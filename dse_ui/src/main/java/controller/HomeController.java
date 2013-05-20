@@ -1,4 +1,4 @@
-package services;
+package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,9 +8,6 @@ import java.util.Map;
 import java.util.Properties;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Doctor;
-import models.Patient;
-import models.Person;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,6 +23,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mongodb.DBCollection;
 import com.mongodb.MongoException;
+
+import domain.Doctor;
+import domain.Patient;
+import domain.Person;
 
 /**
  * Handles requests for the application home page.

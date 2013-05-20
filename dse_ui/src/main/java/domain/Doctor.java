@@ -1,4 +1,4 @@
-package models;
+package domain;
 
 public class Doctor extends Person {
 
