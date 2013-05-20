@@ -12,6 +12,9 @@ import java.util.Random;
 
 import javax.servlet.http.HttpServletResponse;
 
+import models.Doctor;
+import models.Person;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -21,6 +24,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -49,18 +53,35 @@ public class HomeController {
 		if (mongoDbFactory != null) {
 			services.add("MongoDB: " + mongoDbFactory.getDb().getMongo().getAddress());
 		}
-		Random generator = new Random();
-		Person p = new Person("Joe Cloud-" + generator.nextInt(100), generator.nextInt(100));
-		mongoTemplate.save(p);
-		List<Person> people = mongoTemplate.find(new Query(where("age").lt(100)), Person.class);
+		
+		// Doctor doctor = new Doctor("Dr.", "Doctor", "McDoctorton");
+		// mongoTemplate.save(doctor);
+		
+		List<Doctor> doctors = mongoTemplate.findAll(Doctor.class);
 
-		model.addAttribute("people", people);
+		model.addAttribute("doctors", doctors);
 		model.addAttribute("services", services);
 		model.addAttribute("serviceProperties", getServicePropertiesAsList());
 
 		String environmentName = (System.getenv("VCAP_APPLICATION") != null) ? "Cloud" : "Local";
 		model.addAttribute("environmentName", environmentName);
 		return "home";
+	}
+	
+	/**
+	 * TODO
+	 * 
+	 * @param title
+	 * @param firstname
+	 * @param lastname
+	 * @return
+	 */
+	@RequestMapping(value = "/doctor/create/{title}/{firstname}/{lastname}", method = RequestMethod.GET)
+	public String doctorCreate(@PathVariable("title") String title, @PathVariable("firstname") String firstname,
+			@PathVariable("lastname") String lastname) {
+		Doctor doctor = new Doctor(title, firstname, lastname);
+		mongoTemplate.save(doctor);
+		return "redirect:/";
 	}
 
 	@RequestMapping("/env")
