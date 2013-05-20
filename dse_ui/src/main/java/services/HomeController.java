@@ -1,18 +1,15 @@
 package services;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
-
 import javax.servlet.http.HttpServletResponse;
 
 import models.Doctor;
+import models.Patient;
 import models.Person;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.CollectionCallback;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,13 +49,12 @@ public class HomeController {
 		if (mongoDbFactory != null) {
 			services.add("MongoDB: " + mongoDbFactory.getDb().getMongo().getAddress());
 		}
-		
-		// Doctor doctor = new Doctor("Dr.", "Doctor", "McDoctorton");
-		// mongoTemplate.save(doctor);
-		
+
 		List<Doctor> doctors = mongoTemplate.findAll(Doctor.class);
+		List<Patient> patients = mongoTemplate.findAll(Patient.class);
 
 		model.addAttribute("doctors", doctors);
+		model.addAttribute("patients", patients);
 		model.addAttribute("services", services);
 		model.addAttribute("serviceProperties", getServicePropertiesAsList());
 
@@ -67,7 +62,7 @@ public class HomeController {
 		model.addAttribute("environmentName", environmentName);
 		return "home";
 	}
-	
+
 	/**
 	 * TODO
 	 * 
@@ -84,13 +79,30 @@ public class HomeController {
 		return "redirect:/";
 	}
 
+	/**
+	 * TODO
+	 * 
+	 * @param firstname
+	 * @param lastname
+	 * @param lat
+	 * @param lon
+	 * @return
+	 */
+	@RequestMapping(value = "/patient/create/{firstname}/{lastname}/{lat}/{lon}", method = RequestMethod.GET)
+	public String patientCreate(@PathVariable("firstname") String firstname, @PathVariable("lastname") String lastname,
+			@PathVariable("lat") double lat, @PathVariable("lon") double lon) {
+		double[] coordinates = new double[] { lat, lon };
+		Patient patient = new Patient(firstname, lastname, coordinates);
+		mongoTemplate.save(patient);
+		return "redirect:/";
+	}
+
 	@RequestMapping("/env")
 	public void env(HttpServletResponse response) throws IOException {
 		response.setContentType("text/plain");
 		PrintWriter out = response.getWriter();
 		out.println("System Properties:");
-		for (Map.Entry<Object, Object> property : System.getProperties()
-				.entrySet()) {
+		for (Map.Entry<Object, Object> property : System.getProperties().entrySet()) {
 			out.println(property.getKey() + ": " + property.getValue());
 		}
 		out.println();
@@ -131,14 +143,12 @@ public class HomeController {
 	public void deleteAll(HttpServletResponse response) throws IOException {
 		response.setContentType("text/plain");
 		PrintWriter out = response.getWriter();
-		long count = mongoTemplate.execute(Person.class,
-				new CollectionCallback<Long>() {
-					@Override
-					public Long doInCollection(DBCollection collection)
-							throws MongoException, DataAccessException {
-						return collection.count();
-					}
-				});
+		long count = mongoTemplate.execute(Person.class, new CollectionCallback<Long>() {
+			@Override
+			public Long doInCollection(DBCollection collection) throws MongoException, DataAccessException {
+				return collection.count();
+			}
+		});
 		out.println("Deleted " + count + " entries");
 		mongoTemplate.dropCollection(Person.class);
 	}
