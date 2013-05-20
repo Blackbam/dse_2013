@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ac.at.tuwien.infosys.dse</groupId>
-	<name>dse_2013</name>
-	<artifactId>dse_2013</artifactId>
+	<name>dse_ui</name>
+	<artifactId>dse_ui</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
