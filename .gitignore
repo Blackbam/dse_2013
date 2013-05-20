@@ -1,4 +1,6 @@
 /target
+*.orig
+
 *.pydevproject
 .project
 .metadata
