@@ -34,8 +34,8 @@ to the list you see below.  To reset the list, click <a href="deleteAll">Delete 
 
 <h2>The following people have been stored in the database:</h2>
 <ul>
-	<c:forEach items="${people}" var="people">
-		<li><p>${people}</p></li>	
+	<c:forEach items="${doctors}" var="doctors">
+		<li><p>${doctors}</p></li>	
 	</c:forEach>
 </ul>
 
