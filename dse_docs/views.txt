@@ -1,0 +1,10 @@
+Es gibt jeweils nur eine View:
+
+1. public.jsp
+2. doctor.jsp
+3. patient.jsp
+4. hospital.jsp
+
+Für die letzteren 3 muss eine bestimmte ID angegeben werden.
+
+Auf dieser einen Seite sind via Ajax sämtliche Aktionen des betreffenden Akteurs ausführbar.
