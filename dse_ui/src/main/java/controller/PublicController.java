@@ -1,8 +1,12 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
+
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.MongoDbFactory;
@@ -36,17 +40,24 @@ public class PublicController {
 
 	@RequestMapping(value = "/public", method = RequestMethod.GET)
 	public String publicInfo(Model model) {
-		
-		// mongoTemplate.dropCollection(Hospital.class);
-		// mongoTemplate.dropCollection(OpSlot.class);
-		
-		double[] coordinates = new double[]{40, 50};
-		Hospital hospital = new Hospital("test hospital", coordinates);
-		
-		OpSlot opSlot = new OpSlot(hospital, 1, OpSlot.Type.AUGEN);
-		mongoTemplate.save(opSlot);
 
 		List<OpSlot> opSlots = mongoTemplate.findAll(OpSlot.class);
+
+		// TODO for testing only
+		if (opSlots.size() >= 10) {
+			mongoTemplate.dropCollection(Hospital.class);
+			mongoTemplate.dropCollection(OpSlot.class);
+		}
+
+		Random rn = new Random();
+		double[] coordinates = new double[] { 40, 50 };
+		Hospital hospital = new Hospital("test hospital " + Math.abs(rn.nextInt()), coordinates);
+		DateTime dateTime = new DateTime("2013-12-13T21:39:45.618-08:00");
+
+		OpSlot opSlot = new OpSlot(hospital, 1, OpSlot.Type.AUGEN);
+		opSlot.setDate(dateTime.toDate());
+
+		mongoTemplate.save(opSlot);
 		model.addAttribute("opSlots", opSlots);
 
 		return "public";
