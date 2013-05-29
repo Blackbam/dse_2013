@@ -1,6 +1,12 @@
 /target
 *.orig
 
+.docx#
+
+# SpringIDE-specific
+.springBeans 
+
+#__eclipse gitignore template__
 *.pydevproject
 .project
 .metadata
