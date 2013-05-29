@@ -30,16 +30,22 @@
 
 				<table id='gradient-style' class='sortable'>
 					<tr>
-						<th>Date</th>
-						<th>Hospital</th>
-						<th>Type</th>
+						<th>Datum</th>
+						<th>Dauer</th>
+						<th>Typ</th>
+						<th>Krankenhaus</th>
+						<th>Arzt</th>
+						<th>Status</th>
 					</tr>
 
 					<c:forEach items="${opSlots}" var="opSlots">
 						<tr>
 							<td>${opSlots.date}</td>
-							<td>${opSlots.hospital.name}</td>
+							<th>${opSlots.length}</th>
 							<td>${opSlots.type}</td>
+							<td>${opSlots.hospital.name}</td>
+							<td>@Todo: Implement Reservations</td>
+							<td>@Todo: Implement Reservations</td>
 						</tr>
 					</c:forEach>
 

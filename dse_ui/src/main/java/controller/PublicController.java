@@ -56,7 +56,7 @@ public class PublicController {
 		
 		DateTime dateTime = new DateTime("2013-12-13T21:39:45.618-08:00");
 
-		OpSlot opSlot = new OpSlot(hospital, 1, OpSlot.Type.AUGEN);
+		OpSlot opSlot = new OpSlot(hospital, 30, OpSlot.Type.AUGEN);
 		opSlot.setDate(dateTime.toDate());
 
 		mongoTemplate.save(opSlot);
