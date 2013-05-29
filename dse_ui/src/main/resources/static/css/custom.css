@@ -1,0 +1,13 @@
+.success {
+	display:block;
+	background-color:#ccffcc;
+	padding:5px 10px;
+	border:1px solid #0f0;
+}
+
+.error {
+	display:block;
+	background-color:#ffcccc;
+	padding:5px 10px;
+	border:1px solid #f00;
+}

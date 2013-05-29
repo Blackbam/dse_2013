@@ -26,7 +26,7 @@
 
 				<p>For testing purposes, reloading the page adds a new operation
 					slot. Once 10 slots have been created, the next reload will remove
-					them all again.</p>
+					them all again. DeltaX.</p>
 
 				<table id='gradient-style' class='sortable'>
 					<tr>
