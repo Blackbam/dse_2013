@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import domain.OpSlot;
 
-
 @Controller
 @RequestMapping(value = "/doctor")
 public class DoctorController {
@@ -26,36 +25,33 @@ public class DoctorController {
 
 	@Autowired(required = false)
 	MongoTemplate mongoTemplate;
-	
+
 	@Autowired
 	AmqpTemplate amqpTemplate;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Model model) {	
-		
-		//TODO only find this doctors op sloths + find needed data through database relations
+	public String home(Model model) {
+
+		// TODO only find this doctors op slots + find needed data through database relations
 		List<OpSlot> opSlots = mongoTemplate.findAll(OpSlot.class);
 
 		model.addAttribute("op_slots", opSlots);
 
-		
 		logger.debug("Doctor view finished");
-		
+
 		return "doctor";
 	}
 
 	@RequestMapping(value = "/reserve/", method = RequestMethod.POST)
 	public String doctorReserve(@RequestParam("patientID") String patientID) {
 
-		logger.info("trying to reserve patient: " + patientID +". sending message to allocator");
+		logger.info("trying to reserve patient: " + patientID + ". sending message to allocator");
 
-		
 		return "doctor";
 	}
 
 	@RequestMapping(value = "/remove_reservation/", method = RequestMethod.GET)
-	public String doctorRemoveReservation(
-			@RequestParam("patientID") int patientID) {
+	public String doctorRemoveReservation(@RequestParam("patientID") int patientID) {
 
 		// TODO ME
 

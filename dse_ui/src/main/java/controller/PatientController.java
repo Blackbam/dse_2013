@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import domain.Patient;
 
 /**
- * Handles requst for the patient view
+ * Handles requests for the patient view
  * 
  * @author Taylor
  */

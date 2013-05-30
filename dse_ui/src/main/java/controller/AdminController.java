@@ -161,27 +161,35 @@ public class AdminController {
 	}
 
 	/**
-	 * New doctor, if parameters are valid.
+	 * Create a new Patient entity
 	 * 
 	 * @param model
-	 * @param title
+	 *            the model associated with the view for this controller
+	 * @param username
+	 *            the patient's username
+	 * @param password
+	 *            the patient's password
 	 * @param firstName
+	 *            the patient's first name
 	 * @param lastName
+	 *            the patient's last name
+	 * @param latitude
+	 *            the latitude of the patient's location
+	 * @param longitude
+	 *            the longitude of the patient's location
 	 * @return
 	 */
 	@RequestMapping(value = "/patient/create/", method = RequestMethod.POST)
-	public String createPatient(Model model, @RequestParam("firstName") String firstName,
+	public String createPatient(Model model, @RequestParam("username") String username,
+			@RequestParam("password") String password, @RequestParam("firstName") String firstName,
 			@RequestParam("lastName") String lastName, @RequestParam("latitude") double latitude,
 			@RequestParam("longitude") double longitude) {
 
-		double[] geocoords = { latitude, longitude };
-
-		Patient patient = new Patient(firstName, lastName, geocoords);
-
-		// TODO set username and password in form
-		patient.setUsername(firstName);
-		patient.setPassword(firstName);
-
+		// Persist patient
+		double[] geoCoords = { latitude, longitude };
+		Patient patient = new Patient(firstName, lastName, geoCoords);
+		patient.setUsername(username);
+		patient.setPassword(password);
 		mongoTemplate.save(patient);
 
 		patient = mongoTemplate.findById(patient.getId(), Patient.class);
