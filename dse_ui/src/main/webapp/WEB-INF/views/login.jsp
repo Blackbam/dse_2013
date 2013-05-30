@@ -14,7 +14,7 @@
 		<div id="header">
 			<div id="name-and-company">
 				<div id='site-name'>
-					<a href="" title="Patientenbereich" rel="home">Patientenbereich</a>
+					<a href="" title="Login" rel="home">Login</a>
 				</div>
 			</div>
 		</div>
@@ -22,7 +22,15 @@
 		<div id="container">
 			<div id="content" class="no-side-nav">
 
-				<!-- ${patient.firstname} -->
+				<h2>Login</h2>
+
+				<div id="login">
+					<form method="post" action="/login/authenticate">
+						<label>Username:</label><input type="text" name="username" /><br />
+						<label>Passwort</label><input type="text" name="password" /><br />
+						<input type="submit" value="Einloggen" />
+					</form>
+				</div>
 
 			</div>
 		</div>

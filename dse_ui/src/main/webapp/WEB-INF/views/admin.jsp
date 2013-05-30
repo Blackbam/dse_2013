@@ -15,7 +15,7 @@
 		<div id="header">
 			<div id="name-and-company">
 				<div id='site-name'>
-					<a href="" title="Admin" rel="home">Administrators Access</a>
+					<a href="" title="Admin" rel="home">Administrator Access</a>
 				</div>
 			</div>
 		</div>
