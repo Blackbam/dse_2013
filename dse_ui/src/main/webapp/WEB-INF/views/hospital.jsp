@@ -103,8 +103,8 @@
 							<td>${opslots.type}</td>
 							<td>
 								<c:if test="${not empty opslots.reservation}">
-								    ${opslots.reservation.id} by ${opslots.reservation.doctor.name} 
-								    with patient ${opslots.reservation.patient.name}
+								    ${opslots.reservation.id} von Arzt ${opslots.reservation.doctor.name} 
+								    für Patient ${opslots.reservation.patient.name}
 								</c:if>
 								<c:if test="${empty opslots.reservation}">
 								    Nein

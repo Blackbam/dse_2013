@@ -23,12 +23,10 @@
 			<div id="content" class="no-side-nav">
 
 				<p><a href="/login">User login</a></p>
+				
+				<h2>OP-Slot Suche</h2>
 
-				<h2>Below you can find a list of all operation slots.</h2>
-
-				<p>For testing purposes, reloading the page adds a new operation
-					slot. Once 10 slots have been created, the next reload will remove
-					them all again. DeltaX.</p>
+				<h2>Liste aller OP-Slots</h2>
 
 				<table id='gradient-style' class='sortable'>
 					<tr>
@@ -36,8 +34,7 @@
 						<th>Dauer</th>
 						<th>Typ</th>
 						<th>Krankenhaus</th>
-						<th>Arzt</th>
-						<th>Status</th>
+						<th>Reservierung</th>
 					</tr>
 
 					<c:forEach items="${opSlots}" var="opSlots">
@@ -46,8 +43,15 @@
 							<th>${opSlots.length}</th>
 							<td>${opSlots.type}</td>
 							<td>${opSlots.hospital.name}</td>
-							<td>@Todo: Implement Reservations</td>
-							<td>@Todo: Implement Reservations</td>
+							<td>
+								<c:if test="${not empty opSlots.reservation}">
+								    ${opSlots.reservation.id} von Arzt ${opSlots.reservation.doctor.name} 
+								    für Patient ${opSlots.reservation.patient.name}
+								</c:if>
+								<c:if test="${empty opSlots.reservation}">
+								    Nein
+								</c:if>
+							</td>
 						</tr>
 					</c:forEach>
 
