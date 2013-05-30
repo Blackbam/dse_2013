@@ -103,6 +103,8 @@
 				
 				<div id="doktor_anlegen">
 					<form method="post" action="/admin/doctor/create/">
+						<label>Username</label><input type="text" name="username" /><br/>
+						<label>Passwort</label><input type="text" name="password" /><br/>
 						<label>Titel</label><input type="text" name="title" /><br/>
 						<label>Vorname</label><input type="text" name="firstName" /><br/>
 						<label>Nachname</label><input type="text" name="lastName" /><br/>
@@ -115,6 +117,8 @@
 				<table id='gradient-style' class='sortable'>
 					<tr>
 						<th>ID</th>
+						<th>Username</th>
+						<th>Passwort</th>
 						<th>Titel</th>
 						<th>Vorname</th>
 						<th>Nachname</th>
@@ -124,6 +128,8 @@
 					<c:forEach items="${doctors}" var="doctors">
 						<tr>
 							<td>${doctors.id}</td>
+							<td>${doctors.username}</td>
+							<td>${doctors.password}</td>
 							<td>${doctors.title}</td>
 							<td>${doctors.firstName}</td>
 							<td>${doctors.lastName}</td>

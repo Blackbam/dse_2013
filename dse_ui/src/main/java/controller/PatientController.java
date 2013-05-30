@@ -2,6 +2,8 @@ package controller;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import domain.OpSlot;
 import domain.Patient;
+import domain.Reservation;
 
 /**
  * Handles requests for the patient view
@@ -32,11 +36,16 @@ public class PatientController {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String patient(Model model, @RequestParam("id") String id) {
 
-		// TODO
-		// show user info and reservation details
-
-		Patient patient = mongoTemplate.findOne(new Query(where("id").is(id)), Patient.class);
+		// Get the patient with the given id
+		Patient patient = mongoTemplate.findById(id, Patient.class);
 		model.addAttribute("patient", patient);
+		
+		// TODO error handling if patient is not found
+		
+		// Get all operation slots for patient
+		List<Reservation> reservations = mongoTemplate.find(new Query(where("patient").is(patient)), Reservation.class);
+		List<OpSlot> opSlots = mongoTemplate.find(new Query(where("reservation").in(reservations)), OpSlot.class);
+		model.addAttribute("opSlots", opSlots);
 
 		return "patient";
 	}

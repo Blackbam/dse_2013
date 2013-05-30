@@ -103,20 +103,31 @@ public class AdminController {
 	}
 
 	/**
-	 * New doctor, if parameters are valid.
+	 * Create a new Doctor entity
 	 * 
 	 * @param model
+	 *            the model associated with the view for this controller
+	 * @param username
+	 *            the doctor's username
+	 * @param password
+	 *            the doctor's password
 	 * @param title
+	 *            the doctor's title
 	 * @param firstName
+	 *            the doctor's first name
 	 * @param lastName
+	 *            the doctor's last name
 	 * @return
 	 */
 	@RequestMapping(value = "/doctor/create/", method = RequestMethod.POST)
-	public String createDoctor(Model model, @RequestParam("title") String title,
+	public String createDoctor(Model model, @RequestParam("username") String username,
+			@RequestParam("password") String password, @RequestParam("title") String title,
 			@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
 
+		// Persist doctor
 		Doctor doctor = new Doctor(title, firstName, lastName);
-
+		doctor.setUsername(username);
+		doctor.setPassword(password);
 		mongoTemplate.save(doctor);
 
 		doctor = mongoTemplate.findById(doctor.getId(), Doctor.class);

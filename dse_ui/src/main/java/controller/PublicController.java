@@ -38,7 +38,7 @@ public class PublicController {
 	public String publicInfo(Model model) {
 
 		List<OpSlot> opSlots = mongoTemplate.findAll(OpSlot.class);
-		
+
 		model.addAttribute("opSlots", opSlots);
 
 		return "public";

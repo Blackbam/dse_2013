@@ -4,11 +4,11 @@ public class Reservation {
 	
 	private Doctor doctor;
 	private Patient patient;
-	private OpSlot op_slot;
+	private OpSlot opSlot;
 	
-	public Reservation(Doctor doctor, Patient patient, OpSlot op_slot) {
+	public Reservation(Doctor doctor, Patient patient, OpSlot opSlot) {
 		this.doctor = doctor;
-		this.op_slot = op_slot;
+		this.opSlot = opSlot;
 		this.patient = patient;
 	}
 	
@@ -24,8 +24,8 @@ public class Reservation {
 		this.patient = patient;
 	}
 
-	public OpSlot getOp_slot() {
-		return op_slot;
+	public OpSlot getOpSlot() {
+		return opSlot;
 	}
 	
 }
