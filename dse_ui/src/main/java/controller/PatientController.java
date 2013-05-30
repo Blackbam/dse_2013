@@ -29,15 +29,7 @@ public class PatientController {
 	@Autowired(required = false)
 	MongoTemplate mongoTemplate;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String patient(Model model) {
-
-		// TODO
-
-		return "patient";
-	}
-
-	@RequestMapping(value = "/id/", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String patient(Model model, @RequestParam("id") String id) {
 
 		// TODO

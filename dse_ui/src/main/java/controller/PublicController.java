@@ -21,6 +21,7 @@ import domain.OpSlot;
  * @author Taylor
  */
 @Controller
+@RequestMapping(value = "/public")
 public class PublicController {
 
 	@Autowired(required = false)

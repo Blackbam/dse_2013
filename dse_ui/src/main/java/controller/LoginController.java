@@ -29,7 +29,7 @@ public class LoginController {
 	@Autowired(required = false)
 	MongoTemplate mongoTemplate;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String login(Model model) {
 		return "login";
 	}
@@ -44,7 +44,7 @@ public class LoginController {
 		// Check type of user
 		if (patient != null) {
 			// TODO check password
-			return "redirect:/patient/id/" + patient.getId();
+			return "redirect:/patient?id=" + patient.getId();
 		}
 
 		return "redirect:/public";

@@ -22,6 +22,8 @@
 		<div id="container">
 			<div id="content" class="no-side-nav">
 
+				<p><a href="/login">User login</a></p>
+
 				<h2>Below you can find a list of all operation slots.</h2>
 
 				<p>For testing purposes, reloading the page adds a new operation
