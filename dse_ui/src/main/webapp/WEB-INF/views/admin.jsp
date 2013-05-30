@@ -161,6 +161,8 @@
 				
 				<div id="patient_anlegen">
 					<form method="post" action="/admin/patient/create/">
+						<label>Username</label><input type="text" name="username" /><br/>
+						<label>Passwort</label><input type="text" name="password" /><br/>
 						<label>Vorname</label><input type="text" name="firstName" /><br/>
 						<label>Nachname</label><input type="text" name="lastName" /><br/>
 						<label>Latitude</label><input type="text" name="latitude" /><br/>
@@ -174,6 +176,8 @@
 				<table id='gradient-style' class='sortable'>
 					<tr>
 						<th>ID</th>
+						<th>Username</th>
+						<th>Passwort</th>
 						<th>Vorname</th>
 						<th>Nachname</th>
 						<th>Geo-Koordinaten</th>
@@ -183,6 +187,8 @@
 					<c:forEach items="${patients}" var="patients">
 						<tr>
 							<td>${patients.id}</td>
+							<td>${patients.username}</td>
+							<td>${patients.password}</td>
 							<td>${patients.firstName}</td>
 							<td>${patients.lastName}</td>
 							<td>Lat. ${patients.location[0]}, Long. ${patients.location[1]}</td>

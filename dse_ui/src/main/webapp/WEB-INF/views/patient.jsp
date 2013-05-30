@@ -22,8 +22,27 @@
 		<div id="container">
 			<div id="content" class="no-side-nav">
 
-				${patient.firstName}
+				<h2>Persönliche Daten</h2>
 
+				<table>
+					<tr>
+						<td align="right">Nachname:</td>
+						<td>${patient.lastName}</td>
+					</tr>
+					<tr>
+						<td align="right">Vorname:</td>
+						<td>${patient.firstName}</td>
+					</tr>
+					<tr>
+						<td align="right">Username:</td>
+						<td>${patient.username}</td>
+					</tr>
+					<tr>
+						<td align="right">Standort:</td>
+						<td>${patient.locationString}</td>
+					</tr>
+
+				</table>
 			</div>
 		</div>
 	</div>
