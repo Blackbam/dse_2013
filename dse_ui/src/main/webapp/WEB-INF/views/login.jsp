@@ -4,10 +4,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Login</title>
-<link rel="stylesheet" href="static/css/main.css" type="text/css"></link>
-<link rel="stylesheet" href="static/css/colors.css" type="text/css"></link>
-<link rel="stylesheet" href="static/css/local.css" type="text/css"></link>
-<script type="text/javascript" src="static/js/sorttable.js"></script>
+<link rel="stylesheet" href="/static/css/main.css" type="text/css"></link>
+<link rel="stylesheet" href="/static/css/colors.css" type="text/css"></link>
+<link rel="stylesheet" href="/static/css/local.css" type="text/css"></link>
+<link rel="stylesheet" href="/static/css/custom.css" type="text/css"></link>
+<script type="text/javascript" src="/static/js/sorttable.js"></script>
 </head>
 <body>
 	<div id="page">
@@ -26,8 +27,13 @@
 
 				<div id="login">
 					<form method="post" action="/login/authenticate">
-						<label>Username</label><input type="text" name="username" /><br />
-						<label>Passwort</label><input type="text" name="password" /><br />
+						<label>Username</label><input type="text" name="username" /><br /><br />
+						<label>Passwort</label><input type="text" name="password" /><br /><br />
+						<label>Einloggen als</label>
+							<input type="radio" name="usertype" value="PATIENT" checked="checked" /> Patient
+							<input type="radio" name="usertype" value="DOCTOR" /> Doktor
+							<input type="radio" name="usertype" value="HOSPITAL" /> Krankenhaus
+							<br /><br />
 						<input type="submit" value="Einloggen" />
 					</form>
 				</div>

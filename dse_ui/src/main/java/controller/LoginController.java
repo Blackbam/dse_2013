@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import domain.Doctor;
+import domain.Hospital;
 import domain.Patient;
 
 /**
@@ -36,18 +38,43 @@ public class LoginController {
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public String login(Model model, @RequestParam("username") String username,
-			@RequestParam("password") String password) {
+			@RequestParam("password") String password, @RequestParam("usertype") Usertype usertype) {
+		
+		switch(usertype) {
+			case HOSPITAL:
+				// Retrieve the hospital
+				Hospital hospital = mongoTemplate.findOne(new Query(where("name").is(username)), Hospital.class);
 
-		// Retrieve the person with the received username
-		Patient patient = mongoTemplate.findOne(new Query(where("username").is(username)), Patient.class);
+				// Check type of user
+				if (hospital != null) {
+					return "redirect:/hospital?id=" + hospital.getId();
+				}
+			break;
+			case DOCTOR:
+				// Retrieve the person with the received username
+				Doctor doctor = mongoTemplate.findOne(new Query(where("username").is(username)), Doctor.class);
 
-		// Check type of user
-		if (patient != null) {
-			// TODO check password
-			return "redirect:/patient?id=" + patient.getId();
+				// Check type of user
+				if (doctor != null) {
+					return "redirect:/doctor?id=" + doctor.getId();
+				}
+			break;
+			default:
+				// Retrieve the patient with the received username
+				Patient patient = mongoTemplate.findOne(new Query(where("username").is(username)), Patient.class);
+
+				// Check type of user
+				if (patient != null) {
+					return "redirect:/patient?id=" + patient.getId();
+				}
+			break;
 		}
 
 		return "redirect:/public";
+	}
+	
+	public enum Usertype {
+	    PATIENT,DOCTOR,HOSPITAL
 	}
 
 }

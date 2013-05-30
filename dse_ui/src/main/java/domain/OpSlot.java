@@ -15,10 +15,11 @@ public class OpSlot {
 	private Reservation reservation = null;
 	private Type type;
 
-	public OpSlot(Hospital hospital, int length, Type type) {
+	public OpSlot(Hospital hospital, int length, Type type, Date date) {
 		this.hospital = hospital;
 		this.length = length;
 		this.type = type;
+		this.date = date;
 	}
 
 	public enum Type {
