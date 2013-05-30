@@ -36,7 +36,7 @@ public class PublicController {
 
 	// get the full list of operations
 	// Werte: Datum von bis Typ KH Arzt Status
-	@RequestMapping(value = "/public", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String publicInfo(Model model) {
 
 		List<OpSlot> opSlots = mongoTemplate.findAll(OpSlot.class);
