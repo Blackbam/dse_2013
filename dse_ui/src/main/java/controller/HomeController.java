@@ -32,8 +32,8 @@ import domain.Person;
  * Handles requests for the application home page.
  */
 @Controller
-public class HomeController {
-
+public class HomeController {	
+	
 	@Autowired(required = false)
 	MongoDbFactory mongoDbFactory;
 
@@ -62,22 +62,6 @@ public class HomeController {
 		String environmentName = (System.getenv("VCAP_APPLICATION") != null) ? "Cloud" : "Local";
 		model.addAttribute("environmentName", environmentName);
 		return "home";
-	}
-
-	/**
-	 * TODO
-	 * 
-	 * @param title
-	 * @param firstname
-	 * @param lastname
-	 * @return
-	 */
-	@RequestMapping(value = "/doctor/create/{title}/{firstname}/{lastname}", method = RequestMethod.GET)
-	public String doctorCreate(@PathVariable("title") String title, @PathVariable("firstname") String firstname,
-			@PathVariable("lastname") String lastname) {
-		Doctor doctor = new Doctor(title, firstname, lastname);
-		mongoTemplate.save(doctor);
-		return "redirect:/";
 	}
 
 	/**

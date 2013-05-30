@@ -42,6 +42,7 @@
 			<version>2.2</version>
 		</dependency>
 		
+		<!-- Messaging  -->
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit</artifactId>
