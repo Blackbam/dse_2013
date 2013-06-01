@@ -22,8 +22,10 @@
 		<div id="container">
 			<div id="content" class="no-side-nav">
 
-				<p><a href="/login">User login</a></p>
-				
+				<p>
+					<a href="/login">User login</a>
+				</p>
+
 				<h2>OP-Slot Suche</h2>
 
 				<h2>Liste aller OP-Slots</h2>
@@ -31,27 +33,31 @@
 				<table id='gradient-style' class='sortable'>
 					<tr>
 						<th>Datum</th>
-						<th>Dauer</th>
+						<th>von</th>
+						<th>bis</th>
 						<th>Typ</th>
 						<th>Krankenhaus</th>
-						<th>Reservierung</th>
+						<th>Arzt</th>
+						<th>Status</th>
 					</tr>
 
 					<c:forEach items="${opSlots}" var="opSlots">
 						<tr>
-							<td>${opSlots.date}</td>
-							<th>${opSlots.length}</th>
-							<td>${opSlots.type}</td>
+							<td>${opSlots.dateString}</td>
+							<td>${opSlots.startTimeString}</td>
+							<td>${opSlots.endTimeString}</td>
+							<td>${opSlots.typeString}</td>
 							<td>${opSlots.hospital.name}</td>
-							<td>
-								<c:if test="${not empty opSlots.reservation}">
-								    ${opSlots.reservation.id} von Arzt ${opSlots.reservation.doctor.name} 
-								    für Patient ${opSlots.reservation.patient.name}
-								</c:if>
-								<c:if test="${empty opSlots.reservation}">
-								    Nein
-								</c:if>
-							</td>
+							<td><c:if test="${not empty opSlots.reservation}">
+								    ${opSlots.reservation.doctor.name}
+								</c:if> <c:if test="${empty opSlots.reservation}">
+								    -
+								</c:if></td>
+							<td><c:if test="${not empty opSlots.reservation}">
+								    reserviert
+								</c:if> <c:if test="${empty opSlots.reservation}">
+								    frei
+								</c:if></td>
 						</tr>
 					</c:forEach>
 

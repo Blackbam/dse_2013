@@ -2,6 +2,7 @@ package domain;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 
 public class OpSlot {
@@ -42,6 +43,21 @@ public class OpSlot {
 		this.hospital = hospital;
 	}
 
+	public String getDateString() {
+		DateTime dt = new DateTime(date);
+		return dt.toLocalDate().toString("yyyy.MM.dd");
+	}
+
+	public String getStartTimeString() {
+		DateTime dt = new DateTime(date);
+		return dt.toLocalTime().toString("HH:mm");
+	}
+
+	public String getEndTimeString() {
+		DateTime dt = new DateTime(date);
+		return dt.plusMinutes(length).toLocalTime().toString("HH:mm");
+	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -64,6 +80,11 @@ public class OpSlot {
 
 	public void setReservation(Reservation reservation) {
 		this.reservation = reservation;
+	}
+
+	public String getTypeString() {
+		String typeString = type.toString();
+		return typeString.substring(0, 1).toUpperCase() + typeString.substring(1).toLowerCase();
 	}
 
 	public Type getType() {
