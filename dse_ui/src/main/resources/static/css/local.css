@@ -168,12 +168,6 @@ form .control {
 	margin-bottom: 8px;
 }
 
-input[type="text"], 
-input[type="password"]
-{ 
-	width: 250px;
-}
-
 fieldset .buttonGroup { 
 	clear: both;
 	margin-left: 130px; 

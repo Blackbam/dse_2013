@@ -45,7 +45,7 @@ public class OpSlot {
 
 	public String getDateString() {
 		DateTime dt = new DateTime(date);
-		return dt.toLocalDate().toString("yyyy.MM.dd");
+		return dt.toLocalDate().toString("dd.MM.yyyy");
 	}
 
 	public String getStartTimeString() {

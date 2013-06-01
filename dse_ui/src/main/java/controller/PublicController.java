@@ -32,15 +32,29 @@ public class PublicController {
 	@Qualifier(value = "serviceProperties")
 	Properties serviceProperties;
 
-	// get the full list of operations
-	// Werte: Datum von bis Typ KH Arzt Status
+	/**
+	 * TODO
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String publicInfo(Model model) {
-
 		List<OpSlot> opSlots = mongoTemplate.findAll(OpSlot.class);
-
 		model.addAttribute("opSlots", opSlots);
+		return "public";
+	}
 
+	/**
+	 * TODO
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public String publicInfoSorted(Model model) {
+		List<OpSlot> opSlots = mongoTemplate.findAll(OpSlot.class);
+		model.addAttribute("opSlots", opSlots);
 		return "public";
 	}
 

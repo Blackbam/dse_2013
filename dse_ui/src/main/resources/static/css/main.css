@@ -367,9 +367,7 @@ input.form-checkbox,input.form-radio {
 	text-align: center;
 	font-size: 13px;
 	font-weight: bold;
-	background: #b9c9fe
-		url("http://media.smashingmagazine.com/images/express-css-table-design/table-images/gradhead.png")
-		repeat-x;
+	background: #b9c9fe;
 	border-top: 2px solid #d3ddff;
 	border-bottom: 1px solid #fff;
 	color: #039;
@@ -381,9 +379,7 @@ input.form-checkbox,input.form-radio {
 	border-bottom: 1px solid #fff;
 	color: #669;
 	border-top: 1px solid #fff;
-	background: #e8edff
-		url("http://media.smashingmagazine.com/images/express-css-table-design/table-images/gradback.png")
-		repeat-x;
+	background: #e8edff;
 	padding: 8px;
 }
 
@@ -394,8 +390,6 @@ input.form-checkbox,input.form-radio {
 }
 
 #gradient-style tbody tr:hover td {
-	background: #d0dafd
-		url("http://media.smashingmagazine.com/images/express-css-table-design/table-images/gradhover.png")
-		repeat-x;
+	background: #d0dafd;
 	color: #339;
 }
