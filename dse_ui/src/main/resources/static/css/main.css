@@ -399,6 +399,7 @@ input.form-checkbox,input.form-radio {
 .searchForm {
 	width: 100%;
 	padding-top: 20px;
+	padding-bottom: 20px;
 	margin: 20px;
 }
 
