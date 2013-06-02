@@ -180,6 +180,7 @@ h4 {
 
 #content.no-side-nav {
 	margin-left: 10px;
+	width: 800px;
 }
 
 /*
@@ -392,4 +393,62 @@ input.form-checkbox,input.form-radio {
 #gradient-style tbody tr:hover td {
 	background: #d0dafd;
 	color: #339;
+}
+
+/* Search form */
+.searchForm {
+	width: 100%;
+	padding-top: 20px;
+	margin: 20px;
+}
+
+.searchForm.p,.searchForm.h2,.searchForm.form,.searchForm.button {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+#stylized {
+	background: #e8edff;
+}
+
+#stylized h2 {
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+#stylized p {
+	font-size: 11px;
+	color: #666666;
+	margin-bottom: 20px;
+	border-bottom: solid 1px #e8edff;
+	padding-bottom: 10px;
+}
+
+#stylized label {
+	display: block;
+	font-weight: bold;
+	text-align: right;
+	width: 140px;
+	float: left;
+}
+
+#stylized label:after {
+	content: '';
+}
+
+#stylized .small {
+	color: #666666;
+	display: block;
+	font-size: 11px;
+	font-weight: normal;
+	text-align: right;
+	width: 140px;
+}
+
+#stylized input {
+	font-size: 12px;
+	padding: 4px 2px;
+	border: solid 1px #aacfe4;
 }
