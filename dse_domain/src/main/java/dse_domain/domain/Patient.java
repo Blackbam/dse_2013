@@ -1,4 +1,4 @@
-package domain;
+package dse_domain.domain;
 
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 

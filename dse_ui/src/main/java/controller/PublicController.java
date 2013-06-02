@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import domain.OpSlot;
+import dse_domain.domain.OpSlot;
 
 /**
  * Handles requests for the public access page.

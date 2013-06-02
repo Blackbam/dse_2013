@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import domain.Hospital;
-import domain.OpSlot;
+import dse_domain.domain.Hospital;
+import dse_domain.domain.OpSlot;
 
 /**
  * Handles requests for the hospital view

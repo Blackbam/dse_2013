@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import dse_domain.domain.Notification;
+
 @Controller
 public class MessageController implements MessageListener {
 
@@ -31,6 +33,8 @@ public class MessageController implements MessageListener {
 
 		System.out.println("TEST MESSENGERcontroller - received message: "
 				+ message.toString());
+		
+		Notification fuckingShit = new Notification(null, null, null);
 	}
 
 	/**
@@ -50,6 +54,7 @@ public class MessageController implements MessageListener {
 		}
 		
 		model.addAttribute("services", services);
+		Notification fuckingShit = new Notification(null, null, null);
 
 		return "home";
 	}

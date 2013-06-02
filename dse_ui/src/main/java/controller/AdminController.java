@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import domain.Doctor;
-import domain.Hospital;
-import domain.OpSlot;
-import domain.Patient;
-import domain.Reservation;
+import dse_domain.domain.Doctor;
+import dse_domain.domain.Hospital;
+import dse_domain.domain.OpSlot;
+import dse_domain.domain.Patient;
+import dse_domain.domain.Reservation;
 
 /**
  * Handles requests for the administrator page

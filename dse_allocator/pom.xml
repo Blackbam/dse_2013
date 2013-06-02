@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<artifactId>dse</artifactId>
+		<groupId>at.ac.tuwien.infosys.dse</groupId>
+		<version>1.0.0</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ac.at.tuwien.infosys.dse</groupId>
+
 	<name>dse_allocator</name>
 	<artifactId>dse_allocator</artifactId>
 	<packaging>war</packaging>
@@ -15,57 +21,58 @@
 		<spring.amqp.version>1.1.4.RELEASE</spring.amqp.version>
 	</properties>
 
+
 	<dependencies>
 
+		<!-- intern shared domain project -->
+		<dependency>
+			<groupId>at.ac.tuwien.infosys.dse</groupId>
+			<artifactId>dse_domain</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- CloudFoundry -->
-			<dependency>
-  			<groupId>org.cloudfoundry</groupId>
-  			<artifactId>cloudfoundry-runtime</artifactId>
-  			<version>${org.cloudfoundry-version}</version>
+		<dependency>
+			<groupId>org.cloudfoundry</groupId>
+			<artifactId>cloudfoundry-runtime</artifactId>
 		</dependency>
 
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${org.springframework-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${org.springframework-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
-			<version>2.2</version>
 		</dependency>
-		
-		<!-- Messaging  -->
+
+		<!-- Messaging -->
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit</artifactId>
-			<version>${spring.amqp.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
 		</dependency>
-		
+
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
-	
-	
+
+
 	<repositories>
 		<!-- For testing against latest Spring snapshots -->
 		<repository>
@@ -88,9 +95,8 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-
 	</repositories>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -101,6 +107,88 @@
 					<target>${java-version}</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.3</version>
+			</plugin>
+			
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<version>1.0-beta-1</version>
+			</plugin>
 		</plugins>
 	</build>
+
+	<!--<build> <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> 
+		<artifactId>maven-compiler-plugin</artifactId> <configuration> <source>${java-version}</source> 
+		<target>${java-version}</target> </configuration> </plugin> </plugins> </build> -->
+
+<!--
+<build>
+	<plugins>
+		 <groupId>org.codehaus.mojo</groupId>
+     <artifactId>appassembler-maven-plugin</artifactId>
+     <version>1.1.1</version>
+     <executions>
+         <execution>
+             <phase>package</phase>
+             <goals>
+                 <goal>assemble</goal>
+             </goals>
+             <configuration>
+                 <assembledirectory>target</assembledirectory>
+                 <programs>
+                     <program>
+                         <mainClass>my.package.myclass</mainClass>
+                     </program>
+                 </programs>
+            </configuration>
+        </execution>
+    </executions>
+
+	</plugins>
+</build>-->
+<!--
+		<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>at.ac.tuwien.infosys.dse</groupId>
+							<artifactId>dse_domain</artifactId>
+							<outputDirectory>${basedir}../wtf</outputDirectory>
+						</artifactItem>
+					</artifactItems>
+					<outputDirectory>${basedir}/target/wtf</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build> -->
 </project>

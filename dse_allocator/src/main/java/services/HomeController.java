@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.amqp.core.AmqpTemplate;
 
+import dse_domain.domain.Doctor;
+
+//import at.ac.tuwien.infosys.dse_domain.domain.Doctor;
+
 /**
  * Handles requests for the application home page.
  */
@@ -14,6 +18,8 @@ import org.springframework.amqp.core.AmqpTemplate;
 public class HomeController {
 	@Autowired
 	AmqpTemplate amqpTemplate;
+	
+	Doctor doc;
 
 	@RequestMapping(value = "/")
 	public String home(Model model) {

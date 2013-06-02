@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import domain.OpSlot;
-import domain.Patient;
-import domain.Reservation;
+import dse_domain.domain.OpSlot;
+import dse_domain.domain.Patient;
+import dse_domain.domain.Reservation;
 
 /**
  * Handles requests for the patient view

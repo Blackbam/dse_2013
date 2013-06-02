@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import domain.Doctor;
-import domain.Hospital;
-import domain.Patient;
+import dse_domain.domain.Doctor;
+import dse_domain.domain.Hospital;
+import dse_domain.domain.Patient;
 
 /**
  * Handles requests for the public access login.

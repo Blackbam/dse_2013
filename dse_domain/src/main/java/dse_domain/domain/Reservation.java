@@ -1,4 +1,4 @@
-package domain;
+package dse_domain.domain;
 
 public class Reservation {
 	

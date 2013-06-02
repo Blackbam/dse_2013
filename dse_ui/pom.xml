@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>dse</artifactId>
+		<groupId>at.ac.tuwien.infosys.dse</groupId>
+		<version>1.0.0</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ac.at.tuwien.infosys.dse</groupId>
+
 	<name>dse_ui</name>
 	<artifactId>dse_ui</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
-		<java-version>1.6</java-version>
-		<org.cloudfoundry-version>0.8.1</org.cloudfoundry-version>
-		<org.cloudfoundry-group>org.cloudfoundry</org.cloudfoundry-group>
-		<org.springframework-version>3.2.2.RELEASE</org.springframework-version>
-		<org.spring-data-mongo-version>1.2.1.RELEASE</org.spring-data-mongo-version>
-		<spring.amqp.version>1.1.4.RELEASE</spring.amqp.version>
 		<org.aspectj-version>1.6.11</org.aspectj-version>
-		<org.slf4j-version>1.5.10</org.slf4j-version>
-		<roo.version>1.2.1.RELEASE</roo.version>
 	</properties>
 
 	<dependencies>
 	
+		<!-- intern shared domain project -->
+		<dependency>
+			<groupId>at.ac.tuwien.infosys.dse</groupId>
+			<artifactId>dse_domain</artifactId>
+			<version>1.0</version>
+		</dependency>
+	
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>2.2</version>
 		</dependency>
 
 		<!-- CloudFoundry -->
 		<dependency>
 			<groupId>org.cloudfoundry</groupId>
 			<artifactId>cloudfoundry-runtime</artifactId>
-			<version>${org.cloudfoundry-version}</version>
+
 		</dependency>
 
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${org.springframework-version}</version>
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
@@ -50,7 +52,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${org.springframework-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -62,7 +63,6 @@
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit</artifactId>
-			<version>${spring.amqp.version}</version>
 		</dependency>
 
 		<!-- AspectJ -->
@@ -76,24 +76,20 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${org.slf4j-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${org.slf4j-version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>${org.slf4j-version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.mail</groupId>
@@ -112,7 +108,7 @@
 					<artifactId>jmxri</artifactId>
 				</exclusion>
 			</exclusions>
-			<scope>runtime</scope>
+			<scope>compile</scope>
 		</dependency>
 
 		<!-- @Inject -->
@@ -125,6 +121,12 @@
 		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		
+		<!-- Servlet (not managed in parent pom)-->
+		<dependency>
+			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
 			<scope>provided</scope>
@@ -135,24 +137,18 @@
 			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
+		
 
 		<!-- Data -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
-			<version>${org.spring-data-mongo-version}</version>
 		</dependency>
 
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -194,23 +190,9 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<warName>hello-spring-mongodb</warName>
-				</configuration>
+				<version>2.3</version>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>install</id>
-						<phase>install</phase>
-						<goals>
-							<goal>sources</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -229,6 +211,7 @@
 					</additionalProjectnatures>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>

@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoException;
 
-import domain.Doctor;
-import domain.Patient;
-import domain.Person;
+import dse_domain.domain.Doctor;
+import dse_domain.domain.Patient;
+import dse_domain.domain.Person;
 
 /**
  * Handles requests for the application home page.
