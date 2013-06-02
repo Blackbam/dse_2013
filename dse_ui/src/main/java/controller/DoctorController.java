@@ -56,6 +56,8 @@ public class DoctorController {
 
 		logger.info("trying to reserve patient: " + patientID + ". sending message to allocator");
 
+		//amqpTemplate.convertAndSend("allocator", message.getValue());
+		
 		return "doctor";
 	}
 
