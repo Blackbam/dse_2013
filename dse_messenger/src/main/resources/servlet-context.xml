@@ -27,15 +27,22 @@
 	<!-- Obtain a connection to the RabbitMQ via cloudfoundry-runtime: -->
     <cloud:rabbit-connection-factory id="connectionFactory"/>
 
+	<!-- Define message listener   -->
+	<rabbit:listener-container connection-factory="connectionFactory">
+    	<rabbit:listener queues="messenger" ref="messageController" method="onMessage"/>
+	</rabbit:listener-container>
+
     <!-- Set up the AmqpTemplate/RabbitTemplate: -->
-    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory"/>
+    <rabbit:template id="rabbitTemplate" connection-factory="connectionFactory"/>
 
     <!-- Request that queues, exchanges and bindings be automatically
          declared on the broker: -->
     <rabbit:admin connection-factory="connectionFactory"/>
     
-	<!-- Declare the message queues: -->
+	<!-- Declare the message queues (if not already declared) -->
     <rabbit:queue name="allocator" durable="true"/>
     <rabbit:queue name="messenger" durable="true"/>
+
+	<bean id="messageController" class="services.MessageController" />
 
 </beans>

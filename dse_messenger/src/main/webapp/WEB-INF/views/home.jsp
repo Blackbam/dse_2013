@@ -35,24 +35,6 @@
 					</c:forEach>
 				</ul>
 
-				<h2>Get messenger queue message:</h2>
-
-				<form:form action="/get" method="post">
-					<input type="submit" value="Get one" />
-				</form:form>
-
-				<c:choose>
-					<c:when test="${got_queue_empty}">
-						<p>Queue empty</p>
-					</c:when>
-					<c:when test="${got != null}">
-						<p>
-							Got message:
-							<c:out value="${got}" />
-						</p>
-					</c:when>
-				</c:choose>
-
 			</div>
 		</div>
 	</div>
