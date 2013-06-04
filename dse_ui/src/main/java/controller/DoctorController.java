@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
+
 import domain.OpSlot;
 import domain.Patient;
 import domain.Reservation;
@@ -40,7 +42,7 @@ public class DoctorController {
 		// Get the patient with the given id
 		Patient patient = mongoTemplate.findById(id, Patient.class);
 		model.addAttribute("patient", patient);
-
+		
 		// TODO error handling if patient is not found
 
 		// Get all operation slots for patient
@@ -55,8 +57,7 @@ public class DoctorController {
 	public String doctorReserve(@RequestParam("patientID") String patientID) {
 
 		logger.info("trying to reserve patient: " + patientID + ". sending message to allocator");
-
-		//amqpTemplate.convertAndSend("allocator", message.getValue());
+		amqpTemplate.convertAndSend("messenger", patientID);
 		
 		return "doctor";
 	}
