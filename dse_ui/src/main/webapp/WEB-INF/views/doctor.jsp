@@ -31,8 +31,7 @@
 				<table id='gradient-style' class='sortable'>
 					<tr>
 						<th>Datum</th>
-						<th>von</th>
-						<th>bis</th>
+						<th>Dauer</th>
 						<th>Typ</th>
 						<th>KH</th>
 						<th>Arzt</th>
@@ -40,21 +39,28 @@
 						<th>Reservierung loeschen</th>
 					</tr>
 
-					<c:forEach items="${op_slots}" var="op_slots">
+					<c:forEach items="${op_slots_this_doctor}" var="op_slots_this_doctor">
 						<tr>
-							<td>${op_slots.date}</td>
-							<td>todo</td>
-							<td>todo</td>
-							<td>${op_slots.type}</td>
-							<td>${op_slots.hospital.name}</td>
-							<td>${op_slots.reservation.arzt}</td>
-							<td>${op_slots.reservation.patient}</td>
-							<td><a href="/remove_reservation/?id=${op_slots.id}">X</a></td>
+							<td>${op_slots_this_doctor.date}</td>
+							<td>${op_slots_this_doctor.length}</td>
+							<td>${op_slots_this_doctor.type}</td>
+							<td>${op_slots_this_doctor.hospital.name}</td>
+							<td>${op_slots_this_doctor.reservation.doctor.lastName}</td>
+							<td>${op_slots_this_doctor.reservation.patient.lastName}</td>
+							<td><a href="/remove_reservation/?id=${op_slots_this_doctor.id}">X</a></td>
 						</tr>
 					</c:forEach>
 
 				</table>
-
+				
+				<h2>Reservierung für einen Patienten vornehmen</h2>
+				<p>benötigt Name des Patienten</p>
+				<p>benötigt Typ der Operation</p>
+				<p>benötigt maximaler Umkreis</p>
+				<p>benötigt frühestes Datum</p>
+				<p>benötigt spätestes Datum</p>
+				<p>--&gt; der Allocator sucht ein passendes Krankenhaus</p>
+				
 				<div id="reserve">
 					<form  method="post"  action="/doctor/reserve/">
 						<label>PatientenID (for debug)</label><input type="text" name="patientID" /><br/>				
