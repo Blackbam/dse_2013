@@ -29,8 +29,9 @@ public class HomeController {
 
 	@RequestMapping(value = "/sendTo_messenger", method = RequestMethod.POST)
 	public String sendToMessenger(Model model, Message message) {
-
-		amqpTemplate.convertAndSend("messenger", message.getValue());
+		doc = new Doctor();
+		doc.setFirstName("WAGI");
+		amqpTemplate.convertAndSend("messenger", doc.getFirstName());
 		model.addAttribute("publishedMessenger", true);
 
 		return home(model);

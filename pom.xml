@@ -160,64 +160,14 @@
 
 	</repositories>
 	
-	<profiles>
-		<profile>
-			<!-- This module is intended to be used to clean the project i.e., by 
-				invoking "mvn -P all clean" -->
-			<id>all</id>
-			<modules>
+	<modules>
 				<module>dse_domain</module>
 				<module>dse_allocator</module>
 				<module>dse_messenger</module>
 				<module>dse_ui</module>
-			</modules>
-		</profile>
-
-		<profile>
-			<id>dse_domain</id>
-			<modules>
-				<module>dse_domain</module>
-			</modules>
-		</profile>
-
-		<profile>
-			<id>dse_allocator</id>
-			<modules>
-				<module>dse_domain</module>
-				<module>dse_allocator</module>
-			</modules>
-		</profile>
-
-		<profile>
-			<id>dse_messenger</id>
-			<modules>
-				<module>dse_domain</module>
-				<module>dse_messenger</module>
-			</modules>
-		</profile>
-
-		<profile>
-			<id>dse_ui</id>
-			<modules>
-				<module>dse_domain</module>
-				<module>dse_ui</module>
-			</modules>
-		</profile>
-
-	</profiles>
-	
+	</modules>
 	
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${java-version}</source>
-					<target>${java-version}</target>
-				</configuration>
-			</plugin>
-		</plugins>
 
 		<pluginManagement>
 			<plugins>
