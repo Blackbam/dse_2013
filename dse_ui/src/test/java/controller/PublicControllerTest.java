@@ -9,8 +9,8 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.Hospital;
-import domain.OpSlot;
+import dse_domain.domain.Hospital;
+import dse_domain.domain.OpSlot;
 
 /**
  * Tests for the PublicController

@@ -14,20 +14,11 @@
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 
-	<properties>
-		<java-version>1.6</java-version>
-		<org.cloudfoundry-version>0.8.1</org.cloudfoundry-version>
-		<org.springframework-version>3.2.2.RELEASE</org.springframework-version>
-		<org.spring-data-mongo-version>1.2.1.RELEASE</org.spring-data-mongo-version>
-		<spring.amqp.version>1.1.4.RELEASE</spring.amqp.version>
-	</properties>
-
-
 	<dependencies>
 
 		<!-- intern shared domain project -->
 		<dependency>
-			<groupId>at.ac.tuwien.infosys.dse</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>dse_domain</artifactId>
 			<scope>compile</scope>
 		</dependency>
@@ -57,13 +48,11 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
-			<version>${org.spring-data-mongo-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>2.2</version>
 		</dependency>
 
 		<!-- Messaging -->
@@ -120,130 +109,12 @@
 				<version>2.3</version>
 			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>package</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>dse_domain</artifactId>
-									<version>1.0</version>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
-				<version>1.0-beta-1</version>
+				<version>1.1</version>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-dependency-plugin
-										</artifactId>
-										<versionRange>
-											[2.4,)
-										</versionRange>
-										<goals>
-											<goal>unpack</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
-
-	<!--<build> <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> 
-		<artifactId>maven-compiler-plugin</artifactId> <configuration> <source>${java-version}</source> 
-		<target>${java-version}</target> </configuration> </plugin> </plugins> </build> -->
-
-<!--
-<build>
-	<plugins>
-		 <groupId>org.codehaus.mojo</groupId>
-     <artifactId>appassembler-maven-plugin</artifactId>
-     <version>1.1.1</version>
-     <executions>
-         <execution>
-             <phase>package</phase>
-             <goals>
-                 <goal>assemble</goal>
-             </goals>
-             <configuration>
-                 <assembledirectory>target</assembledirectory>
-                 <programs>
-                     <program>
-                         <mainClass>my.package.myclass</mainClass>
-                     </program>
-                 </programs>
-            </configuration>
-        </execution>
-    </executions>
-
-	</plugins>
-</build>-->
-<!--
-		<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.8</version>
-				<configuration>
-					<artifactItems>
-						<artifactItem>
-							<groupId>at.ac.tuwien.infosys.dse</groupId>
-							<artifactId>dse_domain</artifactId>
-							<outputDirectory>${basedir}../wtf</outputDirectory>
-						</artifactItem>
-					</artifactItems>
-					<outputDirectory>${basedir}/target/wtf</outputDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build> -->
 </project>
