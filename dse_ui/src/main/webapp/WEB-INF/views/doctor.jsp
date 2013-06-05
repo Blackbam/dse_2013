@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page session="false"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -25,7 +26,7 @@
 			<div id="content" class="no-side-nav">
 			
 			<div class="elem_wrapper">
-				<h2>Persönliche OP-Slot Liste</h2>
+				<h2>Persoenliche OP-Slot Liste</h2>
 
 				<table id='gradient-style' class='sortable'>
 					<tr>
@@ -36,7 +37,7 @@
 						<th>KH</th>
 						<th>Arzt</th>
 						<th>Patient</th>
-						<th>Reservierung löschen</th>
+						<th>Reservierung loeschen</th>
 					</tr>
 
 					<c:forEach items="${op_slots}" var="op_slots">
@@ -53,14 +54,17 @@
 					</c:forEach>
 
 				</table>
-			
+
 				<div id="reserve">
-					<form method="post" action="/admin/patient/create/">
-						<label>PatientenID (for debug)</label><input type="text" name="title" /><br/>
-						<input type="submit" value="Reservierung für einen Patienten vornehmen]" />
-					</form>
+					<form  method="post"  action="/doctor/reserve/">
+						<label>PatientenID (for debug)</label><input type="text" name="patientID" /><br/>				
+						<input type="submit" value="Reservierung fuer einen Patienten vornehmen" />
+					</form>	
 				</div>
-			</div><!-- elem_wrapper close -->		
+
+								
+				
+				</div><!-- elem_wrapper close -->		
 		</div>
 	</div>
 </div>

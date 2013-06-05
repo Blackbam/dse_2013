@@ -453,3 +453,7 @@ input.form-checkbox,input.form-radio {
 	padding: 4px 2px;
 	border: solid 1px #aacfe4;
 }
+
+input.genericInput,input.date {
+	width: 181px;
+}

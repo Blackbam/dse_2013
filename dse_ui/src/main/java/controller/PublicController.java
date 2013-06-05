@@ -1,6 +1,8 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 
@@ -40,29 +42,44 @@ public class PublicController {
 	static final Logger logger = Logger.getLogger(PublicController.class);
 
 	/**
-	 * TODO
+	 * Retrieve and display all upcoming operation slots
 	 * 
 	 * @param model
+	 *            the model associated with the view for this controller
 	 * @return
 	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String publicInfo(Model model) {
 		List<OpSlot> opSlots = mongoTemplate.findAll(OpSlot.class);
+		opSlots = removePastSlots(opSlots);
+
+		// Sort the list of OpSlots according to their dates
+		Collections.sort(opSlots, new OpSlotComparator());
+
 		model.addAttribute("opSlots", opSlots);
+		model.addAttribute("slotCount", opSlots.size());
 		return "public";
 	}
 
 	/**
-	 * TODO
+	 * Retrieve and display all upcoming operation slots that match the given criteria
 	 * 
 	 * @param model
+	 *            the model associated with the view for this controller
 	 * @param date
+	 *            a date to filter by
 	 * @param from
+	 *            a starting time to filter by
 	 * @param to
+	 *            an end time to filter by
 	 * @param status
+	 *            a status to filter by
 	 * @param hospital
+	 *            a hospital name to filter by
 	 * @param doctor
+	 *            a doctor name to filter by
 	 * @param type
+	 *            an operation type to filter by
 	 * @return
 	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
@@ -71,11 +88,70 @@ public class PublicController {
 			@RequestParam("hospital") String hospital, @RequestParam("doctor") String doctor,
 			@RequestParam("type") String type) {
 
+		// Retrieve all slots
 		List<OpSlot> allSlots = mongoTemplate.findAll(OpSlot.class);
+
+		// Remove past slots before filtering
+		allSlots = removePastSlots(allSlots);
+
+		// Perform filtering
+		allSlots = filterOpSlotList(allSlots, date, from, to, status, hospital, doctor, type);
+
+		// Sort the list of OpSlots according to their dates
+		Collections.sort(allSlots, new OpSlotComparator());
+
+		// Set models
+		model.addAttribute("opSlots", allSlots);
+		model.addAttribute("slotCount", allSlots.size());
+		return "public";
+	}
+
+	/**
+	 * Filter out operation slots that have already occurred
+	 * 
+	 * @param opSlots
+	 *            a list of operation slots
+	 * @return
+	 */
+	public static List<OpSlot> removePastSlots(List<OpSlot> opSlots) {
+		List<OpSlot> toRemove = new ArrayList<OpSlot>();
+		for (OpSlot slot : opSlots) {
+			DateTime dt = new DateTime(slot.getDate());
+			if (dt.isBeforeNow()) {
+				toRemove.add(slot);
+			}
+		}
+		opSlots.removeAll(toRemove);
+		return opSlots;
+	}
+
+	/**
+	 * Filter a list of OpSlots according to given criteria
+	 * 
+	 * @param slots
+	 *            the list of slots to filter
+	 * @param date
+	 *            a date string to filter by
+	 * @param from
+	 *            the starting time to filter by
+	 * @param to
+	 *            the end time to filter by
+	 * @param status
+	 *            a status string to filter by
+	 * @param hospital
+	 *            a hospital name to filter by
+	 * @param doctor
+	 *            a doctor's name to filter by
+	 * @param type
+	 *            an operation type to filter by
+	 * @return
+	 */
+	public static List<OpSlot> filterOpSlotList(List<OpSlot> slots, String date, String from, String to, String status,
+			String hospital, String doctor, String type) {
 
 		// Filter list according to received criteria
 		List<OpSlot> toRemove = new ArrayList<OpSlot>();
-		for (OpSlot slot : allSlots) {
+		for (OpSlot slot : slots) {
 
 			// date
 			String dateString = null;
@@ -102,7 +178,7 @@ public class PublicController {
 				}
 			}
 
-			// TODO to
+			// to
 			if (!to.isEmpty()) {
 				DateTime slotStartTime = new DateTime(slot.getDate());
 				String[] split = to.split(":");
@@ -151,11 +227,32 @@ public class PublicController {
 			}
 		}
 
-		// Remove all slots that did not match criteria
-		allSlots.removeAll(toRemove);
+		// Remove all slots that do not match criteria
+		slots.removeAll(toRemove);
 
-		// Set model
-		model.addAttribute("opSlots", allSlots);
-		return "public";
+		return slots;
+	}
+
+	/**
+	 * Custom comparator used to sort lists of OpSlots
+	 * 
+	 * @author Taylor
+	 */
+	class OpSlotComparator implements Comparator<OpSlot> {
+
+		@Override
+		public int compare(OpSlot slot1, OpSlot slot2) {
+
+			DateTime slot1Dt = new DateTime(slot1.getDate());
+			DateTime slot2Dt = new DateTime(slot2.getDate());
+
+			if (slot1Dt.isBefore(slot2Dt)) {
+				return -1;
+			} else if (slot2Dt.isBefore(slot1Dt)) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
 	}
 }

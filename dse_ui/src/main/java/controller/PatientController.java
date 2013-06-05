@@ -33,15 +33,24 @@ public class PatientController {
 	@Autowired(required = false)
 	MongoTemplate mongoTemplate;
 
+	/**
+	 * Retrieve basic information for a given patient
+	 * 
+	 * @param model
+	 *            the model associated with the view for this controller
+	 * @param id
+	 *            the patient ID
+	 * @return
+	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String patient(Model model, @RequestParam("id") String id) {
 
 		// Get the patient with the given id
 		Patient patient = mongoTemplate.findById(id, Patient.class);
 		model.addAttribute("patient", patient);
-		
+
 		// TODO error handling if patient is not found
-		
+
 		// Get all operation slots for patient
 		List<Reservation> reservations = mongoTemplate.find(new Query(where("patient").is(patient)), Reservation.class);
 		List<OpSlot> opSlots = mongoTemplate.find(new Query(where("reservation").in(reservations)), OpSlot.class);

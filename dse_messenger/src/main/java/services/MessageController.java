@@ -31,7 +31,7 @@ public class MessageController implements MessageListener {
 	@Override
 	public void onMessage(Message message) {
 
-		System.out.println("TEST MESSENGERcontroller - received message: "
+		System.out.println("TEST MESSENGERcontroller - received message: " 
 				+ message.toString());
 		
 		Notification fuckingShit = new Notification(null, null, null);

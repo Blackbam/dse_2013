@@ -31,8 +31,8 @@
 <script>
 	jQuery(function($) {
 		$('.time').timepicker({
-			'minTime' : '07:00',
-			'maxTime' : '17:00',
+			'minTime' : '06:00',
+			'maxTime' : '18:00',
 			'timeFormat' : 'H:i'
 		});
 	});
@@ -55,18 +55,32 @@
 					<a href="/login">User login</a>
 				</p>
 
-				<h2>OP-Slots</h2>
+				<h2>Operation-Slots</h2>
 
 				<table id='gradient-style' class='sortable' style="width: 100%">
-					<tr>
-						<th>Datum</th>
-						<th>von</th>
-						<th>bis</th>
-						<th>Typ</th>
-						<th>Krankenhaus</th>
-						<th>Arzt</th>
-						<th>Status</th>
-					</tr>
+					<thead>
+						<tr>
+							<th>Datum</th>
+							<th>von</th>
+							<th>bis</th>
+							<th>Typ</th>
+							<th>Krankenhaus</th>
+							<th>Arzt</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<td colspan=7 style="text-align: left">${slotCount} 
+								<c:choose>
+									<c:when test="${slotCount == '1'}">Slot
+									</c:when>
+									<c:otherwise>Slots
+									</c:otherwise>
+								</c:choose> gefunden
+							</td>
+						</tr>
+					</tfoot>
 
 					<c:forEach items="${opSlots}" var="opSlots">
 						<tr>
@@ -89,43 +103,42 @@
 					</c:forEach>
 
 				</table>
-				
+
 				<h2>Suche</h2>
 
 				<div id="stylized" class="searchForm">
 					<form id="form" name="form" method="post" action="/public">
 						<table>
 							<tr>
-								<td><label>Datum<span class="small">Tag des
-											OP-Slots</span>
-								</label> <input type="text" class="date" name="date"
-									style="width: 181px" /></td>
+								<td><label>Datum<span class="small">Tag</span>
+								</label> <input type="text" class="date" name="date" /></td>
 								<td><label>Krankenhaus<span class="small">Name
 											des Krankenhauses</span>
-								</label> <input type="text" name="hospital" style="width: 181px" /></td>
+								</label> <input type="text" name="hospital" class="genericInput" /></td>
 							</tr>
 							<tr>
-								<td><label>Uhrzeit<span class="small">todo</span>
+								<td><label>Uhrzeit<span class="small">Zeitraum</span>
 								</label><input type="text" class="time" name="from" style="width: 75px" />
 									<span style="margin-top: 5px; margin-right: 5px;">bis</span><input
 									type="text" class="time" name="to" style="width: 75px" /></td>
 								<td><label>Arzt<span class="small">Name des
 											Arztes</span>
-								</label> <input type="text" name="doctor" style="width: 181px" /></td>
+								</label> <input type="text" name="doctor" class="genericInput" /></td>
 							</tr>
 							<tr>
-								<td><label>Status<span class="small">todo</span>
+								<td><label>Status<span class="small">Verfügbarkeit</span>
 								</label><select name="status">
 										<option value="unset">-</option>
 										<option value="available">frei</option>
 										<option value="reserved">reserviert</option>
 								</select></td>
-								<td><label>Type<span class="small">Art der
-											OP</span>
-								</label> <input type="text" name="type" style="width: 181px" /></td>
+								<td><label>Typ<span class="small">Art der
+											Operation</span>
+								</label> <input type="text" name="type" class="genericInput" /></td>
 							</tr>
 							<tr>
-								<td><label>&nbsp;</label><button type="submit">suchen</button></td>
+								<td><label>&nbsp;</label>
+									<button type="submit">suchen</button></td>
 							</tr>
 						</table>
 

@@ -34,7 +34,8 @@
 						<li><p>${service}</p></li>
 					</c:forEach>
 				</ul>
-
+				
+				<h2>Look at logging output for received messages</h2>
 			</div>
 		</div>
 	</div>
