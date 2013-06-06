@@ -4,11 +4,9 @@ public class Reservation {
 	
 	private Doctor doctor;
 	private Patient patient;
-	private OpSlot opSlot;
 	
-	public Reservation(Doctor doctor, Patient patient, OpSlot opSlot) {
+	public Reservation(Doctor doctor, Patient patient) {
 		this.doctor = doctor;
-		this.opSlot = opSlot;
 		this.patient = patient;
 	}
 	
@@ -22,10 +20,6 @@ public class Reservation {
 	
 	public void setPatient(Patient patient) {
 		this.patient = patient;
-	}
-
-	public OpSlot getOpSlot() {
-		return opSlot;
 	}
 	
 }

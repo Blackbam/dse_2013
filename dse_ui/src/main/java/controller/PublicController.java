@@ -51,7 +51,12 @@ public class PublicController {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String publicInfo(Model model) {
 		List<OpSlot> opSlots = mongoTemplate.findAll(OpSlot.class);
+		
+		logger.debug("Public OP Slots found: "+opSlots.size());
+		
 		opSlots = removePastSlots(opSlots);
+		
+		
 
 		// Sort the list of OpSlots according to their dates
 		Collections.sort(opSlots, new OpSlotComparator());

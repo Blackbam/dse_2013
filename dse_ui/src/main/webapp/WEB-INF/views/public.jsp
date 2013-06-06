@@ -90,10 +90,12 @@
 							<td>${opSlots.typeString}</td>
 							<td>${opSlots.hospital.name}</td>
 							<td><c:if test="${not empty opSlots.reservation}">
-								    ${opSlots.reservation.doctor.name}
-								</c:if> <c:if test="${empty opSlots.reservation}">
+								   ${opSlots.reservation.doctor.title} ${opSlots.reservation.doctor.firstName} ${opSlots.reservation.doctor.lastName}
+								</c:if>
+								 <c:if test="${empty opSlots.reservation}">
 								    -
-								</c:if></td>
+								</c:if>
+							</td>
 							<td><c:if test="${not empty opSlots.reservation}">
 								    reserviert
 								</c:if> <c:if test="${empty opSlots.reservation}">
