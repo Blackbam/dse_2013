@@ -65,7 +65,7 @@
 				
 						
 				<div id="stylized" class="searchForm">
-					<form id="form" name="form" method="post" action="/doctor/reserve">
+					<form id="form" name="form" method="post" action="/doctor/reserve/">
 						<table>
 							<tbody>
 							<tr>
@@ -112,6 +112,37 @@
 
 					</form>
 				</div>
+				
+				
+				
+			<div class="elem_wrapper">
+				<h2>Liste aller Patienten</h2>
+
+				<table id='gradient-style' class='sortable'>
+					<tr>
+						<th>ID</th>
+						<th>Username</th>
+						<th>Passwort</th>
+						<th>Vorname</th>
+						<th>Nachname</th>
+						<th>Geo-Koordinaten</th>
+						<th>Patient löschen</th>
+					</tr>
+
+					<c:forEach items="${patients}" var="patients">
+						<tr>
+							<td>${patients.id}</td>
+							<td>${patients.username}</td>
+							<td>${patients.password}</td>
+							<td>${patients.firstName}</td>
+							<td>${patients.lastName}</td>
+							<td>Lat. ${patients.location[0]}, Long. ${patients.location[1]}</td>
+							<td><a href="/admin/patient/delete/?id=${patients.id}">X</a></td>
+						</tr>
+					</c:forEach>
+
+				</table>
+			</div><!-- elem_wrapper close -->
 
 								
 				

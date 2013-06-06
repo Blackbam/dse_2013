@@ -79,19 +79,28 @@ public class DoctorController {
 	}
 
 	@RequestMapping(value = "/reserve/", method = RequestMethod.POST)
-	public String doctorReserve(Model model, @RequestParam("patientID") String patientID) {
+	public String doctorReserve(Model model, @RequestParam("date_start") String date_start, @RequestParam("date_end") String date_end,
+			@RequestParam("patient_id") String patient_id, @RequestParam("type") OpSlot.Type type,
+			@RequestParam("min_time") int min_time,@RequestParam("max_distance") int max_distance) {
 
-		logger.info("trying to reserve patient: " + patientID + ". sending message to allocator");
-		amqpTemplate.convertAndSend("messenger", patientID);
+		logger.info("trying to reserve patient: " + patient_id + ". sending message to allocator");
+		
+		// @Todo - Parameter + Nachricht an den Allocator senden:
+		//amqpTemplate.convertAndSend("messenger", patientID);
+		
+		// get answer
 		
 		addStandardOutputs(model);
 		
 		return "doctor";
 	}
 
+	// i think we need op_slot id here
 	@RequestMapping(value = "/remove_reservation/", method = RequestMethod.GET)
-	public String doctorRemoveReservation(Model model, @RequestParam("patientID") int patientID) {
-
+	public String doctorRemoveReservation(Model model, @RequestParam("opslot_id") int opslot_id) {
+		
+		//
+		
 		// TODO ME
 		addStandardOutputs(model);
 		
@@ -101,6 +110,9 @@ public class DoctorController {
 	private void addStandardOutputs(Model model) {
 		List<OpSlot> opSlots = mongoTemplate.findAll(OpSlot.class);
 		model.addAttribute("opSlots", opSlots);
+		
+		List<Patient> patients = mongoTemplate.findAll(Patient.class);
+		model.addAttribute("patients", patients);
 	}
 
 }
