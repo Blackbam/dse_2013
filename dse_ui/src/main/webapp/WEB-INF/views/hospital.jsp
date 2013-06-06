@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -49,7 +50,7 @@
 				    <p class="success">Ein neuer OP Slot wurde angelegt:
 				    ID: ${new_opslot.id},
 				    In Krankenhaus: ${new_opslot.hospital.name},
-				    Datum: ${new_opslot.date},
+				    Datum: <fmt:formatDate value="${new_opslot.date}" pattern="dd.MM.yyyy HH:mm" />,
 				    Dauer in Minuten: ${new_opslot.length},
 				    Typ: ${new_opslot.type}
 				    </p>
@@ -98,7 +99,7 @@
 						<tr>
 							<td>${opslots.id}</td>
 							<td>${opslots.hospital.name}</td>
-							<td>${opslots.date}</td>
+							<td><fmt:formatDate value="${opslots.date}" pattern="dd.MM.yyyy HH:mm" /></td>
 							<td>${opslots.length}</td>
 							<td>${opslots.type}</td>
 							<td>

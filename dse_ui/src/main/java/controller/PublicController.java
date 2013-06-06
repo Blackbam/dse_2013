@@ -54,7 +54,7 @@ public class PublicController {
 		
 		logger.debug("Public OP Slots found: "+opSlots.size());
 		
-		opSlots = removePastSlots(opSlots);
+		// opSlots = removePastSlots(opSlots);
 		
 		
 

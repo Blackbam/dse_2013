@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import dse_domain.domain.Hospital;
 import dse_domain.domain.OpSlot;
+import domain.Reservation;
 
 /**
  * Handles requests for the hospital view
@@ -51,11 +52,13 @@ public class HospitalController {
 	public String createHospital(Model model, @RequestParam("hospital_id") String hospital_id,
 			@RequestParam("date") String date, @RequestParam("length") int length, @RequestParam("type") OpSlot.Type type) {
 		
+		
+		
 		Hospital hospital = mongoTemplate.findOne(new Query(where("id").is(hospital_id)), Hospital.class);
 		
 		if(hospital!=null) {
 			
-			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Date d;
 			try {
 				d = format.parse(date);
