@@ -1,17 +1,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Public Access</title>
-<link rel="stylesheet" href="static/css/main.css" type="text/css"></link>
-<link rel="stylesheet" href="static/css/colors.css" type="text/css"></link>
-<link rel="stylesheet" href="static/css/local.css" type="text/css"></link>
-<link rel="stylesheet" href="static/css/normalize.css" type="text/css" />
-<link rel="stylesheet" href="static/css/datepicker.css" type="text/css" />
-<link rel="stylesheet" href="static/css/jquery.timepicker.css"
+<link rel="stylesheet" href="/static/css/main.css" type="text/css"></link>
+<link rel="stylesheet" href="/static/css/colors.css" type="text/css"></link>
+<link rel="stylesheet" href="/static/css/local.css" type="text/css"></link>
+<link rel="stylesheet" href="/static/css/normalize.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/datepicker.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/jquery.timepicker.css"
 	type="text/css" />
-<script type="text/javascript" src="static/js/sorttable.js"></script>
+<script type="text/javascript" src="/static/js/sorttable.js"></script>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
 <script type="text/javascript"

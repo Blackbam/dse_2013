@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page session="false"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -10,6 +11,13 @@
 <link rel="stylesheet" href="/static/css/local.css" type="text/css"></link>
 <link rel="stylesheet" href="/static/css/custom.css" type="text/css"></link>
 <script type="text/javascript" src="/static/js/sorttable.js"></script>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+<script type="text/javascript"
+	src="http://code.jquery.com/ui/1.10.0/jquery-ui.min.js"></script>
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/i18n/jquery-ui-i18n.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.timepicker.js"></script>
 </head>
 <body>
 	<div id="page">
@@ -41,7 +49,7 @@
 
 					<c:forEach items="${op_slots_this_doctor}" var="op_slots_this_doctor">
 						<tr>
-							<td>${op_slots_this_doctor.date}</td>
+							<td><fmt:formatDate value="${op_slots_this_doctor.date}" pattern="dd.MM.yyyy HH:mm" /></td>
 							<td>${op_slots_this_doctor.length}</td>
 							<td>${op_slots_this_doctor.type}</td>
 							<td>${op_slots_this_doctor.hospital.name}</td>
@@ -54,18 +62,55 @@
 				</table>
 				
 				<h2>Reservierung für einen Patienten vornehmen</h2>
-				<p>benötigt Name des Patienten</p>
-				<p>benötigt Typ der Operation</p>
-				<p>benötigt maximaler Umkreis</p>
-				<p>benötigt frühestes Datum</p>
-				<p>benötigt spätestes Datum</p>
-				<p>--&gt; der Allocator sucht ein passendes Krankenhaus</p>
 				
-				<div id="reserve">
-					<form  method="post"  action="/doctor/reserve/">
-						<label>PatientenID (for debug)</label><input type="text" name="patientID" /><br/>				
-						<input type="submit" value="Reservierung fuer einen Patienten vornehmen" />
-					</form>	
+						
+				<div id="stylized" class="searchForm">
+					<form id="form" name="form" method="post" action="/doctor/reserve">
+						<table>
+							<tbody>
+							<tr>
+								<td>
+									<label>Frühester Zeitpunkt</label> 
+									<input type="text" class="date hasDatepicker" name="date_start">
+								</td>
+								<td>
+									<label>Spätester Zeitpunkt</label> 
+									<input type="text" class="date hasDatepicker" name="date_end">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>ID des Patienten</label> 
+									<input type="text" name="patient_id">
+								</td>
+								<td>
+									<label>benötigter Typ</label> 
+										<select name="type">
+											<option value="AUGEN">Augen</option>
+											<option value="KARDIO">Kardio</option>
+											<option value="OTHER">Andere</option>
+										</select>
+								</td>
+								
+							</tr>
+							<tr>
+								<td>
+									<label>Dauer der Operation in Min</label> 
+									<input type="number" name="min_time" min="0" max="300" />
+								</td>
+								<td>
+									<label>Maximale Entfernung vom Heimatort des Patienten</label> 
+									<input type="number" name="max_distance" min="0" max="40000" />
+								</td>
+								
+							</tr>
+							<tr>
+								<td><label>&nbsp;</label>
+									<button type="submit">Versuche OP-Slot zu finden</button></td>
+							</tr>
+						</tbody></table>
+
+					</form>
 				</div>
 
 								

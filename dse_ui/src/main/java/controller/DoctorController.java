@@ -63,8 +63,8 @@ public class DoctorController {
 		} else {
 			logger.debug("Test reservation error");
 		}
-		*/
 		
+		*/
 		// End Debug
 		
 		
