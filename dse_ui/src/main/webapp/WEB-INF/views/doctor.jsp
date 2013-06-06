@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="/static/css/colors.css" type="text/css"></link>
 <link rel="stylesheet" href="/static/css/local.css" type="text/css"></link>
 <link rel="stylesheet" href="/static/css/custom.css" type="text/css"></link>
+<link rel="stylesheet" href="/static/css/datepicker.css" type="text/css" />
 <script type="text/javascript" src="/static/js/sorttable.js"></script>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
@@ -18,6 +19,15 @@
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/i18n/jquery-ui-i18n.min.js"></script>
 <script type="text/javascript" src="static/js/jquery.timepicker.js"></script>
+<script>
+	jQuery(function($) {
+		$.datepicker.setDefaults({
+			showOtherMonths : true,
+			selectOtherMonths : true
+		});
+		$(".date").datepicker($.datepicker.regional['de']);
+	});
+</script>
 </head>
 <body>
 	<div id="page">
@@ -71,11 +81,11 @@
 							<tr>
 								<td>
 									<label>Frühester Zeitpunkt</label> 
-									<input type="text" class="date hasDatepicker" name="date_start">
+									<input type="text" class="date" name="date_start">
 								</td>
 								<td>
 									<label>Spätester Zeitpunkt</label> 
-									<input type="text" class="date hasDatepicker" name="date_end">
+									<input type="text" class="date" name="date_end">
 								</td>
 							</tr>
 							<tr>
@@ -122,7 +132,6 @@
 					<tr>
 						<th>ID</th>
 						<th>Username</th>
-						<th>Passwort</th>
 						<th>Vorname</th>
 						<th>Nachname</th>
 						<th>Geo-Koordinaten</th>
@@ -133,7 +142,6 @@
 						<tr>
 							<td>${patients.id}</td>
 							<td>${patients.username}</td>
-							<td>${patients.password}</td>
 							<td>${patients.firstName}</td>
 							<td>${patients.lastName}</td>
 							<td>Lat. ${patients.location[0]}, Long. ${patients.location[1]}</td>
@@ -150,6 +158,5 @@
 		</div>
 	</div>
 </div>
-	
 </body>
 </html>
