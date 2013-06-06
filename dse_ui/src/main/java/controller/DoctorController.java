@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
-import domain.Doctor;
+import dse_domain.domain.Doctor;
 import dse_domain.domain.Reservation;
-import domain.Hospital;
+import dse_domain.domain.Hospital;
 
 @Controller
 @RequestMapping(value = "/doctor")

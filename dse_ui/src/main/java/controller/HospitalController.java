@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import dse_domain.domain.Hospital;
 import dse_domain.domain.OpSlot;
-import domain.Reservation;
+import dse_domain.domain.Reservation;
 
 /**
  * Handles requests for the hospital view

@@ -9,6 +9,7 @@ import org.springframework.amqp.core.AmqpTemplate;
 
 import dse_domain.domain.Doctor;
 
+
 //import at.ac.tuwien.infosys.dse_domain.domain.Doctor;
 
 /**
