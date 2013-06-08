@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dse_domain.DTO.ReservationDTO;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 import dse_domain.domain.Doctor;
@@ -83,12 +84,15 @@ public class DoctorController {
 			@RequestParam("patient_id") String patient_id, @RequestParam("type") OpSlot.Type type,
 			@RequestParam("min_time") int min_time,@RequestParam("max_distance") int max_distance) {
 
-		logger.info("trying to reserve patient: " + patient_id + ". sending message to allocator");
 		
-		// @Todo - Parameter + Nachricht an den Allocator senden:
-		//amqpTemplate.convertAndSend("messenger", patientID);
 		
-		// get answer
+
+		ReservationDTO res = new ReservationDTO(patient_id,date_start, date_end,type,min_time,max_distance);
+		
+		logger.info("trying to reserve patient: " + patient_id + ". sending message to allocator: " +res);
+		
+		amqpTemplate.convertAndSend("allocator", res);
+		
 		
 		addStandardOutputs(model);
 		

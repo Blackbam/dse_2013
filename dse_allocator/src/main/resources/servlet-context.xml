@@ -20,6 +20,11 @@
 
     <!-- Set up the AmqpTemplate/RabbitTemplate: -->
     <rabbit:template id="amqpTemplate" connection-factory="connectionFactory"/>
+    
+    <!-- Define message listener   -->
+	<rabbit:listener-container connection-factory="connectionFactory">
+    	<rabbit:listener queues="allocator" ref="messageController" method="handleReservationRequest"/>
+	</rabbit:listener-container>
 
     <!-- Request that queues, exchanges and bindings be automatically
          declared on the broker: -->
@@ -28,5 +33,7 @@
     <!-- Declare the message queues: -->
     <rabbit:queue name="allocator" durable="true"/>
     <rabbit:queue name="messenger" durable="true"/>
-
+    
+    <bean id="messageController" class="services.MessageController" />
+    
 </beans>

@@ -32,9 +32,14 @@
 		<level value="info" />
 	</logger>
 
+	<!-- dse loggers  -->
+	<logger name="services">
+		<level value="debug" />
+	</logger>
+
 	<!-- Root Logger -->
 	<root>
-		<priority value="info" />
+		<priority value="warn" />
 		<appender-ref ref="console" />
 	</root>
 	

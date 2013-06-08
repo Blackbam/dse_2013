@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
 
 import dse_domain.domain.Doctor;
 
@@ -24,7 +25,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/")
 	public String home(Model model) {
-		model.addAttribute(new Message());
+		//model.addAttribute(new Message());
 		return "WEB-INF/views/home.jsp";
 	}
 
@@ -41,7 +42,7 @@ public class HomeController {
 	@RequestMapping(value = "/sendTo_allocator", method = RequestMethod.POST)
 	public String sendToAllocator(Model model, Message message) {
 
-		amqpTemplate.convertAndSend("allocator", message.getValue());
+		amqpTemplate.convertAndSend("allocator", "");
 		model.addAttribute("publishedAllocator", true);
 
 		return home(model);
