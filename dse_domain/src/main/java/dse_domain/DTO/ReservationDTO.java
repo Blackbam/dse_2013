@@ -1,6 +1,7 @@
 package dse_domain.DTO;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.OpSlot.Type;
@@ -10,14 +11,13 @@ public class ReservationDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String patientID;
-	private String dateStart;
-	private String dateEnd;
+	private Date dateStart;
+	private Date dateEnd;
 	private OpSlot.Type type;
 	private int minTime;
 	private int maxDistance;
 
-	public ReservationDTO(String patientID, String dateStart, String dateEnd,
-			Type type, int minTime, int maxDistance) {
+	public ReservationDTO(String patientID, Date dateStart, Date dateEnd, Type type, int minTime, int maxDistance) {
 		this.patientID = patientID;
 		this.dateStart = dateStart;
 		this.dateEnd = dateEnd;
@@ -34,19 +34,19 @@ public class ReservationDTO implements Serializable {
 		this.patientID = patientID;
 	}
 
-	public String getDateStart() {
+	public Date getDateStart() {
 		return dateStart;
 	}
 
-	public void setDateStart(String dateStart) {
+	public void setDateStart(Date dateStart) {
 		this.dateStart = dateStart;
 	}
 
-	public String getDateEnd() {
+	public Date getDateEnd() {
 		return dateEnd;
 	}
 
-	public void setDateEnd(String dateEnd) {
+	public void setDateEnd(Date dateEnd) {
 		this.dateEnd = dateEnd;
 	}
 
@@ -76,9 +76,8 @@ public class ReservationDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ReservationDTO [patientID=" + patientID + ", dateStart="
-				+ dateStart + ", dateEnd=" + dateEnd + ", type=" + type
-				+ ", minTime=" + minTime + ", maxDistance=" + maxDistance + "]";
+		return "ReservationDTO [patientID=" + patientID + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd
+				+ ", type=" + type + ", minTime=" + minTime + ", maxDistance=" + maxDistance + "]";
 	}
 
 }

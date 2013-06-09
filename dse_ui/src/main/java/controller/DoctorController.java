@@ -2,10 +2,13 @@ package controller;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
-import java.util.Iterator;
+
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.MongoDbFactory;
@@ -22,7 +25,6 @@ import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 import dse_domain.domain.Doctor;
 import dse_domain.domain.Reservation;
-import dse_domain.domain.Hospital;
 
 @Controller
 @RequestMapping(value = "/doctor")
@@ -32,7 +34,7 @@ public class DoctorController {
 	@Autowired(required = false)
 	MongoDbFactory mongoDbFactory;
 
-	@Autowired(required = false)
+	@Autowired
 	MongoTemplate mongoTemplate;
 
 	@Autowired
@@ -73,6 +75,7 @@ public class DoctorController {
 		List<OpSlot> opSlots = mongoTemplate.find(new Query(where("reservation").in(reservations)), OpSlot.class);
 		
 		model.addAttribute("op_slots_this_doctor", opSlots);
+		model.addAttribute("sent_reservation", false);
 		
 		addStandardOutputs(model);
 
@@ -80,20 +83,23 @@ public class DoctorController {
 	}
 
 	@RequestMapping(value = "/reserve/", method = RequestMethod.POST)
-	public String doctorReserve(Model model, @RequestParam("date_start") String date_start, @RequestParam("date_end") String date_end,
-			@RequestParam("patient_id") String patient_id, @RequestParam("type") OpSlot.Type type,
-			@RequestParam("min_time") int min_time,@RequestParam("max_distance") int max_distance) {
+	public String doctorReserve(Model model, @RequestParam("date_start") String dateStart, @RequestParam("date_end") String dateEnd,
+			@RequestParam("patient_id") String patientID, @RequestParam("type") OpSlot.Type type,
+			@RequestParam("min_time") int minTime,@RequestParam("max_distance") int maxDistance) {
 
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd.MM.yyyy");
+		DateTime startDate = DateTime.parse(dateStart,fmt);
+		DateTime endDate = DateTime.parse(dateEnd,fmt);
 		
 		
-
-		ReservationDTO res = new ReservationDTO(patient_id,date_start, date_end,type,min_time,max_distance);
+		ReservationDTO res = new ReservationDTO(patientID,startDate.toDate(), endDate.toDate(),type,minTime,maxDistance);
 		
-		logger.info("trying to reserve patient: " + patient_id + ". sending message to allocator: " +res);
+		logger.info("trying to reserve patient: " + patientID + ". sending message to allocator: " +res);
 		
 		amqpTemplate.convertAndSend("allocator", res);
 		
-		
+		model.addAttribute("sent_reservation", true);
+		model.addAttribute("sent_dto", res);
 		addStandardOutputs(model);
 		
 		return "doctor";

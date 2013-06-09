@@ -5,6 +5,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-15" /> <!-- for correctly displayed German -->
+
 <title>Ärztebereich</title>
 <link rel="stylesheet" href="/static/css/main.css" type="text/css"></link>
 <link rel="stylesheet" href="/static/css/colors.css" type="text/css"></link>
@@ -44,7 +46,7 @@
 			<div id="content" class="no-side-nav">
 			
 			<div class="elem_wrapper">
-				<h2>Persoenliche OP-Slot Liste</h2>
+				<h2>Persönliche OP-Slot Liste</h2>
 
 				<table id='gradient-style' class='sortable'>
 					<tr>
@@ -73,7 +75,16 @@
 				
 				<h2>Reservierung für einen Patienten vornehmen</h2>
 				
-						
+				<c:if test="${sent_reservation == true}">
+				    <p class="success">Eine Reservierungsanfrage wurde gesendet für:
+				    PatientID: ${sent_dto.patientID},
+				    Frühester Zeitpunkt: ${sent_dto.dateStart}",
+				    Spätester Zeitpunkt: ${sent_dto.dateEnd}",
+				    Minimale Dauer in Minuten: ${sent_dto.minTime},
+				    Typ: ${sent_dto.type}
+				    </p>
+				</c:if>
+				
 				<div id="stylized" class="searchForm">
 					<form id="form" name="form" method="post" action="/doctor/reserve/">
 						<table>
