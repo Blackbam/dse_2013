@@ -3,7 +3,6 @@ package dao.impl;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 
 import dao.INotificationDAO;
@@ -15,7 +14,6 @@ import dse_domain.domain.Patient;
 public class NotificationMongoDAO implements INotificationDAO {
 	static final Logger logger = Logger.getLogger(NotificationMongoDAO.class);
 
-	@Autowired
 	MongoOperations mongo;
 	
 	public NotificationMongoDAO(MongoOperations mongo) {

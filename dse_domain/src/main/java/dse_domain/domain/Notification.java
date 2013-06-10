@@ -13,14 +13,14 @@ public class Notification {
 	private String title;
 	private String content;
 	private Date date;
-	private boolean hasBeenRead;
+	private boolean read;
 	
 	public Notification(User user, String title, String content) {
 		this.user = user;
 		this.title = title;
 		this.content = content;
 		this.date = new Date();
-		this.hasBeenRead = false;
+		this.read = false;
 	}
 	
 	public String getId() {
@@ -58,19 +58,23 @@ public class Notification {
 	public Date getDate() {
 		return date;
 	}
-	
-	public boolean hasBeenRead() {
-		return hasBeenRead;
+
+	public boolean isRead() {
+		return read;
 	}
-	
-	public void setHasBeenRead(boolean hasBeenRead) {
-		this.hasBeenRead = hasBeenRead;
+
+	public void setRead(boolean read) {
+		this.read = read;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	@Override
 	public String toString() {
 		return "Notification [id=" + id + ", user=" + user + ", title=" + title + ", content=" + content + ", date="
-				+ date + ", hasBeenRead=" + hasBeenRead + "]";
+				+ date + ", hasBeenRead=" + read + "]";
 	}
 	
 	

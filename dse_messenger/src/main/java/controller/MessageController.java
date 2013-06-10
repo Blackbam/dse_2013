@@ -50,40 +50,17 @@ public class MessageController {
 				Doctor doctor = notificationDAO.findDoctor(reservationRequestDTO.getDoctorID());
 				Hospital hospital = notificationDAO.findHospital(opSlotDTO.getHospitalID());
 
-				String title = "Reservierung erfolgreich";
-				String content = "Reservierung für die Operation des Patienten " + patient.getFirstName() + " "
-						+ patient.getLastName() + " im Krankenhaus " + hospital.getName() + " am "
-						+ opSlotDTO.getDate() + " von " + opSlotDTO.getStartTime() + " bis " + opSlotDTO.getEndTime()
-						+ ", beantragt von " + doctor.getTitle() + " " + doctor.getFirstName() + " "
-						+ doctor.getLastName() + ", konnte erfolgreich durchgeführt werden!";
-
-				Notification patientNotification = new Notification(patient, title, content);
-				Notification doctorNotification = new Notification(doctor, title, content);
-				Notification hospitalNotification = new Notification(hospital, title, content);
-
-				notificationDAO.insertNotification(doctorNotification);
-				notificationDAO.insertNotification(patientNotification);
-				notificationDAO.insertNotification(hospitalNotification);
+				processSuccessNotification(reservationRequestDTO, opSlotDTO, patient, doctor, hospital);
 
 			} else if (message instanceof ReservationFailNotificationDTO) {
 				logger.info("Message is instance of ReservationFailNotificationDTO, processing..");
 				ReservationFailNotificationDTO dto = (ReservationFailNotificationDTO) message;
-				ReservationDTO reservationRequest = dto.getReservationRequest();
+				ReservationDTO reservationRequestDTO = dto.getReservationRequest();
 
-				Patient patient = notificationDAO.findPatient(reservationRequest.getPatientID());
-				Doctor doctor = notificationDAO.findDoctor(reservationRequest.getDoctorID());
+				Patient patient = notificationDAO.findPatient(reservationRequestDTO.getPatientID());
+				Doctor doctor = notificationDAO.findDoctor(reservationRequestDTO.getDoctorID());
 
-				String title = "Reservierung fehlgeschlagen";
-				String content = "Reservierung für die Operation des Patienten " + patient.getFirstName() + " "
-						+ patient.getLastName() + ", beantragt von " + doctor.getTitle() + " " + doctor.getFirstName()
-						+ " " + doctor.getLastName() + ", konnte nicht durchgeführt werden! Grund: "
-						+ dto.getFailureReason();
-
-				Notification patientNotification = new Notification(patient, title, content);
-				Notification doctorNotification = new Notification(patient, title, content);
-
-				notificationDAO.insertNotification(doctorNotification);
-				notificationDAO.insertNotification(patientNotification);
+				processFailNotification(dto, reservationRequestDTO, patient, doctor);
 
 			} else if (message instanceof NotificationDTO) {
 				logger.info("Message is instance of NotificationDTO, processing..");
@@ -106,7 +83,39 @@ public class MessageController {
 		}
 
 	}
-	
+
+	private void processSuccessNotification(ReservationDTO reservationRequestDTO, OpSlotDTO opSlotDTO, Patient patient,
+			Doctor doctor, Hospital hospital) {
+		String title = "Reservierung erfolgreich";
+		String content = "Reservierung für die Operation (Typ: " + reservationRequestDTO.getType() + ") des Patienten "
+				+ patient.getFirstName() + " " + patient.getLastName() + " im Krankenhaus " + hospital.getName()
+				+ " am " + opSlotDTO.getDate() + " von " + opSlotDTO.getStartTime() + " bis " + opSlotDTO.getEndTime()
+				+ ", beantragt von " + doctor.getTitle() + " " + doctor.getFirstName() + " " + doctor.getLastName()
+				+ ", konnte erfolgreich durchgeführt werden!";
+
+		Notification patientNotification = new Notification(patient, title, content);
+		Notification doctorNotification = new Notification(doctor, title, content);
+		Notification hospitalNotification = new Notification(hospital, title, content);
+
+		notificationDAO.insertNotification(doctorNotification);
+		notificationDAO.insertNotification(patientNotification);
+		notificationDAO.insertNotification(hospitalNotification);
+	}
+
+	private void processFailNotification(ReservationFailNotificationDTO dto, ReservationDTO reservationRequestDTO,
+			Patient patient, Doctor doctor) {
+		String title = "Reservierung fehlgeschlagen";
+		String content = "Reservierung für die Operation (Typ: " + reservationRequestDTO.getType() + ") des Patienten "
+				+ patient.getFirstName() + " " + patient.getLastName() + ", beantragt von " + doctor.getTitle() + " "
+				+ doctor.getFirstName() + " " + doctor.getLastName() + ", konnte nicht durchgeführt werden! Grund: "
+				+ dto.getFailureReason();
+
+		Notification patientNotification = new Notification(patient, title, content);
+		Notification doctorNotification = new Notification(patient, title, content);
+
+		notificationDAO.insertNotification(doctorNotification);
+		notificationDAO.insertNotification(patientNotification);
+	}
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -119,11 +128,11 @@ public class MessageController {
 		if (rabbitTemplate != null) {
 			services.add("RabbitMQ: " + rabbitTemplate.getConnectionFactory().toString());
 		}
-		
-		List<Notification> nots = notificationDAO.findAllNotifications();
 
+		List<Notification> nots = notificationDAO.findAllNotifications();
+		model.addAttribute("nots", nots);
 		model.addAttribute("services", services);
-		
+
 		return "home";
 	}
 

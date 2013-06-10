@@ -6,6 +6,7 @@ import java.util.List;
 import dse_domain.domain.Doctor;
 import dse_domain.domain.Hospital;
 import dse_domain.domain.OpSlot;
+import dse_domain.domain.OpSlot.Type;
 import dse_domain.domain.Patient;
 
 public interface IReservationDAO {
@@ -23,7 +24,7 @@ public interface IReservationDAO {
 
 	/**
 	 * finds free op_slot which are closest to patient (to maxDistance away) and which are in the
-	 * specified date range, and have the minimal length
+	 * specified date range, and have the minimal length, and have the correct op type
 	 * 
 	 * @param maxDistance
 	 * @param patient
@@ -31,21 +32,12 @@ public interface IReservationDAO {
 	 * @param endDate
 	 * @param minTime
 	 * @param hospital
+	 * @param type
 	 * @return OpSlot if successful, null otherwise
 	 */
 	public OpSlot findFreeOPSlotInNearHospital(int maxDistance, Patient patient, Date startDate, Date endDate,
-			int minTime);
+			int minTime, Type type);
 
-	/**
-	 * TODO change GeoResults return find hospitals in the area specified with maxDistance and
-	 * patient location
-	 * 
-	 * @param maxDistance
-	 *            in kilometers
-	 * @param patient
-	 * @return list with GeoResults sorted by distance
-	 */
-	// public GeoResults<Hospital> findNearHospitals(int maxDistance, Patient patient);
 
 	/**
 	 * 
@@ -53,8 +45,9 @@ public interface IReservationDAO {
 	 * @param endDate
 	 * @param minTime
 	 * @param hospital
+	 * @param type
 	 * @return
 	 */
-	public List<OpSlot> findFreeOPSlotsInHospitalSortedList(Date startDate, Date endDate, int minTime, Hospital hospital);
+	public List<OpSlot> findFreeOPSlotsInHospitalSortedList(Date startDate, Date endDate, int minTime, Hospital hospital, Type type);
 
 }

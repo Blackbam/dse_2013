@@ -1,6 +1,5 @@
 package controller;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import java.util.List;
 
@@ -10,42 +9,35 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dao.IUserInterfaceDAO;
 import dse_domain.DTO.ReservationDTO;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 import dse_domain.domain.Doctor;
-import dse_domain.domain.Reservation;
 
 @Controller
 @RequestMapping(value = "/doctor")
 public class DoctorController {
 	static final Logger logger = Logger.getLogger(DoctorController.class);
 
-	@Autowired(required = false)
-	MongoDbFactory mongoDbFactory;
-
-	@Autowired
-	MongoTemplate mongoTemplate;
-
 	@Autowired
 	AmqpTemplate amqpTemplate;
 
+	@Autowired
+	IUserInterfaceDAO uiDAO;
 
 	// Requires DOCTOR id
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String patient(Model model, @RequestParam("id") String id) {
 
-		Doctor doctor = mongoTemplate.findById(id, Doctor.class);
-
+		Doctor doctor = uiDAO.findDoctor(id);
 
 		/* For Debugging: Test Reservations */
 
@@ -64,9 +56,17 @@ public class DoctorController {
 		// End Debug
 
 		// finds all the reservation
-		List<Reservation> reservations = mongoTemplate.find(new Query(where("doctor").is(doctor)), Reservation.class);
+		// List<Reservation> reservations = uiDAO.findAllReservationsByDoctor(doctor);
 
-		List<OpSlot> opSlots = mongoTemplate.find(new Query(where("reservation").in(reservations)), OpSlot.class);
+		// List<OpSlot> opSlots = mongoTemplate.find(new
+		// Query(where("reservation").in(reservations)), OpSlot.class);
+		
+		List<OpSlot> opSlots = uiDAO.findAllReservedOpSlotsWithDoctor(doctor);
+
+		for (OpSlot curr : opSlots) {
+			logger.debug("found op slot " + curr.getDateString() + " with reservation: "
+					+ curr.getReservation().getDoctor() + "/" + curr.getReservation().getPatient());
+		}
 
 		model.addAttribute("doctorID", id);
 		model.addAttribute("op_slots_this_doctor", opSlots);
@@ -80,9 +80,8 @@ public class DoctorController {
 	@RequestMapping(value = "/reserve/", method = RequestMethod.POST)
 	public String doctorReserve(Model model, @RequestParam("date_start") String dateStart,
 			@RequestParam("date_end") String dateEnd, @RequestParam("patient_id") String patientID,
-			@RequestParam("doctor_id") String doctorID,
-			@RequestParam("type") OpSlot.Type type, @RequestParam("min_time") int minTime,
-			@RequestParam("max_distance") int maxDistance) {
+			@RequestParam("doctor_id") String doctorID, @RequestParam("type") OpSlot.Type type,
+			@RequestParam("min_time") int minTime, @RequestParam("max_distance") int maxDistance) {
 
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd.MM.yyyy");
 		DateTime startDate = DateTime.parse(dateStart, fmt);
@@ -91,7 +90,8 @@ public class DoctorController {
 		ReservationDTO res = new ReservationDTO(patientID, doctorID, startDate.toDate(), endDate.toDate(), type,
 				minTime, maxDistance);
 
-		logger.info("trying to reserve patientID: " + patientID + " (as doctorID: " + doctorID + "). sending message to allocator: " + res);
+		logger.info("trying to reserve patientID: " + patientID + " (as doctorID: " + doctorID
+				+ "). sending message to allocator: " + res);
 
 		amqpTemplate.convertAndSend("allocator", res);
 
@@ -115,10 +115,11 @@ public class DoctorController {
 	}
 
 	private void addStandardOutputs(Model model) {
-		List<OpSlot> opSlots = mongoTemplate.findAll(OpSlot.class);
+
+		List<OpSlot> opSlots = uiDAO.findAllOpSlots();
 		model.addAttribute("opSlots", opSlots);
 
-		List<Patient> patients = mongoTemplate.findAll(Patient.class);
+		List<Patient> patients = uiDAO.findAllPatients();
 		model.addAttribute("patients", patients);
 	}
 

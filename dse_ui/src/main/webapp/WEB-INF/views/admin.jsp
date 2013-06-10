@@ -50,6 +50,7 @@
 				
 				<div id="krankenhaus_anlegen">
 					<form method="post" action="/admin/hospital/create/">
+						<label>Username</label><input type="text" name="username" /><br/>
 						<label>Name</label><input type="text" name="name" /><br/>
 						<label>Latitude</label><input type="text" name="latitude" /><br/>
 						<label>Longitude</label><input type="text" name="longitude" /><br/>
@@ -62,6 +63,7 @@
 				<table id='gradient-style' class='sortable'>
 					<tr>
 						<th>ID</th>
+						<th>Username</th>
 						<th>Name</th>
 						<th>Geo-Koordinaten</th>
 						<th>Krankenhaus löschen</th>
@@ -70,6 +72,7 @@
 					<c:forEach items="${hospitals}" var="hospitals">
 						<tr>
 							<td>${hospitals.id}</td>
+							<td>${hospitals.username}</td>
 							<td>${hospitals.name}</td>
 							<td>Lat. ${hospitals.location[0]}, Long. ${hospitals.location[1]}</td>
 							<td><a href="/admin/hospital/delete/?id=${hospitals.id}">X</a></td>

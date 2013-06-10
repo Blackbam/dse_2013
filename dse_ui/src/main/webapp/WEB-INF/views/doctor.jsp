@@ -93,17 +93,17 @@
 							<tr>
 								<td>
 									<label>Frühester Zeitpunkt</label> 
-									<input type="text" class="date" name="date_start">
+									<input type="text" class="date" name="date_start"/>
 								</td>
 								<td>
 									<label>Spätester Zeitpunkt</label> 
-									<input type="text" class="date" name="date_end">
+									<input type="text" class="date" name="date_end"/>
 								</td>
 							</tr>
 							<tr>
 								<td>
 									<label>ID des Patienten</label> 
-									<input type="text" name="patient_id">
+									<input type="text" name="patient_id"/>
 								</td>
 								<td>
 									<label>benötigter Typ</label> 

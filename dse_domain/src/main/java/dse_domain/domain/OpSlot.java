@@ -23,7 +23,6 @@ public class OpSlot {
 		this.date = date;
 	}
 
-
 	public enum Type {
 		KARDIO, AUGEN, OTHER
 	}

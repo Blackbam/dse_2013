@@ -15,6 +15,7 @@ import dse_domain.DTO.ReservationFailNotificationDTO;
 import dse_domain.DTO.ReservationSuccessNotificationDTO;
 import dse_domain.domain.Doctor;
 import dse_domain.domain.OpSlot;
+import dse_domain.domain.OpSlot.Type;
 import dse_domain.domain.Patient;
 import dse_domain.domain.Reservation;
 
@@ -51,11 +52,13 @@ public class ReservationController {
 				Date startDate = receivedDTO.getDateStart();
 				Date endDate = receivedDTO.getDateEnd();
 				int minTime = receivedDTO.getMinTime();
+				Type type = receivedDTO.getType();
 
 				Patient patient = reservationDAO.findPatient(patientID);
 
+				// main op_slot query
 				OpSlot foundOpSlot = reservationDAO.findFreeOPSlotInNearHospital(maxDistance, patient, startDate,
-						endDate, minTime);
+						endDate, minTime, type);
 
 				if (foundOpSlot != null) {
 					logger.info("Reservation finished processing.. found OpSlot: " + foundOpSlot.getDateString()
@@ -69,35 +72,19 @@ public class ReservationController {
 
 					reservationDAO.updateOpSlot(foundOpSlot);
 
-					// sending
-
-//					String notifTitle = "Reservation successful";
-//					String notifContent = "Reservierung für die Operation des Patienten " + patient.getFirstName()
-//							+ " " + patient.getLastName() + ", durchgeführt " + doctor.getTitle() + " "
-//							+ doctor.getFirstName() + " " + doctor.getLastName() + "erfolgreich  "
-//							+ foundOpSlot.getDateString() + " / " + foundOpSlot.getStartTimeString() + "-"
-//							+ foundOpSlot.getEndTimeString() + " ";
-
-					// NotificationDTO notificationDoctor = new NotificationDTO(doctor,notifTitle,
-					// notifContent, true);
-					//
-					// NotificationDTO notificationPatient = new NotificationDTO(patient,
-					// notifTitle, notifContent, true);
-					//
-					// NotificationDTO notificationHopsital = new
-					// NotificationDTO(foundOpSlot.getHospital(), notifTitle, notifContent, true);
-					//
 					OpSlotDTO opSlotDTO = new OpSlotDTO(foundOpSlot.getHospital().getId(), foundOpSlot.getDateString(),
 							foundOpSlot.getStartTimeString(), foundOpSlot.getEndTimeString());
-					
+
 					sendSuccessNotification(receivedDTO, opSlotDTO);
-					
+
 				} else {
 					logger.info("Reservation not possible.. no free OpSlots found");
-					
+
 					sendFailNotification(receivedDTO);
 				}
 
+			} else {
+				logger.info("Received unexpected message type");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,15 +96,16 @@ public class ReservationController {
 		String failureReason = "No free OpSlots could be found";
 		ReservationFailNotificationDTO failNotification = new ReservationFailNotificationDTO(receivedDTO, failureReason);
 		amqpTemplate.convertAndSend(messengerQueue, failNotification);
-		
-		logger.info("Sending to messenger: " +failNotification);
+
+		logger.info("Sending to messenger: " + failNotification);
 	}
 
 	private void sendSuccessNotification(ReservationDTO receivedDTO, OpSlotDTO opSlotDTO) {
-		ReservationSuccessNotificationDTO succsNotification = new ReservationSuccessNotificationDTO(receivedDTO, opSlotDTO);
+		ReservationSuccessNotificationDTO succsNotification = new ReservationSuccessNotificationDTO(receivedDTO,
+				opSlotDTO);
 		amqpTemplate.convertAndSend(messengerQueue, succsNotification);
-		
-		logger.info("Sending to messenger: " +succsNotification);
+
+		logger.info("Sending to messenger: " + succsNotification);
 	}
 
 	public void sendNotification() {
