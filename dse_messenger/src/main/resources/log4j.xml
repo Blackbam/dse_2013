@@ -31,6 +31,15 @@
 	<logger name="org.springframework.web">
 		<level value="info" />
 	</logger>
+	
+	<!-- dse loggers  -->
+	<logger name="controller">
+		<level value="debug" />
+	</logger>
+	
+	<logger name="dao">
+		<level value="debug" />
+	</logger>
 
 	<!-- Root Logger -->
 	<root>

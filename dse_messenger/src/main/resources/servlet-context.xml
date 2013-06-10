@@ -17,7 +17,7 @@
 
 	<mvc:default-servlet-handler/>
 
-	<context:component-scan base-package="services"/>
+	<context:component-scan base-package="controller"/>
 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/"/>
@@ -29,7 +29,7 @@
 
 	<!-- Define message listener   -->
 	<rabbit:listener-container connection-factory="connectionFactory">
-    	<rabbit:listener queues="messenger" ref="messageController" method="onMessage"/>
+    	<rabbit:listener queues="messenger" ref="messageController" method="handleNotificationRequest"/>
 	</rabbit:listener-container>
 
     <!-- Set up the AmqpTemplate/RabbitTemplate: -->
@@ -43,6 +43,6 @@
     <rabbit:queue name="allocator" durable="true"/>
     <rabbit:queue name="messenger" durable="true"/>
 
-	<bean id="messageController" class="services.MessageController" />
+	<bean id="messageController" class="controller.MessageController" />
 
 </beans>

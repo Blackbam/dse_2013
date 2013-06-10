@@ -9,14 +9,14 @@ public class Notification {
 
 	@Id
 	private String id;
-	private Person person;
+	private User user;
 	private String title;
 	private String content;
 	private Date date;
 	private boolean hasBeenRead;
 	
-	public Notification(Person person, String title, String content) {
-		this.person = person;
+	public Notification(User user, String title, String content) {
+		this.user = user;
 		this.title = title;
 		this.content = content;
 		this.date = new Date();
@@ -31,8 +31,12 @@ public class Notification {
 		this.id = id;
 	}
 	
-	public Person getPerson() {
-		return person;
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user){
+		this.user = user;
 	}
 
 	public String getTitle() {
@@ -62,5 +66,13 @@ public class Notification {
 	public void setHasBeenRead(boolean hasBeenRead) {
 		this.hasBeenRead = hasBeenRead;
 	}
+
+	@Override
+	public String toString() {
+		return "Notification [id=" + id + ", user=" + user + ", title=" + title + ", content=" + content + ", date="
+				+ date + ", hasBeenRead=" + hasBeenRead + "]";
+	}
+	
+	
 
 }

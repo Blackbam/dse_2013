@@ -12,6 +12,10 @@
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg ref="mongoDbFactory" />
 	</bean>
+	
+	<bean id="notificationDAO" class="dao.impl.NotificationMongoDAO">
+		<constructor-arg ref="mongoTemplate" />
+	</bean>
 
 	<mongo:db-factory id="mongoDbFactory" dbname="${mongo.name}"
 		host="${mongo.host}" port="27017" username="${mongo.username}"
