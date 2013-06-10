@@ -87,6 +87,7 @@
 				
 				<div id="stylized" class="searchForm">
 					<form id="form" name="form" method="post" action="/doctor/reserve/">
+						<input type="hidden" name="doctor_id" value="${doctorID}" />
 						<table>
 							<tbody>
 							<tr>

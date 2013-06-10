@@ -12,7 +12,7 @@
                            http://schema.cloudfoundry.org/spring http://schema.cloudfoundry.org/spring/cloudfoundry-spring-0.7.xsd">
 
         	
-	<context:component-scan base-package="services"/>
+	<context:component-scan base-package="controller"/>
 	<mvc:annotation-driven/>
 	
 	<mvc:resources mapping="static/**"
@@ -37,7 +37,7 @@
     <rabbit:queue name="allocator" durable="true"/>
     <rabbit:queue name="messenger" durable="true"/>
     
-    <bean id="messageController" class="services.MessageController" />
+    <bean id="messageController" class="controller.ReservationController" />
      <!--<bean id="reservationDAO" class="dao.impl.ReservationDAO" /> -->
     
 </beans>

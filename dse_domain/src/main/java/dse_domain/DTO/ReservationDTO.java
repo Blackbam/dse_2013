@@ -11,14 +11,16 @@ public class ReservationDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String patientID;
+	private String doctorID;
 	private Date dateStart;
 	private Date dateEnd;
 	private OpSlot.Type type;
 	private int minTime;
 	private int maxDistance;
 
-	public ReservationDTO(String patientID, Date dateStart, Date dateEnd, Type type, int minTime, int maxDistance) {
+	public ReservationDTO(String patientID, String doctorID, Date dateStart, Date dateEnd, Type type, int minTime, int maxDistance) {
 		this.patientID = patientID;
+		this.doctorID = doctorID;
 		this.dateStart = dateStart;
 		this.dateEnd = dateEnd;
 		this.type = type;
@@ -32,6 +34,14 @@ public class ReservationDTO implements Serializable {
 
 	public void setPatientID(String patientID) {
 		this.patientID = patientID;
+	}
+
+	public String getDoctorID() {
+		return doctorID;
+	}
+
+	public void setDoctorID(String doctorID) {
+		this.doctorID = doctorID;
 	}
 
 	public Date getDateStart() {
@@ -76,8 +86,11 @@ public class ReservationDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ReservationDTO [patientID=" + patientID + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd
-				+ ", type=" + type + ", minTime=" + minTime + ", maxDistance=" + maxDistance + "]";
+		return "ReservationDTO [patientID=" + patientID + ", doctorID=" + doctorID + ", dateStart=" + dateStart
+				+ ", dateEnd=" + dateEnd + ", type=" + type + ", minTime=" + minTime + ", maxDistance=" + maxDistance
+				+ "]";
 	}
 
+
+	
 }

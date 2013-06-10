@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.Distance;
 import org.springframework.data.mongodb.core.geo.GeoResult;
@@ -15,6 +16,7 @@ import org.springframework.data.mongodb.core.geo.Metrics;
 import org.springframework.data.mongodb.core.geo.Point;
 import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Repository;
 
 import dao.IReservationDAO;
 
@@ -23,14 +25,15 @@ import dse_domain.domain.Hospital;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 
-public class ReservationDAO implements IReservationDAO{
-	static final Logger logger = Logger.getLogger(ReservationDAO.class);
+
+public class ReservationMongoDAO implements IReservationDAO{
+	static final Logger logger = Logger.getLogger(ReservationMongoDAO.class);
 	
-	@Autowired(required = false)
-	MongoDbFactory mongoDbFactory;
+	private MongoOperations mongo;
 	
-	@Autowired
-	private MongoTemplate mongoTemplate;
+	public ReservationMongoDAO(MongoOperations mongo){
+		this.mongo = mongo;
+	}
 
 	public void findStuff() {
 		// finds all the reservation
@@ -40,19 +43,23 @@ public class ReservationDAO implements IReservationDAO{
 		// List<OpSlot> opSlots = mongoTemplate.find(new
 		// Query(where("reservation").in(reservations)), OpSlot.class)
 		//
+		
+		mongo.findAll(Patient.class);
+		
+		logger.info("OH LOOK IT WORKS LAWL");
 
 	}
 
 	public OpSlot findFreeOPSlotsWithinPatientRadius(String patientID, int maxDistance) {
 
-		Patient patient = mongoTemplate.findById(patientID, Patient.class);
+		Patient patient = mongo.findById(patientID, Patient.class);
 		double[] patientLoc = patient.getLocation();
 
 		Point patientLocation = new Point(patientLoc[0], patientLoc[1]);
 		logger.debug("patient location: " + patientLocation.toString());
 
 		NearQuery query = NearQuery.near(patientLocation).maxDistance(new Distance(maxDistance, Metrics.KILOMETERS));
-		GeoResults<Hospital> test = mongoTemplate.geoNear(query, Hospital.class);
+		GeoResults<Hospital> test = mongo.geoNear(query, Hospital.class);
 
 		logger.debug("got all near hospitals: " + test.toString());
 
@@ -63,7 +70,7 @@ public class ReservationDAO implements IReservationDAO{
 					+ " - distance to patient: " + currGeo.getDistance().getValue());
 
 			// find OPSlots without reservation
-			List<OpSlot> opSlots = mongoTemplate.find(
+			List<OpSlot> opSlots = mongo.find(
 					new Query(where("reservation").exists(false).and("hospital").is(currGeo.getContent())),
 					OpSlot.class);
 

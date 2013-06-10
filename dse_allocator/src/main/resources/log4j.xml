@@ -33,9 +33,14 @@
 	</logger>
 	
 	<!-- dse loggers  -->
-	<logger name="services">
+	<logger name="controller">
 		<level value="debug" />
 	</logger>
+	
+	<logger name="dao">
+		<level value="debug" />
+	</logger>
+	
 
 	<!-- Root Logger -->
 	<root>
