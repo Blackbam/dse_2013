@@ -13,13 +13,14 @@
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg ref="mongoDbFactory" />
 	</bean>
-	
 
-	
-	
+	<bean id="reservationDAO" class="dao.impl.ReservationMongoDAO">
+		<constructor-arg ref="mongoTemplate" />
+	</bean>
+
 	<mongo:db-factory id="mongoDbFactory" dbname="${mongo.name}"
 		host="${mongo.host}" port="27017" username="${mongo.username}"
 		password="${mongo.password}" />
-	
+
 
 </beans>

@@ -2,89 +2,148 @@ package dao.impl;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.MongoDbFactory;
+
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.Distance;
 import org.springframework.data.mongodb.core.geo.GeoResult;
 import org.springframework.data.mongodb.core.geo.GeoResults;
 import org.springframework.data.mongodb.core.geo.Metrics;
 import org.springframework.data.mongodb.core.geo.Point;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Repository;
 
 import dao.IReservationDAO;
 
-
+import dse_domain.domain.Doctor;
 import dse_domain.domain.Hospital;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 
-
-public class ReservationMongoDAO implements IReservationDAO{
+public class ReservationMongoDAO implements IReservationDAO {
 	static final Logger logger = Logger.getLogger(ReservationMongoDAO.class);
-	
+
 	private MongoOperations mongo;
-	
-	public ReservationMongoDAO(MongoOperations mongo){
+
+	public ReservationMongoDAO(MongoOperations mongo) {
 		this.mongo = mongo;
 	}
 
-	public void findStuff() {
-		// finds all the reservation
-		// List<Reservation> reservations = mongoTemplate.find(new
-		// Query(where("doctor").is(doctor)), Reservation.class);
-		//
-		// List<OpSlot> opSlots = mongoTemplate.find(new
-		// Query(where("reservation").in(reservations)), OpSlot.class)
-		//
-		
-		mongo.findAll(Patient.class);
-		
-		logger.info("OH LOOK IT WORKS LAWL");
 
-	}
-
-	public OpSlot findFreeOPSlotsWithinPatientRadius(String patientID, int maxDistance) {
-
-		Patient patient = mongo.findById(patientID, Patient.class);
+	private GeoResults<Hospital> findNearHospitals(int maxDistance, Patient patient) {
 		double[] patientLoc = patient.getLocation();
-
 		Point patientLocation = new Point(patientLoc[0], patientLoc[1]);
 		logger.debug("patient location: " + patientLocation.toString());
 
-		NearQuery query = NearQuery.near(patientLocation).maxDistance(new Distance(maxDistance, Metrics.KILOMETERS));
-		GeoResults<Hospital> test = mongo.geoNear(query, Hospital.class);
+		NearQuery geoQuery = NearQuery.near(patientLocation).maxDistance(new Distance(maxDistance, Metrics.KILOMETERS));
+		GeoResults<Hospital> test = mongo.geoNear(geoQuery, Hospital.class);
+		
+		logger.debug("got near enough hospitals: " + test.toString());
+		
+		
+		
+		return test;
+	}
+	
+	@Override
+	public OpSlot findFreeOPSlotInNearHospital(int maxDistance, Patient patient, Date startDate, Date endDate, int minTime){
+		
+		GeoResults<Hospital> test = findNearHospitals(maxDistance, patient);
+		List<GeoResult<Hospital>> geoResults = test.getContent();
+		
+		OpSlot foundOpSlot = null;
 
-		logger.debug("got all near hospitals: " + test.toString());
+		for (GeoResult<Hospital> currGeo : geoResults) {
+			logger.debug("- proceeding with " + currGeo.getContent().getName() + " - distance to patient: "
+					+ currGeo.getDistance().getValue());
 
-		List<GeoResult<Hospital>> bla = test.getContent();
-
-		for (GeoResult<Hospital> currGeo : bla) {
-			logger.debug("-" + currGeo.getContent().getId() + " / " + currGeo.getContent().getName()
-					+ " - distance to patient: " + currGeo.getDistance().getValue());
-
-			// find OPSlots without reservation
-			List<OpSlot> opSlots = mongo.find(
-					new Query(where("reservation").exists(false).and("hospital").is(currGeo.getContent())),
-					OpSlot.class);
+			List<OpSlot> opSlots = findFreeOPSlotsInHospitalSortedList(startDate, endDate,
+					minTime, currGeo.getContent());
 
 			if (!opSlots.isEmpty()) {
-				OpSlot currOpSlot = opSlots.get(0);
-				logger.debug("found Op_slot without reservation: " + currOpSlot.getDateString() + " s: "
-						+ currOpSlot.getStartTimeString() + " e: " + currOpSlot.getEndTimeString());
-
-				return currOpSlot;
+				// get first op_slot in the sorted list
+				foundOpSlot = opSlots.get(0);
+				return foundOpSlot;
 			}
 
 		}
-
+		
 		return null;
+	}
+
+	@Override
+	public List<OpSlot> findFreeOPSlotsInHospitalSortedList(Date startDate, Date endDate, int minTime, Hospital hospital) {
+		// op_slot date greater than or equal to startDate and date less than or equal
+		// to endDate
+		Criteria dateQuery = where("date").gte(startDate).lte(endDate);
+
+		// op_slot length greater than or equal to minTime
+		Criteria lengthQuery = where("length").gte(minTime);
+
+		// find OPSlots in the current hospital where no reservation exists yet
+		Criteria reservationQuery = where("reservation").exists(false).and("hospital").is(hospital);
+
+		// reservationQuery + dateQuery + lengthQuery
+		Query query = new Query(reservationQuery.andOperator(dateQuery.andOperator(lengthQuery)));
+
+		List<OpSlot> opSlots = mongo.find(query, OpSlot.class);
+
+		logger.debug("Queried " + opSlots.size() + " op_slot(s)");
+
+		// sort the result list
+		Collections.sort(opSlots, new Comparator<OpSlot>() {
+
+			@Override
+			public int compare(OpSlot o1, OpSlot o2) {
+				return o1.getDate().compareTo(o2.getDate());
+			}
+		});
+
+		for (OpSlot curr : opSlots) {
+			logger.debug("-- queried " + curr.getDateString() + " / " + curr.getStartTimeString() + " - "
+					+ curr.getEndTimeString() + " ");
+		}
+
+		return opSlots;
+	}
+
+	@Override
+	public Patient findPatient(String patientID) {
+		return mongo.findById(patientID, Patient.class);
+	}
+
+	@Override
+	public Doctor findDoctor(String doctorID) {
+		return mongo.findById(doctorID, Doctor.class);
+	}
+
+	@Override
+	public void updateOpSlot(OpSlot opSlot) {
+		mongo.save(opSlot);
+		logger.info("Updated op_slot in database");
+
+		debugLogs();
+	}
+
+	private void debugLogs() {
+		List<OpSlot> slots = mongo.findAll(OpSlot.class);
+		logger.debug("DEBUG after update");
+		for (OpSlot curr : slots) {
+			if (curr.getReservation() != null)
+				logger.debug("  " + curr.getId() + "/" + curr.getDateString() + "/" + curr.getStartTimeString() + "-"
+						+ curr.getEndTimeString() + "/" + curr.getTypeString() + "/ Reservation: "
+						+ curr.getReservation().getDoctor() + "/" + curr.getReservation().getPatient());
+
+			else
+				logger.debug("  " + curr.getId() + "/" + curr.getDateString() + "/" + curr.getStartTimeString() + "-"
+						+ curr.getEndTimeString() + "/" + curr.getTypeString() + "/ Reservation: NOPE");
+		}
 	}
 
 }
