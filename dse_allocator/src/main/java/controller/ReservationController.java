@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import dao.IReservationDAO;
+import dse_domain.DTO.NotificationDTO;
 import dse_domain.DTO.OpSlotDTO;
 import dse_domain.DTO.ReservationDTO;
 import dse_domain.DTO.ReservationFailNotificationDTO;
@@ -88,6 +89,11 @@ public class ReservationController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+
+			// TODO DEBUG DELETE ME PLEASE
+			amqpTemplate.convertAndSend(messengerQueue, new NotificationDTO(new Patient(),
+					"DEBUG Exception thrown in allocator",
+					"yeah as I said exception thrown and debug and stuff remove that shit later plox"));
 		}
 
 	}

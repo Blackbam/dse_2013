@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import dao.INotificationDAO;
 import dse_domain.DTO.NotificationDTO;
 import dse_domain.DTO.OpSlotDTO;
+import dse_domain.DTO.ReservationCancellationDTO;
 import dse_domain.DTO.ReservationDTO;
 import dse_domain.DTO.ReservationFailNotificationDTO;
 import dse_domain.DTO.ReservationSuccessNotificationDTO;
 import dse_domain.domain.Doctor;
 import dse_domain.domain.Hospital;
 import dse_domain.domain.Notification;
+import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 import dse_domain.domain.User;
 
@@ -62,6 +64,22 @@ public class MessageController {
 
 				processFailNotification(dto, reservationRequestDTO, patient, doctor);
 
+			} else if (message instanceof ReservationCancellationDTO) {
+				logger.info("Message is instance of ReservationCancellationDTO, processing..");
+
+				ReservationCancellationDTO cancelDTO = (ReservationCancellationDTO) message;
+
+				OpSlot slot = notificationDAO.findOpSlot(cancelDTO.getOpSlotID());
+
+				Patient patient = slot.getReservation().getPatient();
+				Doctor doctor = slot.getReservation().getDoctor();
+
+				if (slot.getReservation() != null) {
+					processCancellationNotification(slot, patient, doctor);
+				}
+
+				logger.info("Cancellation not possible since the opSlot has no reservation");
+
 			} else if (message instanceof NotificationDTO) {
 				logger.info("Message is instance of NotificationDTO, processing..");
 
@@ -82,6 +100,23 @@ public class MessageController {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void processCancellationNotification(OpSlot slot, Patient patient, Doctor doctor) {
+		String title = "Stornierung einer Reservierung";
+		String content = "Die Operation (Typ: " + slot.getType() + ") des Patienten " + patient.getFirstName() + " "
+				+ patient.getLastName() + " im Krankenhaus " + slot.getHospital().getName() + " am " + slot.getDate()
+				+ " von " + slot.getStartTimeString() + " bis " + slot.getEndTimeString() + ", mit dem Arzt "
+				+ doctor.getTitle() + " " + doctor.getFirstName() + " " + doctor.getLastName()
+				+ "wurde vom Arzt storniert!";
+
+		Notification patientNotification = new Notification(patient, title, content);
+		Notification doctorNotification = new Notification(doctor, title, content);
+		Notification hospitalNotification = new Notification(slot.getHospital(), title, content);
+
+		notificationDAO.insertNotification(doctorNotification);
+		notificationDAO.insertNotification(patientNotification);
+		notificationDAO.insertNotification(hospitalNotification);
 	}
 
 	private void processSuccessNotification(ReservationDTO reservationRequestDTO, OpSlotDTO opSlotDTO, Patient patient,

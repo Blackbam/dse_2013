@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dao.IUserInterfaceDAO;
+import dse_domain.DTO.ReservationCancellationDTO;
 import dse_domain.DTO.ReservationDTO;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
@@ -55,12 +56,7 @@ public class DoctorController {
 		 */
 		// End Debug
 
-		// finds all the reservation
-		// List<Reservation> reservations = uiDAO.findAllReservationsByDoctor(doctor);
 
-		// List<OpSlot> opSlots = mongoTemplate.find(new
-		// Query(where("reservation").in(reservations)), OpSlot.class);
-		
 		List<OpSlot> opSlots = uiDAO.findAllReservedOpSlotsWithDoctor(doctor);
 
 		for (OpSlot curr : opSlots) {
@@ -104,11 +100,14 @@ public class DoctorController {
 
 	// i think we need op_slot id here
 	@RequestMapping(value = "/remove_reservation/", method = RequestMethod.GET)
-	public String doctorRemoveReservation(Model model, @RequestParam("opslot_id") int opslot_id) {
+	public String doctorRemoveReservation(Model model, @RequestParam("opslot_id") String opslot_id) {
 
-		//
-
-		// TODO ME
+		
+		//TODO delete reservation (DAO)
+		
+		ReservationCancellationDTO cancel = new ReservationCancellationDTO(opslot_id);
+		amqpTemplate.convertAndSend(cancel);
+		
 		addStandardOutputs(model);
 
 		return "doctor";

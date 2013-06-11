@@ -9,6 +9,7 @@ import dao.INotificationDAO;
 import dse_domain.domain.Doctor;
 import dse_domain.domain.Hospital;
 import dse_domain.domain.Notification;
+import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 
 public class NotificationMongoDAO implements INotificationDAO {
@@ -45,6 +46,11 @@ public class NotificationMongoDAO implements INotificationDAO {
 	@Override
 	public List<Notification> findAllNotifications() {
 		return mongo.findAll(Notification.class);
+	}
+
+	@Override
+	public OpSlot findOpSlot(String opSlotID) {
+		return mongo.findById(opSlotID, OpSlot.class);
 	}
 
 }
