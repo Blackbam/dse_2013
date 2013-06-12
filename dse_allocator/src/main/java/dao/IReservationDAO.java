@@ -21,6 +21,8 @@ public interface IReservationDAO {
 	public Patient findPatient(String patientID);
 
 	public Doctor findDoctor(String doctorID);
+	
+	//public Reservation findReservation(String opSlotID);
 
 	/**
 	 * finds free op_slot which are closest to patient (to maxDistance away) and which are in the
@@ -50,4 +52,10 @@ public interface IReservationDAO {
 	 */
 	public List<OpSlot> findFreeOPSlotsInHospitalSortedList(Date startDate, Date endDate, int minTime, Hospital hospital, Type type);
 
+	
+	
+	
+	public void save(Doctor doctor);
+
+	public void save(Patient patient);
 }

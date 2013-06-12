@@ -146,7 +146,7 @@ public class MessageController {
 				+ dto.getFailureReason();
 
 		Notification patientNotification = new Notification(patient, title, content);
-		Notification doctorNotification = new Notification(patient, title, content);
+		Notification doctorNotification = new Notification(doctor, title, content);
 
 		notificationDAO.insertNotification(doctorNotification);
 		notificationDAO.insertNotification(patientNotification);

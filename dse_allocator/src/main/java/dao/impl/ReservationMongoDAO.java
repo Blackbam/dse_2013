@@ -150,4 +150,13 @@ public class ReservationMongoDAO implements IReservationDAO {
 		}
 	}
 
+	@Override
+	public void save(Doctor doctor) {
+		mongo.save(doctor);
+	}
+
+	@Override
+	public void save(Patient patient) {
+		mongo.save(patient);
+	}
 }

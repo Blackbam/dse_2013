@@ -56,6 +56,8 @@ public class ReservationController {
 				Type type = receivedDTO.getType();
 
 				Patient patient = reservationDAO.findPatient(patientID);
+				Doctor doctor = reservationDAO.findDoctor(doctorID);
+				
 
 				// main op_slot query
 				OpSlot foundOpSlot = reservationDAO.findFreeOPSlotInNearHospital(maxDistance, patient, startDate,
@@ -66,7 +68,7 @@ public class ReservationController {
 							+ " / " + foundOpSlot.getStartTimeString() + "-" + foundOpSlot.getEndTimeString()
 							+ " in hospital: " + foundOpSlot.getHospital().getName());
 
-					Doctor doctor = reservationDAO.findDoctor(doctorID);
+					
 
 					Reservation reservation = new Reservation(doctor, patient);
 					foundOpSlot.setReservation(reservation);
