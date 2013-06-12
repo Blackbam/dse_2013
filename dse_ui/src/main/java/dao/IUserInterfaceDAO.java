@@ -4,8 +4,10 @@ import java.util.List;
 
 import dse_domain.domain.Doctor;
 import dse_domain.domain.Hospital;
+import dse_domain.domain.Notification;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
+import dse_domain.domain.Person;
 
 public interface IUserInterfaceDAO {
 
@@ -62,5 +64,15 @@ public interface IUserInterfaceDAO {
 	 *         Reservations - patient not removed
 	 */
 	public boolean delete(Patient patient);
+	
+	
+	// for the notifications
+	public List<Notification> findNotificationsForPerson(Person person);
+	
+	public List<Notification> findAllNotifications();
+	
+	public void save(Notification notification);
+	
+	public void delete(Notification notification);
 
 }

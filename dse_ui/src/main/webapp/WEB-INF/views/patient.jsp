@@ -4,10 +4,80 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Patientenbereich</title>
-<link rel="stylesheet" href="static/css/main.css" type="text/css"></link>
-<link rel="stylesheet" href="static/css/colors.css" type="text/css"></link>
-<link rel="stylesheet" href="static/css/local.css" type="text/css"></link>
-<script type="text/javascript" src="static/js/sorttable.js"></script>
+<link rel="stylesheet" href="/static/css/main.css" type="text/css"></link>
+<link rel="stylesheet" href="/static/css/colors.css" type="text/css"></link>
+<link rel="stylesheet" href="/static/css/local.css" type="text/css"></link>
+<link rel="stylesheet" href="/static/css/custom.css" type="text/css"></link>
+<link rel="stylesheet" href="/static/css/datepicker.css" type="text/css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script type="text/javascript" src="/static/js/sorttable.js"></script>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+<script type="text/javascript"
+	src="http://code.jquery.com/ui/1.10.0/jquery-ui.min.js"></script>
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/i18n/jquery-ui-i18n.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.timepicker.js"></script>
+<script>
+	jQuery(function($) {
+		$.datepicker.setDefaults({
+			showOtherMonths : true,
+			selectOtherMonths : true
+		});
+		$(".date").datepicker($.datepicker.regional['de']);
+	});
+	
+	$(document).ready(function() {
+		
+		remote_notifications();
+		
+		setInterval(function() { remote_notifications(); }, 5000);
+		
+	});
+	
+	
+	function remote_notifications() {
+		
+		
+        $.ajax({
+            type: "GET",
+            url: "/notification/?id=${patientID}",
+            data: "",
+            success: function(data){
+                var html = "";
+                $(data).each(function(key,obj) {
+                	
+                	html +='<div class="notification_element"><div class="noz"><span class="title">'+obj.title+' <span class="date">'+obj.date+'</span></div>';
+	                	html += '<div class="notel_mas" title="'+obj.title+' - '+obj.date+'">';
+		                	html += '<div class="notel_content">'+obj.content+'</div>';
+	                	html += '</div>';
+	                html += '</div>';
+                });
+                $('#notifications_content').html(html);
+                
+                $(".notification_element").on("click", function (e) {
+                   
+                 $(this).children('.notel_mas').each(function() {
+                	$(this).dialog({
+                		width:400,
+                		height:300
+                	}); 
+                 });
+                });
+                
+                
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+            	console.log(jqXHR);
+            	console.log(textStatus);
+            	console.log(errorThrown);
+            }
+        });
+	}
+	
+
+	
+</script>
 </head>
 <body>
 	<div id="page">
@@ -19,6 +89,16 @@
 			</div>
 		</div>
 		<!-- /header -->
+		
+		<div id="notifications">
+			<div id="notifications_header">
+				Notifications
+			</div>
+			<div id="notifications_content">
+				
+			</div>
+		</div>
+		
 		<div id="container">
 			<div id="content" class="no-side-nav">
 

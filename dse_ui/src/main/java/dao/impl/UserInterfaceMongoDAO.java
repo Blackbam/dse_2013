@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
 
 import dao.IUserInterfaceDAO;
@@ -15,6 +16,7 @@ import dse_domain.domain.Hospital;
 import dse_domain.domain.Notification;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
+import dse_domain.domain.Person;
 
 public class UserInterfaceMongoDAO implements IUserInterfaceDAO {
 	static final Logger logger = Logger.getLogger(UserInterfaceMongoDAO.class);
@@ -134,6 +136,27 @@ public class UserInterfaceMongoDAO implements IUserInterfaceDAO {
 		}
 	}
 
-
+	// Notifications
+	@Override
+	public List<Notification> findNotificationsForPerson(Person person) {
+		Query query = new Query(where("user.id").is(person.getId()));
+		query.sort().on("date", Order.DESCENDING);
+		return mongo.find(query, Notification.class);
+	}
+	
+	@Override
+	public List<Notification> findAllNotifications() {
+		Query query = new Query();
+		query.sort().on("date", Order.DESCENDING);
+		return mongo.find(query,Notification.class);
+	}
+	
+	public void save(Notification notification) {
+		mongo.save(notification);
+	}
+	
+	public void delete(Notification notification) {
+		mongo.remove(notification);
+	}
 
 }

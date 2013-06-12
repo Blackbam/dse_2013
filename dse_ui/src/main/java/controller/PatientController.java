@@ -48,6 +48,7 @@ public class PatientController {
 		// Get the patient with the given id
 		Patient patient = mongoTemplate.findById(id, Patient.class);
 		model.addAttribute("patient", patient);
+		model.addAttribute("patientID",patient.getId());
 
 		// TODO error handling if patient is not found
 
