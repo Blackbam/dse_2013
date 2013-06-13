@@ -40,39 +40,41 @@ public interface IUserInterfaceDAO {
 	public void save(Patient patient);
 
 	/**
+	 * removes hospital and open op_slots without reservations
 	 * 
 	 * @param hospital
-	 * @return true if hospital was removed / false if hospital had op_slots with Reservations -
+	 * @return true if hospital was removed / false if hospital had op_slots with reservations -
 	 *         hospital not removed
 	 */
 	public boolean delete(Hospital hospital);
 
 	/**
-	 * removes doctor and his notifications if he has no open Reservations
+	 * removes doctor and his notifications if he has no open reservations
 	 * 
 	 * @param doctor
 	 * @return true if doctor (and notifications) was removed / false if doctor has open
-	 *         Reservations - doctor not removed
+	 *         reservations - doctor not removed
 	 */
 	public boolean delete(Doctor doctor);
 
 	/**
-	 * removes patient and his notifications if he has no open op_slot Reservations
+	 * removes patient and his notifications if he has no open op_slot reservations
 	 * 
 	 * @param patient
 	 * @return true if patient (and notifications) was removed / false if patient has open
-	 *         Reservations - patient not removed
+	 *         reservations - patient not removed
 	 */
 	public boolean delete(Patient patient);
-	
-	
+
 	// for the notifications
 	public List<Notification> findNotificationsForPerson(Person person);
-	
+
 	public List<Notification> findAllNotifications();
-	
+
 	public void save(Notification notification);
-	
+
 	public void delete(Notification notification);
+	
+	public void removeReservationFromOpSlot(String opSlotID);
 
 }

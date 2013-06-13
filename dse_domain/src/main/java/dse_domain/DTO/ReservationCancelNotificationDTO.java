@@ -2,13 +2,13 @@ package dse_domain.DTO;
 
 import java.io.Serializable;
 
-public class ReservationCancellationDTO implements Serializable {
+public class ReservationCancelNotificationDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private String opSlotID;
 
-	public ReservationCancellationDTO(String opSlotID ) {
+	public ReservationCancelNotificationDTO(String opSlotID ) {
 		super();
 		this.opSlotID = opSlotID;
 	}

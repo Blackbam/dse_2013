@@ -5,10 +5,13 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+
+import com.mongodb.WriteResult;
 
 import dao.IUserInterfaceDAO;
 import dse_domain.domain.Doctor;
@@ -140,14 +143,15 @@ public class UserInterfaceMongoDAO implements IUserInterfaceDAO {
 	@Override
 	public List<Notification> findNotificationsForPerson(Person person) {
 		Query query = new Query(where("user.id").is(person.getId()));
-		query.sort().on("date", Order.DESCENDING);
+		//query.sort().on("date", Order.DESCENDING);  //<-- deprecated
+		query.with(new Sort(Sort.Direction.DESC));
 		return mongo.find(query, Notification.class);
 	}
 	
 	@Override
 	public List<Notification> findAllNotifications() {
 		Query query = new Query();
-		query.sort().on("date", Order.DESCENDING);
+		query.with(new Sort(Sort.Direction.DESC));
 		return mongo.find(query,Notification.class);
 	}
 	
@@ -157,6 +161,25 @@ public class UserInterfaceMongoDAO implements IUserInterfaceDAO {
 	
 	public void delete(Notification notification) {
 		mongo.remove(notification);
+	}
+
+	@Override
+	public void removeReservationFromOpSlot(String opSlotID) {
+		
+		//debug TODO delete if it works
+		OpSlot debug = mongo.findById(opSlotID, OpSlot.class);
+		logger.debug("reservation is: " + debug.getReservation());
+				
+		Query query = new Query(where("id").is(opSlotID));
+		Update update = new Update();
+		update.unset("reservation");
+		WriteResult result = mongo.updateFirst(query, update, OpSlot.class);
+		logger.debug("removeReservationFromOpSlot result: " +result.toString());
+		
+		
+		//debug TODO delete if it works
+		OpSlot debug2 = mongo.findById(opSlotID, OpSlot.class);
+		logger.debug("reservation is: " + debug2.getReservation());
 	}
 
 }

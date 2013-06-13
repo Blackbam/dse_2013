@@ -128,7 +128,7 @@
 							<td>${op_slots_this_doctor.hospital.name}</td>
 							<td>${op_slots_this_doctor.reservation.doctor.lastName}</td>
 							<td>${op_slots_this_doctor.reservation.patient.lastName}</td>
-							<td><a href="/remove_reservation/?id=${op_slots_this_doctor.id}">X</a></td>
+							<td><a href="/remove_reservation/?opslot_id=${op_slots_this_doctor.id}">X</a></td>
 						</tr>
 					</c:forEach>
 
@@ -218,7 +218,6 @@
 							<td>${patients.firstName}</td>
 							<td>${patients.lastName}</td>
 							<td>Lat. ${patients.location[0]}, Long. ${patients.location[1]}</td>
-							<td><a href="/admin/patient/delete/?id=${patients.id}">X</a></td>
 						</tr>
 					</c:forEach>
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import dao.INotificationDAO;
 import dse_domain.DTO.NotificationDTO;
 import dse_domain.DTO.OpSlotDTO;
-import dse_domain.DTO.ReservationCancellationDTO;
+import dse_domain.DTO.ReservationCancelNotificationDTO;
 import dse_domain.DTO.ReservationDTO;
 import dse_domain.DTO.ReservationFailNotificationDTO;
 import dse_domain.DTO.ReservationSuccessNotificationDTO;
@@ -25,16 +25,29 @@ import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 import dse_domain.domain.User;
 
+/**
+ * controller component which handles incoming notification requests and a simple debug list - view
+ * to see notifications in the database
+ */
 @Controller
 public class MessageController {
 	static final Logger logger = Logger.getLogger(MessageController.class);
 
 	@Autowired
-	INotificationDAO notificationDAO;
+	private INotificationDAO notificationDAO;
 
 	@Autowired(required = false)
-	RabbitTemplate rabbitTemplate;
+	private RabbitTemplate rabbitTemplate;
 
+	/**
+	 * listener method which takes notification requests from the messenger queue and processes
+	 * them. depending on the instance of the incoming DTOs takes the information and builds
+	 * notifications out of it, which get inserted in the database
+	 * 
+	 * @param message
+	 *            - expected: ReservationSuccessNotificationDTO, ReservationFailNotificationDTO,
+	 *            ReservationCancelNotificationDTO, NotificationDTO (generic notification DTO)
+	 */
 	public void handleNotificationRequest(Object message) {
 
 		logger.info("Received Message: " + message);
@@ -42,6 +55,7 @@ public class MessageController {
 		try {
 
 			if (message instanceof ReservationSuccessNotificationDTO) {
+				// success notification from allocator for patient, doctor, hospital
 				logger.info("Message is instance of ReservationSuccessNotificationDTO, processing..");
 				ReservationSuccessNotificationDTO dto = (ReservationSuccessNotificationDTO) message;
 
@@ -55,6 +69,7 @@ public class MessageController {
 				processSuccessNotification(reservationRequestDTO, opSlotDTO, patient, doctor, hospital);
 
 			} else if (message instanceof ReservationFailNotificationDTO) {
+				// failure notification from allocator for patient, doctor
 				logger.info("Message is instance of ReservationFailNotificationDTO, processing..");
 				ReservationFailNotificationDTO dto = (ReservationFailNotificationDTO) message;
 				ReservationDTO reservationRequestDTO = dto.getReservationRequest();
@@ -64,10 +79,11 @@ public class MessageController {
 
 				processFailNotification(dto, reservationRequestDTO, patient, doctor);
 
-			} else if (message instanceof ReservationCancellationDTO) {
+			} else if (message instanceof ReservationCancelNotificationDTO) {
+				// cancellation notification from UI for patient, doctor
 				logger.info("Message is instance of ReservationCancellationDTO, processing..");
 
-				ReservationCancellationDTO cancelDTO = (ReservationCancellationDTO) message;
+				ReservationCancelNotificationDTO cancelDTO = (ReservationCancelNotificationDTO) message;
 
 				OpSlot slot = notificationDAO.findOpSlot(cancelDTO.getOpSlotID());
 
@@ -81,6 +97,7 @@ public class MessageController {
 				logger.info("Cancellation not possible since the opSlot has no reservation");
 
 			} else if (message instanceof NotificationDTO) {
+				// generic notification for generic notification requests (currently not used)
 				logger.info("Message is instance of NotificationDTO, processing..");
 
 				NotificationDTO dto = (NotificationDTO) message;
@@ -97,11 +114,19 @@ public class MessageController {
 			}
 			logger.info("..processing of message done.");
 		} catch (Exception e) {
-			e.printStackTrace();
+			// catch exceptions to avoid loops in case something unexpected happened
+			logger.error("Exception in message controller: " + e.getMessage());
 		}
 
 	}
 
+	/**
+	 * create and insert (into db) notification for cancellation (from ui)
+	 * 
+	 * @param slot
+	 * @param patient
+	 * @param doctor
+	 */
 	private void processCancellationNotification(OpSlot slot, Patient patient, Doctor doctor) {
 		String title = "Stornierung einer Reservierung";
 		String content = "Die Operation (Typ: " + slot.getType() + ") des Patienten " + patient.getFirstName() + " "
@@ -119,14 +144,23 @@ public class MessageController {
 		notificationDAO.insertNotification(hospitalNotification);
 	}
 
+	/**
+	 * create and insert (into db) notification for success notification (from allocator)
+	 * 
+	 * @param reservationRequestDTO
+	 * @param opSlotDTO
+	 * @param patient
+	 * @param doctor
+	 * @param hospital
+	 */
 	private void processSuccessNotification(ReservationDTO reservationRequestDTO, OpSlotDTO opSlotDTO, Patient patient,
 			Doctor doctor, Hospital hospital) {
 		String title = "Reservierung erfolgreich";
-		String content = "Reservierung für die Operation (Typ: " + reservationRequestDTO.getType() + ") des Patienten "
-				+ patient.getFirstName() + " " + patient.getLastName() + " im Krankenhaus " + hospital.getName()
-				+ " am " + opSlotDTO.getDate() + " von " + opSlotDTO.getStartTime() + " bis " + opSlotDTO.getEndTime()
-				+ ", beantragt von " + doctor.getTitle() + " " + doctor.getFirstName() + " " + doctor.getLastName()
-				+ ", konnte erfolgreich durchgeführt werden!";
+		String content = "Reservierung fuer die Operation (Typ: " + reservationRequestDTO.getType()
+				+ ") des Patienten " + patient.getFirstName() + " " + patient.getLastName() + " im Krankenhaus "
+				+ hospital.getName() + " am " + opSlotDTO.getDate() + " von " + opSlotDTO.getStartTime() + " bis "
+				+ opSlotDTO.getEndTime() + ", beantragt von " + doctor.getTitle() + " " + doctor.getFirstName() + " "
+				+ doctor.getLastName() + ", konnte erfolgreich durchgefuehrt werden!";
 
 		Notification patientNotification = new Notification(patient, title, content);
 		Notification doctorNotification = new Notification(doctor, title, content);
@@ -137,13 +171,21 @@ public class MessageController {
 		notificationDAO.insertNotification(hospitalNotification);
 	}
 
+	/**
+	 * create and insert (into db) notification for failure notification (from allocator)
+	 * 
+	 * @param dto
+	 * @param reservationRequestDTO
+	 * @param patient
+	 * @param doctor
+	 */
 	private void processFailNotification(ReservationFailNotificationDTO dto, ReservationDTO reservationRequestDTO,
 			Patient patient, Doctor doctor) {
 		String title = "Reservierung fehlgeschlagen";
-		String content = "Reservierung für die Operation (Typ: " + reservationRequestDTO.getType() + ") des Patienten "
-				+ patient.getFirstName() + " " + patient.getLastName() + ", beantragt von " + doctor.getTitle() + " "
-				+ doctor.getFirstName() + " " + doctor.getLastName() + ", konnte nicht durchgeführt werden! Grund: "
-				+ dto.getFailureReason();
+		String content = "Reservierung fuer die Operation (Typ: " + reservationRequestDTO.getType()
+				+ ") des Patienten " + patient.getFirstName() + " " + patient.getLastName() + ", beantragt von "
+				+ doctor.getTitle() + " " + doctor.getFirstName() + " " + doctor.getLastName()
+				+ ", konnte nicht durchgefuehrt werden! Grund: " + dto.getFailureReason();
 
 		Notification patientNotification = new Notification(patient, title, content);
 		Notification doctorNotification = new Notification(doctor, title, content);
@@ -153,7 +195,8 @@ public class MessageController {
 	}
 
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * Simply selects the home view to render by returning its name. which is a simple list with the
+	 * notifications in the database (for debugging)
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {

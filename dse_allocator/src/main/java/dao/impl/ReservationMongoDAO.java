@@ -36,6 +36,13 @@ public class ReservationMongoDAO implements IReservationDAO {
 		this.mongo = mongo;
 	}
 
+	/**
+	 * mongo geo search for near hospitals
+	 * 
+	 * @param maxDistance
+	 * @param patient
+	 * @return
+	 */
 	private GeoResults<Hospital> findNearHospitals(int maxDistance, Patient patient) {
 		double[] patientLoc = patient.getLocation();
 		Point patientLocation = new Point(patientLoc[0], patientLoc[1]);
@@ -52,6 +59,10 @@ public class ReservationMongoDAO implements IReservationDAO {
 	@Override
 	public OpSlot findFreeOPSlotInNearHospital(int maxDistance, Patient patient, Date startDate, Date endDate,
 			int minTime, Type type) {
+		if (patient == null) {
+			logger.info("findFreeOPSlotInNearHospital - passed patient is null. finding op_slot aborted");
+			return null;
+		}
 
 		GeoResults<Hospital> test = findNearHospitals(maxDistance, patient);
 		List<GeoResult<Hospital>> geoResults = test.getContent();
@@ -79,7 +90,8 @@ public class ReservationMongoDAO implements IReservationDAO {
 	@Override
 	public List<OpSlot> findFreeOPSlotsInHospitalSortedList(Date startDate, Date endDate, int minTime,
 			Hospital hospital, Type type) {
-		// op_slot date greater than or equal to startDate and date less than or equal
+
+		// op_slot date greater than or equal to startDate, and date less than or equal
 		// to endDate
 		Criteria dateQuery = where("date").gte(startDate).lte(endDate);
 
@@ -130,11 +142,8 @@ public class ReservationMongoDAO implements IReservationDAO {
 	public void updateOpSlot(OpSlot opSlot) {
 		mongo.save(opSlot);
 		logger.info("Updated op_slot in database");
-
-		//debugLogs();
 	}
 
-	
 	private void debugLogs() {
 		List<OpSlot> slots = mongo.findAll(OpSlot.class);
 		logger.debug("DEBUG after update");

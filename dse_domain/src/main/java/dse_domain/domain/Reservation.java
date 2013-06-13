@@ -21,5 +21,11 @@ public class Reservation {
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
+
+	@Override
+	public String toString() {
+		return "Reservation [doctor=" + doctor + ", patient=" + patient + "]";
+	}
+	
 	
 }

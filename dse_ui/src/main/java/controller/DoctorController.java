@@ -1,6 +1,5 @@
 package controller;
 
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dao.IUserInterfaceDAO;
-import dse_domain.DTO.ReservationCancellationDTO;
+import dse_domain.DTO.ReservationCancelNotificationDTO;
 import dse_domain.DTO.ReservationDTO;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
@@ -56,7 +55,6 @@ public class DoctorController {
 		 */
 		// End Debug
 
-
 		List<OpSlot> opSlots = uiDAO.findAllReservedOpSlotsWithDoctor(doctor);
 
 		for (OpSlot curr : opSlots) {
@@ -73,6 +71,19 @@ public class DoctorController {
 		return "doctor";
 	}
 
+	/**
+	 * sends a reservation request to an allocator, which gets processed asynchronously
+	 * 
+	 * @param model
+	 * @param dateStart
+	 * @param dateEnd
+	 * @param patientID
+	 * @param doctorID
+	 * @param type
+	 * @param minTime
+	 * @param maxDistance
+	 * @return
+	 */
 	@RequestMapping(value = "/reserve/", method = RequestMethod.POST)
 	public String doctorReserve(Model model, @RequestParam("date_start") String dateStart,
 			@RequestParam("date_end") String dateEnd, @RequestParam("patient_id") String patientID,
@@ -98,16 +109,15 @@ public class DoctorController {
 		return "doctor";
 	}
 
-	// i think we need op_slot id here
-	@RequestMapping(value = "/remove_reservation/", method = RequestMethod.GET)
+	@RequestMapping(value = "/remove_reservation/", method = RequestMethod.DELETE)
 	public String doctorRemoveReservation(Model model, @RequestParam("opslot_id") String opslot_id) {
 
-		
-		//TODO delete reservation (DAO)
-		
-		ReservationCancellationDTO cancel = new ReservationCancellationDTO(opslot_id);
+		// TODO delete reservation (DAO)
+		//uiDAO.removeReservationFromOpSlot(opslot_id); // not tested yet TODO
+
+		ReservationCancelNotificationDTO cancel = new ReservationCancelNotificationDTO(opslot_id);
 		amqpTemplate.convertAndSend(cancel);
-		
+
 		addStandardOutputs(model);
 
 		return "doctor";

@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="content-type" content="text/html;charset=iso-8859-15" />
 <!-- for correctly displayed German -->
-<title>Hello Spring</title>
+<title>DSE Messenger</title>
 <link rel="stylesheet" href="static/css/main.css" type="text/css"></link>
 <link rel="stylesheet" href="static/css/colors.css" type="text/css"></link>
 <link rel="stylesheet" href="static/css/local.css" type="text/css"></link>
@@ -17,15 +17,9 @@
 		<div id="header">
 			<div id="name-and-company">
 				<div id='site-name'>
-					<a href="" title="Hello Spring ${environmentName}" rel="home">Hello
-						Spring ${environmentName}</a>
-				</div>
-				<div id='company-name'>
-					<a href="http://www.springsource.com" title="SpringSource">SpringSource
-						Home</a>
-				</div>
+					<a href="" title="Hello Messenger" rel="home">DSE Messenger</a>
+				</div>			
 			</div>
-			<!-- /name-and-company -->
 		</div>
 		<!-- /header -->
 		<div id="container">

@@ -22,7 +22,6 @@ public interface IReservationDAO {
 
 	public Doctor findDoctor(String doctorID);
 	
-	//public Reservation findReservation(String opSlotID);
 
 	/**
 	 * finds free op_slot which are closest to patient (to maxDistance away) and which are in the

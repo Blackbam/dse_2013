@@ -5,11 +5,9 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Controller;
 
 import dao.IReservationDAO;
-import dse_domain.DTO.NotificationDTO;
 import dse_domain.DTO.OpSlotDTO;
 import dse_domain.DTO.ReservationDTO;
 import dse_domain.DTO.ReservationFailNotificationDTO;
@@ -20,6 +18,9 @@ import dse_domain.domain.OpSlot.Type;
 import dse_domain.domain.Patient;
 import dse_domain.domain.Reservation;
 
+/**
+ * Controller component which handles incoming reservation requests
+ */
 @Controller
 public class ReservationController {
 	static final Logger logger = Logger.getLogger(ReservationController.class);
@@ -31,10 +32,6 @@ public class ReservationController {
 
 	@Autowired
 	IReservationDAO reservationDAO;
-
-	public ReservationController() {
-
-	}
 
 	public void handleReservationRequest(Object message) {
 		logger.info("Received Message: " + message);
@@ -57,9 +54,8 @@ public class ReservationController {
 
 				Patient patient = reservationDAO.findPatient(patientID);
 				Doctor doctor = reservationDAO.findDoctor(doctorID);
-				
 
-				// main op_slot query
+				// main op_slot query - result is a free and near op_slot
 				OpSlot foundOpSlot = reservationDAO.findFreeOPSlotInNearHospital(maxDistance, patient, startDate,
 						endDate, minTime, type);
 
@@ -68,8 +64,7 @@ public class ReservationController {
 							+ " / " + foundOpSlot.getStartTimeString() + "-" + foundOpSlot.getEndTimeString()
 							+ " in hospital: " + foundOpSlot.getHospital().getName());
 
-					
-
+					// update the found op_slot in database and send notification request
 					Reservation reservation = new Reservation(doctor, patient);
 					foundOpSlot.setReservation(reservation);
 
@@ -83,41 +78,48 @@ public class ReservationController {
 				} else {
 					logger.info("Reservation not possible.. no free OpSlots found");
 
-					sendFailNotification(receivedDTO);
+					String failureReason = "Keine freien Op-Slots wurden gefunden.";
+					sendFailNotification(receivedDTO, failureReason);
 				}
 
 			} else {
 				logger.info("Received unexpected message type");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-
-			// TODO DEBUG DELETE ME PLEASE
-			amqpTemplate.convertAndSend(messengerQueue, new NotificationDTO(new Patient(),
-					"DEBUG Exception thrown in allocator",
-					"yeah as I said exception thrown and debug and stuff remove that shit later plox"));
+			// catch exceptions to avoid loops in case something unexpected happened
+			logger.error("Exception in reservation controller: " + e.getMessage());
 		}
 
 	}
 
-	private void sendFailNotification(ReservationDTO receivedDTO) {
-		String failureReason = "No free OpSlots could be found";
+	/**
+	 * send failure notification request to messenger, with specified failure reason (notification
+	 * is then built in messenger with the sent information)
+	 * 
+	 * @param receivedDTO
+	 * @param failureReason
+	 */
+	private void sendFailNotification(ReservationDTO receivedDTO, String failureReason) {
+
 		ReservationFailNotificationDTO failNotification = new ReservationFailNotificationDTO(receivedDTO, failureReason);
 		amqpTemplate.convertAndSend(messengerQueue, failNotification);
 
 		logger.info("Sending to messenger: " + failNotification);
 	}
 
+	/**
+	 * send success notification request to messenger (notification is then built in messenger with
+	 * the sent information)
+	 * 
+	 * @param receivedDTO
+	 * @param opSlotDTO
+	 */
 	private void sendSuccessNotification(ReservationDTO receivedDTO, OpSlotDTO opSlotDTO) {
 		ReservationSuccessNotificationDTO succsNotification = new ReservationSuccessNotificationDTO(receivedDTO,
 				opSlotDTO);
 		amqpTemplate.convertAndSend(messengerQueue, succsNotification);
 
 		logger.info("Sending to messenger: " + succsNotification);
-	}
-
-	public void sendNotification() {
-
 	}
 
 }

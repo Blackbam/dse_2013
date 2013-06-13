@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dao.IUserInterfaceDAO;
-import dse_domain.DTO.ReservationCancellationDTO;
+import dse_domain.DTO.ReservationCancelNotificationDTO;
 import dse_domain.DTO.ReservationDTO;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
