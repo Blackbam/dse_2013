@@ -9,6 +9,9 @@ import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 import dse_domain.domain.Person;
 
+/**
+ * Interface defining data-access methods.
+ */
 public interface IUserInterfaceDAO {
 
 	public Doctor findDoctor(String doctorID);
@@ -18,7 +21,7 @@ public interface IUserInterfaceDAO {
 	public Patient findPatient(String patientID);
 
 	/**
-	 * finds all op slots with a reservation with the specified doctor
+	 * Find all OP slots with a reservation with the specified doctor.
 	 * 
 	 * @param doctor
 	 * @return
@@ -40,33 +43,31 @@ public interface IUserInterfaceDAO {
 	public void save(Patient patient);
 
 	/**
-	 * removes hospital and open op_slots without reservations
+	 * Removes hospital and open op_slots without reservations.
 	 * 
 	 * @param hospital
-	 * @return true if hospital was removed / false if hospital had op_slots with reservations -
-	 *         hospital not removed
+	 * @return true if hospital was removed / false if hospital had op_slots with reservations - hospital not removed
 	 */
 	public boolean delete(Hospital hospital);
 
 	/**
-	 * removes doctor and his notifications if he has no open reservations
+	 * Removes doctor and his notifications if he has no open reservations.
 	 * 
 	 * @param doctor
-	 * @return true if doctor (and notifications) was removed / false if doctor has open
-	 *         reservations - doctor not removed
+	 * @return true if doctor (and notifications) was removed / false if doctor has open reservations - doctor not
+	 *         removed
 	 */
 	public boolean delete(Doctor doctor);
 
 	/**
-	 * removes patient and his notifications if he has no open op_slot reservations
+	 * Removes patient and his notifications if he has no open op_slot reservations.
 	 * 
 	 * @param patient
-	 * @return true if patient (and notifications) was removed / false if patient has open
-	 *         reservations - patient not removed
+	 * @return true if patient (and notifications) was removed / false if patient has open reservations - patient not
+	 *         removed
 	 */
 	public boolean delete(Patient patient);
 
-	// for the notifications
 	public List<Notification> findNotificationsForPerson(Person person);
 
 	public List<Notification> findAllNotifications();
@@ -74,7 +75,7 @@ public interface IUserInterfaceDAO {
 	public void save(Notification notification);
 
 	public void delete(Notification notification);
-	
+
 	public void removeReservationFromOpSlot(String opSlotID);
 
 }

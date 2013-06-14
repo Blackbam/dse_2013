@@ -2,6 +2,9 @@ package dse_domain.domain;
 
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 
+/**
+ * Model class for hospitals.
+ */
 public class Hospital extends User {
 
 	private String name;

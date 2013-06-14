@@ -5,15 +5,22 @@ import java.util.Date;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 
+/**
+ * Model class for operation slots.
+ */
 public class OpSlot {
 
 	@Id
 	private String id;
 
 	private Hospital hospital;
+
 	private Date date;
+
 	private int length;
+
 	private Reservation reservation = null;
+
 	private Type type;
 
 	public OpSlot(Hospital hospital, int length, Type type, Date date) {
@@ -23,8 +30,13 @@ public class OpSlot {
 		this.date = date;
 	}
 
+	/**
+	 * Type of operations that can be performed
+	 * 
+	 * @author Taylor
+	 */
 	public enum Type {
-		KARDIO, AUGEN, OTHER
+		AUGENHEILKUNDE, ORTHOPÄDIE, HNO, NEUROCHIRURGIE, KARDIOLOGIE, KARDIO, AUGEN, OTHER // TODO remove old
 	}
 
 	public String getId() {

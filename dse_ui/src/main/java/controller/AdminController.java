@@ -15,7 +15,7 @@ import dse_domain.domain.Hospital;
 import dse_domain.domain.Patient;
 
 /**
- * Handles requests for the administrator page
+ * Handles requests for the administrator page.
  */
 @Controller
 @RequestMapping(value = "/admin")
@@ -26,12 +26,13 @@ public class AdminController {
 
 	/**
 	 * Default Admin Controller.
+	 * 
+	 * @param model
+	 * @return
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String publicInfo(Model model) {
-
 		addStandardOutputs(model);
-
 		return "admin";
 	}
 
@@ -71,7 +72,11 @@ public class AdminController {
 	}
 
 	/**
-	 * Delete some hospital
+	 * Delete a give hospital.
+	 * 
+	 * @param model
+	 * @param idToDelete
+	 * @return
 	 */
 	@RequestMapping(value = "/hospital/delete/", method = RequestMethod.GET)
 	public String deleteHospital(Model model, @RequestParam("id") String idToDelete) {
@@ -92,7 +97,7 @@ public class AdminController {
 	}
 
 	/**
-	 * Create a new Doctor entity
+	 * Create a new Doctor entity.
 	 * 
 	 * @param model
 	 *            the model associated with the view for this controller
@@ -135,7 +140,11 @@ public class AdminController {
 	}
 
 	/**
-	 * Delete some doctor
+	 * Delete a given doctor.
+	 * 
+	 * @param model
+	 * @param idToDelete
+	 * @return
 	 */
 	@RequestMapping(value = "/doctor/delete/", method = RequestMethod.GET)
 	public String deleteDoctor(Model model, @RequestParam("id") String idToDelete) {
@@ -151,7 +160,7 @@ public class AdminController {
 	}
 
 	/**
-	 * Create a new Patient entity
+	 * Create a new Patient entity.
 	 * 
 	 * @param model
 	 *            the model associated with the view for this controller
@@ -198,7 +207,11 @@ public class AdminController {
 	}
 
 	/**
-	 * Delete some patient
+	 * Delete a given patient.
+	 * 
+	 * @param model
+	 * @param idToDelete
+	 * @return
 	 */
 	@RequestMapping(value = "/patient/delete/", method = RequestMethod.GET)
 	public String deletePatient(Model model, @RequestParam("id") String idToDelete) {
@@ -214,6 +227,11 @@ public class AdminController {
 		return "admin";
 	}
 
+	/**
+	 * Retrieve all standard entities and add them to a given model.
+	 * 
+	 * @param model
+	 */
 	private void addStandardOutputs(Model model) {
 		List<Hospital> hospitals = uiDAO.findAllHospitals();
 		List<Doctor> doctors = uiDAO.findAllDoctors();

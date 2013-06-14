@@ -4,17 +4,24 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
-
+/**
+ * Model class for notifications.
+ */
 public class Notification {
 
 	@Id
 	private String id;
-	private User user;
-	private String title;
-	private String content;
-	private Date date;
-	private boolean read;
 	
+	private User user;
+	
+	private String title;
+	
+	private String content;
+	
+	private Date date;
+	
+	private boolean read;
+
 	public Notification(User user, String title, String content) {
 		this.user = user;
 		this.title = title;
@@ -22,7 +29,7 @@ public class Notification {
 		this.date = new Date();
 		this.read = false;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -30,12 +37,12 @@ public class Notification {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public User getUser() {
 		return user;
 	}
-	
-	public void setUser(User user){
+
+	public void setUser(User user) {
 		this.user = user;
 	}
 
@@ -76,7 +83,5 @@ public class Notification {
 		return "Notification [id=" + id + ", user=" + user + ", title=" + title + ", content=" + content + ", date="
 				+ date + ", hasBeenRead=" + read + "]";
 	}
-	
-	
 
 }

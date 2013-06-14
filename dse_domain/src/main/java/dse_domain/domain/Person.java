@@ -1,14 +1,15 @@
 package dse_domain.domain;
 
-
-public abstract class Person extends User{
+/**
+ * Abstract class for common properties and methods for people.
+ */
+public abstract class Person extends User {
 
 	private String firstName;
 
 	private String lastName;
 
-	public Person() {
-	}
+	public Person() {}
 
 	public Person(String firstName, String lastName) {
 		super();

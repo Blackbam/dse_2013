@@ -21,9 +21,14 @@ import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 import dse_domain.domain.Person;
 
+/**
+ * Data-access class for retrieving and modifying objects in the MongoDB database.
+ */
 public class UserInterfaceMongoDAO implements IUserInterfaceDAO {
+
 	static final Logger logger = Logger.getLogger(UserInterfaceMongoDAO.class);
-	MongoOperations mongo;
+
+	private MongoOperations mongo;
 
 	public UserInterfaceMongoDAO(MongoOperations mongo) {
 		this.mongo = mongo;
@@ -49,7 +54,7 @@ public class UserInterfaceMongoDAO implements IUserInterfaceDAO {
 	public List<Patient> findAllPatients() {
 		return mongo.findAll(Patient.class);
 	}
-	
+
 	@Override
 	public List<Doctor> findAllDoctors() {
 		return mongo.findAll(Doctor.class);
@@ -143,41 +148,40 @@ public class UserInterfaceMongoDAO implements IUserInterfaceDAO {
 	@Override
 	public List<Notification> findNotificationsForPerson(Person person) {
 		Query query = new Query(where("user.id").is(person.getId()));
-		//query.sort().on("date", Order.DESCENDING);  //<-- deprecated
+		// query.sort().on("date", Order.DESCENDING); //<-- deprecated
 		query.with(new Sort(Sort.Direction.DESC));
 		return mongo.find(query, Notification.class);
 	}
-	
+
 	@Override
 	public List<Notification> findAllNotifications() {
 		Query query = new Query();
 		query.with(new Sort(Sort.Direction.DESC));
-		return mongo.find(query,Notification.class);
+		return mongo.find(query, Notification.class);
 	}
-	
+
 	public void save(Notification notification) {
 		mongo.save(notification);
 	}
-	
+
 	public void delete(Notification notification) {
 		mongo.remove(notification);
 	}
 
 	@Override
 	public void removeReservationFromOpSlot(String opSlotID) {
-		
-		//debug TODO delete if it works
+
+		// debug TODO delete if it works
 		OpSlot debug = mongo.findById(opSlotID, OpSlot.class);
 		logger.debug("reservation is: " + debug.getReservation());
-				
+
 		Query query = new Query(where("id").is(opSlotID));
 		Update update = new Update();
 		update.unset("reservation");
 		WriteResult result = mongo.updateFirst(query, update, OpSlot.class);
-		logger.debug("removeReservationFromOpSlot result: " +result.toString());
-		
-		
-		//debug TODO delete if it works
+		logger.debug("removeReservationFromOpSlot result: " + result.toString());
+
+		// debug TODO delete if it works
 		OpSlot debug2 = mongo.findById(opSlotID, OpSlot.class);
 		logger.debug("reservation is: " + debug2.getReservation());
 	}

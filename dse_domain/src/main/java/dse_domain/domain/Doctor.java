@@ -1,5 +1,8 @@
 package dse_domain.domain;
 
+/**
+ * Model class for doctors.
+ */
 public class Doctor extends Person {
 
 	private String title;

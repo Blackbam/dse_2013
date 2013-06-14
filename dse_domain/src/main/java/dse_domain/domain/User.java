@@ -2,11 +2,16 @@ package dse_domain.domain;
 
 import org.springframework.data.annotation.Id;
 
+/**
+ * Abstract class containing common properties and methods for system users.
+ */
 public abstract class User {
+
 	@Id
 	private String id;
 
 	private String username;
+
 	private String password;
 
 	public String getUsername() {
