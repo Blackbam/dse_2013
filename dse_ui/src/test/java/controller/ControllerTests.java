@@ -13,11 +13,11 @@ import dse_domain.domain.Hospital;
 import dse_domain.domain.OpSlot;
 
 /**
- * Tests for the PublicController
+ * Tests for the controller classes.
  * 
  * @author Taylor
  */
-public class PublicControllerTest {
+public class ControllerTests {
 
 	/**
 	 * Name of test hospital 1
@@ -49,10 +49,10 @@ public class PublicControllerTest {
 		DateTime futureDate = new DateTime().plusYears(100);
 
 		// OpSlots
-		OpSlot slot1 = new OpSlot(hospital1, 60, OpSlot.Type.AUGEN, pastDate.toDate());
-		OpSlot slot2 = new OpSlot(hospital2, 60, OpSlot.Type.AUGEN, pastDate.toDate());
-		OpSlot slot3 = new OpSlot(hospital1, 60, OpSlot.Type.AUGEN, futureDate.toDate());
-		OpSlot slot4 = new OpSlot(hospital2, 60, OpSlot.Type.AUGEN, futureDate.toDate());
+		OpSlot slot1 = new OpSlot(hospital1, 60, OpSlot.Type.AUGENHEILKUNDE, pastDate.toDate());
+		OpSlot slot2 = new OpSlot(hospital2, 60, OpSlot.Type.AUGENHEILKUNDE, pastDate.toDate());
+		OpSlot slot3 = new OpSlot(hospital1, 60, OpSlot.Type.AUGENHEILKUNDE, futureDate.toDate());
+		OpSlot slot4 = new OpSlot(hospital2, 60, OpSlot.Type.AUGENHEILKUNDE, futureDate.toDate());
 
 		slots.add(slot1);
 		slots.add(slot2);
@@ -63,14 +63,14 @@ public class PublicControllerTest {
 	@Test
 	public void testOpSlotEmptyFilter() {
 		assertEquals("Check size of original list of OP slots", 4, slots.size());
-		List<OpSlot> filteredList = PublicController.filterOpSlotList(slots, "", "", "", "unset", "", "", "");
+		List<OpSlot> filteredList = SlotController.filterOpSlotList(slots, "", "", "", "unset", "", "", "");
 		assertEquals("Filter function should not remove any slots", slots.size(), filteredList.size());
 	}
 
 	@Test
 	public void testOpSlotHospitalFilter() {
 		assertEquals("Check size of original list of OP slots", 4, slots.size());
-		List<OpSlot> filteredList = PublicController
+		List<OpSlot> filteredList = SlotController
 				.filterOpSlotList(slots, "", "", "", "unset", hospitalName2, "", "");
 		assertEquals("Filter function should remove 2 slots", 2, filteredList.size());
 	}
@@ -78,7 +78,7 @@ public class PublicControllerTest {
 	@Test
 	public void testRemovePastOpSlots() {
 		assertEquals("Check size of original list of OP slots", 4, slots.size());
-		List<OpSlot> filteredList = PublicController.removePastSlots(slots);
+		List<OpSlot> filteredList = SlotController.removePastSlots(slots);
 		assertEquals("Filter function should remove 2 slots", 2, filteredList.size());
 	}
 

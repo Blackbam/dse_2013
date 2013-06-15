@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -23,12 +24,11 @@ import dse_domain.domain.Patient;
 import dse_domain.domain.Doctor;
 
 /**
- * 
+ * Handles requests for the doctor page.
  */
 @Controller
 @RequestMapping(value = "/doctor")
-public class DoctorController {
-	static final Logger logger = Logger.getLogger(DoctorController.class);
+public class DoctorController extends SlotController {
 
 	@Autowired
 	AmqpTemplate amqpTemplate;
@@ -36,26 +36,19 @@ public class DoctorController {
 	@Autowired
 	IUserInterfaceDAO uiDAO;
 
-	// Requires DOCTOR id
+	static final Logger logger = Logger.getLogger(DoctorController.class);
+
+	/**
+	 * Retrieve a doctor with a given id.
+	 * 
+	 * @param model
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String patient(Model model, @RequestParam("id") String id) {
+	public String doctor(Model model, @RequestParam("id") String id) {
 
 		Doctor doctor = uiDAO.findDoctor(id);
-
-		/* For Debugging: Test Reservations */
-
-		/*
-		 * Patient p = mongoTemplate.findOne(new Query(),Patient.class); OpSlot op_slot = mongoTemplate.findOne(new
-		 * Query(),OpSlot.class);
-		 * 
-		 * 
-		 * 
-		 * if(doctor!=null && p!=null && op_slot!=null && op_slot.getReservation()==null) { Reservation res = new
-		 * Reservation(doctor,p); mongoTemplate.save(res); op_slot.setReservation(res); mongoTemplate.save(op_slot);
-		 * logger.debug("Test reservation created"); } else { logger.debug("Test reservation error"); }
-		 */
-		// End Debug
-
 		List<OpSlot> opSlots = uiDAO.findAllReservedOpSlotsWithDoctor(doctor);
 
 		for (OpSlot curr : opSlots) {
@@ -72,8 +65,39 @@ public class DoctorController {
 		return "doctor";
 	}
 
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public String doctorFiltered(Model model, @RequestParam("id") String id, @RequestParam("date") String date,
+			@RequestParam("from") String from, @RequestParam("to") String to, @RequestParam("status") String status,
+			@RequestParam("hospital") String hospital, @RequestParam("type") String type) {
+
+		Doctor doctor = uiDAO.findDoctor(id);
+		List<OpSlot> opSlots = uiDAO.findAllReservedOpSlotsWithDoctor(doctor);
+
+		// Remove past slots before filtering
+		opSlots = removePastSlots(opSlots);
+
+		// Perform filtering
+		opSlots = filterOpSlotList(opSlots, date, from, to, status, hospital, "", type);
+
+		// Sort the list of OpSlots according to their dates
+		Collections.sort(opSlots, new OpSlotComparator());
+
+		for (OpSlot curr : opSlots) {
+			logger.debug("found op slot " + curr.getDateString() + " with reservation: "
+					+ curr.getReservation().getDoctor() + "/" + curr.getReservation().getPatient());
+		}
+
+		model.addAttribute("doctorID", id);
+		model.addAttribute("op_slots_this_doctor", opSlots);
+		model.addAttribute("sent_reservation", false);
+
+		addStandardOutputs(model, opSlots);
+
+		return "doctor";
+	}
+
 	/**
-	 * sends a reservation request to an allocator, which gets processed asynchronously
+	 * Send a reservation request to an allocator, which is processed asynchronously.
 	 * 
 	 * @param model
 	 * @param dateStart
@@ -110,7 +134,7 @@ public class DoctorController {
 		return "doctor";
 	}
 
-	@RequestMapping(value = "/remove_reservation/", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/remove_reservation/", method = RequestMethod.GET)
 	public String doctorRemoveReservation(Model model, @RequestParam("opslot_id") String opslot_id) {
 
 		// TODO delete reservation (DAO)
@@ -125,10 +149,16 @@ public class DoctorController {
 	}
 
 	private void addStandardOutputs(Model model) {
-
 		List<OpSlot> opSlots = uiDAO.findAllOpSlots();
 		model.addAttribute("opSlots", opSlots);
+		model.addAttribute("slotCount", opSlots.size());
+		List<Patient> patients = uiDAO.findAllPatients();
+		model.addAttribute("patients", patients);
+	}
 
+	private void addStandardOutputs(Model model, List<OpSlot> opSlots) {
+		model.addAttribute("opSlots", opSlots);
+		model.addAttribute("slotCount", opSlots.size());
 		List<Patient> patients = uiDAO.findAllPatients();
 		model.addAttribute("patients", patients);
 	}

@@ -10,8 +10,7 @@
 <link rel="stylesheet" href="/static/css/local.css" type="text/css"></link>
 <link rel="stylesheet" href="/static/css/normalize.css" type="text/css" />
 <link rel="stylesheet" href="/static/css/datepicker.css" type="text/css" />
-<link rel="stylesheet" href="/static/css/jquery.timepicker.css"
-	type="text/css" />
+<link rel="stylesheet" href="/static/css/jquery.timepicker.css" type="text/css" />
 <script type="text/javascript" src="/static/js/sorttable.js"></script>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.9.0.min.js"></script>

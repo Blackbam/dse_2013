@@ -16,8 +16,6 @@ import dse_domain.domain.Doctor;
 import dse_domain.domain.Hospital;
 import dse_domain.domain.Patient;
 
-
-
 /**
  * Handles requests for the public access login.
  * 
@@ -41,7 +39,7 @@ public class LoginController {
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public String login(Model model, @RequestParam("username") String username,
 			@RequestParam("password") String password, @RequestParam("usertype") Usertype usertype) {
-		
+
 		switch (usertype) {
 			case HOSPITAL:
 				// Retrieve the hospital
@@ -70,11 +68,11 @@ public class LoginController {
 					return "redirect:/patient?id=" + patient.getId();
 				}
 				break;
-			}
+		}
 
-		return "redirect:/home";
+		return "redirect:/";
 	}
-	
+
 	public enum Usertype {
 		PATIENT, DOCTOR, HOSPITAL
 	}
