@@ -86,7 +86,7 @@
 		<!-- /header -->
 
 		<div id="notifications">
-			<div id="notifications_header">Notifications</div>
+			<div id="notifications_header">Benachrichtigungen</div>
 			<div id="notifications_content"></div>
 		</div>
 
@@ -100,17 +100,18 @@
 						<thead>
 							<tr>
 								<th>Datum & Uhrzeit</th>
-								<th>Dauer</br>(in Minuten)</th>
+								<th>Dauer</br>(in Minuten)
+								</th>
 								<th>Typ</th>
 								<th>Krankenhaus</th>
 								<th>Patient</th>
-								<th>Reservierung</br>loeschen</th>
+								<th>Reservierung</br>loeschen
+								</th>
 							</tr>
 						</thead>
 						<tfoot>
 							<tr>
-								<td colspan=6 style="text-align: left">${slotCount} 
-									<c:choose>
+								<td colspan=6 style="text-align: left">${slotCount} <c:choose>
 										<c:when test="${slotCount == '1'}">Slot
 										</c:when>
 										<c:otherwise>Slots
@@ -120,58 +121,59 @@
 							</tr>
 						</tfoot>
 
-						<c:forEach items="${op_slots_this_doctor}" var="op_slots_this_doctor">
+						<c:forEach items="${opSlots}"
+							var="opSlots">
 							<tr>
-								<td><fmt:formatDate value="${op_slots_this_doctor.date}"
+								<td><fmt:formatDate value="${opSlots.date}"
 										pattern="dd.MM.yyyy HH:mm" /></td>
-								<td>${op_slots_this_doctor.length}</td>
-								<td>${op_slots_this_doctor.type}</td>
-								<td>${op_slots_this_doctor.hospital.name}</td>
-								<td>${op_slots_this_doctor.reservation.patient.lastName}</td>
+								<td>${opSlots.length}</td>
+								<td>${opSlots.type}</td>
+								<td>${opSlots.hospital.name}</td>
+								<td>${opSlots.reservation.patient.lastName}</td>
 								<td><a
-									href="/doctor/remove_reservation/?opslot_id=${op_slots_this_doctor.id}">X</a></td>
+									href="/doctor/remove_reservation/?opslot_id=${opSlots.id}">X</a></td>
 							</tr>
 						</c:forEach>
 
 					</table>
-					
+
 					<h2>Suche</h2>
 
-				<div id="stylized" class="searchForm">
-					<form id="form" name="form" method="post" action="/doctor">
-						<input type="hidden" name="id" value="${doctorID}"/>
-						<table>
-							<tr>
-								<td><label>Datum<span class="small">Tag</span>
-								</label> <input type="text" class="date" name="date" /></td>
-								<td><label>Krankenhaus<span class="small">Name
-											des Krankenhauses</span>
-								</label> <input type="text" name="hospital" class="genericInput" /></td>
-							</tr>
-							<tr>
-								<td><label>Uhrzeit<span class="small">Zeitraum</span>
-								</label><input type="text" class="time" name="from" style="width: 75px" />
-									<span style="margin-top: 5px; margin-right: 5px;">bis</span><input
-									type="text" class="time" name="to" style="width: 75px" /></td>
-								<td><label>Typ<span class="small">Art der
-											Operation</span>
-								</label> <input type="text" name="type" class="genericInput" /></td>
-							</tr>
-							<tr>
-								<td><label>&nbsp;</label>
-									<button type="submit">suchen</button></td>
-							</tr>
-						</table>
+					<div id="stylized" class="searchForm">
+						<form id="form" name="form" method="post" action="/doctor">
+							<input type="hidden" name="id" value="${doctorID}" />
+							<table>
+								<tr>
+									<td><label>Datum<span class="small">Tag</span>
+									</label> <input type="text" class="date" name="date" /></td>
+									<td><label>Krankenhaus<span class="small">Name
+												des Krankenhauses</span>
+									</label> <input type="text" name="hospital" class="genericInput" /></td>
+								</tr>
+								<tr>
+									<td><label>Uhrzeit<span class="small">Zeitraum</span>
+									</label><input type="text" class="time" name="from" style="width: 75px" />
+										<span style="margin-top: 5px; margin-right: 5px;">bis</span><input
+										type="text" class="time" name="to" style="width: 75px" /></td>
+									<td><label>Typ<span class="small">Art der
+												Operation</span>
+									</label> <input type="text" name="type" class="genericInput" /></td>
+								</tr>
+								<tr>
+									<td><label>&nbsp;</label>
+										<button type="submit">suchen</button></td>
+								</tr>
+							</table>
 
-					</form>
-				</div>
+						</form>
+					</div>
 
 					<h2>Reservierung für einen Patienten vornehmen</h2>
 
 					<c:if test="${sent_reservation == true}">
 						<p class="success">Eine Reservierungsanfrage wurde gesendet
-							für: PatientID: ${sent_dto.patientID}, Frühester Zeitpunkt:
-							${sent_dto.dateStart}", Spätester Zeitpunkt:
+							für: PatientID: ${sent_dto.patientID}, Frühestes Datum:
+							${sent_dto.dateStart}", Spätestes Datum:
 							${sent_dto.dateEnd}", Minimale Dauer in Minuten:
 							${sent_dto.minTime}, Typ: ${sent_dto.type}</p>
 					</c:if>
@@ -183,14 +185,14 @@
 							<table>
 								<tbody>
 									<tr>
-										<td><label>Frühester Zeitpunkt</label> <input type="text"
+										<td><label>Frühestes Datum</label> <input type="text"
 											class="date" name="date_start" /></td>
-										<td><label>Spätester Zeitpunkt</label> <input type="text"
+										<td><label>Spätestes Datum</label> <input type="text"
 											class="date" name="date_end" /></td>
 									</tr>
 									<tr>
 										<td><label>ID des Patienten</label> <input type="text"
-											name="patient_id" /></td>
+											name="patient_id" class="genericInput" /></td>
 										<td><label>benötigter Typ</label> <select name="type">
 												<option value="AUGEN">Augen</option>
 												<option value="KARDIO">Kardio</option>
@@ -223,18 +225,15 @@
 							<thead>
 								<tr>
 									<th>ID</th>
-									<th>Username</th>
 									<th>Vorname</th>
 									<th>Nachname</th>
 									<th>Geo-Koordinaten</th>
-									<th>Patient löschen</th>
 								</tr>
 							</thead>
 
 							<c:forEach items="${patients}" var="patients">
 								<tr>
 									<td>${patients.id}</td>
-									<td>${patients.username}</td>
 									<td>${patients.firstName}</td>
 									<td>${patients.lastName}</td>
 									<td>Lat. ${patients.location[0]}, Long.

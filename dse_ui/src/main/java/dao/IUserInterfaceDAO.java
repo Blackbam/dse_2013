@@ -27,6 +27,14 @@ public interface IUserInterfaceDAO {
 	 * @return
 	 */
 	public List<OpSlot> findAllReservedOpSlotsWithDoctor(Doctor doctor);
+	
+	/**
+	 * Find all OP slots with a reservation with for the specified patient.
+	 * 
+	 * @param patient
+	 * @return
+	 */
+	public List<OpSlot> findAllReservedOpSlotsWithPatient(Patient patient);
 
 	public List<OpSlot> findAllOpSlots();
 

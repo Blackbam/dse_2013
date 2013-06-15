@@ -44,6 +44,12 @@ public class UserInterfaceMongoDAO implements IUserInterfaceDAO {
 		Criteria query = where("reservation").exists(true).and("reservation.doctor").is(doctor);
 		return mongo.find(new Query(query), OpSlot.class);
 	}
+	
+	@Override
+	public List<OpSlot> findAllReservedOpSlotsWithPatient(Patient patient) {
+		Criteria query = where("reservation").exists(true).and("reservation.patient").is(patient);
+		return mongo.find(new Query(query), OpSlot.class);
+	}
 
 	@Override
 	public List<OpSlot> findAllOpSlots() {

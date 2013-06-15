@@ -8,13 +8,11 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dse_domain.domain.OpSlot;
-import dse_domain.domain.Patient;
 
 /**
  * Handles requests for the application home page.
@@ -94,28 +92,6 @@ public class HomeController extends SlotController {
 		model.addAttribute("opSlots", allSlots);
 		model.addAttribute("slotCount", allSlots.size());
 		return "home";
-	}
-
-	/**
-	 * Create a new patient.
-	 * 
-	 * @param firstname
-	 *            the patient's first name
-	 * @param lastname
-	 *            the patient's last name
-	 * @param lat
-	 *            the patient's latitude geo position.
-	 * @param lon
-	 *            the patient's longitude geo position.
-	 * @return
-	 */
-	@RequestMapping(value = "/patient/create/{firstname}/{lastname}/{lat}/{lon}", method = RequestMethod.GET)
-	public String patientCreate(@PathVariable("firstname") String firstname, @PathVariable("lastname") String lastname,
-			@PathVariable("lat") double lat, @PathVariable("lon") double lon) {
-		double[] coordinates = new double[] { lat, lon };
-		Patient patient = new Patient(firstname, lastname, coordinates);
-		mongoTemplate.save(patient);
-		return "redirect:/";
 	}
 
 }

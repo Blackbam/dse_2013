@@ -39,7 +39,7 @@ public class DoctorController extends SlotController {
 	static final Logger logger = Logger.getLogger(DoctorController.class);
 
 	/**
-	 * Retrieve a doctor with a given id.
+	 * Retrieve model information for a doctor with a given id.
 	 * 
 	 * @param model
 	 * @param id
@@ -57,14 +57,27 @@ public class DoctorController extends SlotController {
 		}
 
 		model.addAttribute("doctorID", id);
-		model.addAttribute("op_slots_this_doctor", opSlots);
+		model.addAttribute("opSlots", opSlots);
 		model.addAttribute("sent_reservation", false);
 
-		addStandardOutputs(model);
+		addStandardOutputs(model, opSlots);
 
 		return "doctor";
 	}
 
+	/**
+	 * Retrieve model information for a doctor with a given id and filter the doctor's OP list according to the given
+	 * criteria.
+	 * 
+	 * @param model
+	 * @param id
+	 * @param date
+	 * @param from
+	 * @param to
+	 * @param hospital
+	 * @param type
+	 * @return
+	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public String doctorFiltered(Model model, @RequestParam("id") String id, @RequestParam("date") String date,
 			@RequestParam("from") String from, @RequestParam("to") String to,
@@ -88,7 +101,7 @@ public class DoctorController extends SlotController {
 		}
 
 		model.addAttribute("doctorID", id);
-		model.addAttribute("op_slots_this_doctor", opSlots);
+		model.addAttribute("opSlots", opSlots);
 		model.addAttribute("sent_reservation", false);
 
 		addStandardOutputs(model, opSlots);
@@ -127,9 +140,14 @@ public class DoctorController extends SlotController {
 
 		amqpTemplate.convertAndSend("allocator", res);
 
+		Doctor doctor = uiDAO.findDoctor(doctorID);
+		List<OpSlot> opSlots = uiDAO.findAllReservedOpSlotsWithDoctor(doctor);
+
+		model.addAttribute("doctorID", doctorID);
+		model.addAttribute("opSlots", opSlots);
 		model.addAttribute("sent_reservation", true);
 		model.addAttribute("sent_dto", res);
-		addStandardOutputs(model);
+		addStandardOutputs(model, opSlots);
 
 		return "doctor";
 	}

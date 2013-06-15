@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -9,7 +10,6 @@
 <link rel="stylesheet" href="/static/css/local.css" type="text/css"></link>
 <link rel="stylesheet" href="/static/css/custom.css" type="text/css"></link>
 <link rel="stylesheet" href="/static/css/datepicker.css" type="text/css" />
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script type="text/javascript" src="/static/js/sorttable.js"></script>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
@@ -89,16 +89,12 @@
 			</div>
 		</div>
 		<!-- /header -->
-		
+
 		<div id="notifications">
-			<div id="notifications_header">
-				Notifications
-			</div>
-			<div id="notifications_content">
-				
-			</div>
+			<div id="notifications_header">Benachrichtigungen</div>
+			<div id="notifications_content"></div>
 		</div>
-		
+
 		<div id="container">
 			<div id="content" class="no-side-nav">
 
@@ -126,28 +122,76 @@
 
 				<h2>Operationen</h2>
 
-				<table id='gradient-style' class='sortable'>
-					<tr>
-						<th>Datum</th>
-						<th>von</th>
-						<th>bis</th>
-						<th>Typ</th>
-						<th>Krankenhaus</th>
-						<th>Arzt</th>
-					</tr>
-
-					<c:forEach items="${opSlots}" var="opSlots">
+				<table id='gradient-style' class='sortable' style="width: 100%">
+					<thead>
 						<tr>
-							<td>${opSlots.dateString}</td>
-							<td>${opSlots.startTimeString}</td>
-							<td>${opSlots.endTimeString}</td>
-							<td>${opSlots.typeString}</td>
+							<th>Datum & Uhrzeit</th>
+							<th>Dauer<br/>(in Minuten)
+							</th>
+							<th>Typ</th>
+							<th>Krankenhaus</th>
+							<th>Arzt</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<td colspan=6 style="text-align: left">${slotCount} <c:choose>
+									<c:when test="${slotCount == '1'}">Slot
+										</c:when>
+									<c:otherwise>Slots
+										</c:otherwise>
+								</c:choose> gefunden
+							</td>
+						</tr>
+					</tfoot>
+
+					<c:forEach items="${opSlots}"
+						var="opSlots">
+						<tr>
+							<td><fmt:formatDate value="${opSlots.date}" pattern="dd.MM.yyyy HH:mm" /></td>
+							<td>${opSlots.length}</td>
+							<td>${opSlots.type}</td>
 							<td>${opSlots.hospital.name}</td>
-							<td>${opSlots.reservation.doctor.name}</td>
+							<td>${opSlots.reservation.doctor.lastName}</td>
 						</tr>
 					</c:forEach>
 
 				</table>
+
+				<h2>Suche</h2>
+
+				<div id="stylized" class="searchForm">
+					<form id="form" name="form" method="post" action="/patient">
+						<input type="hidden" name="id" value="${patientID}" />
+						<table>
+							<tr>
+								<td><label>Datum<span class="small">Tag</span>
+								</label> <input type="text" class="date" name="date" /></td>
+								<td><label>Krankenhaus<span class="small">Name
+											des Krankenhauses</span>
+								</label> <input type="text" name="hospital" class="genericInput" /></td>
+							</tr>
+							<tr>
+								<td><label>Uhrzeit<span class="small">Zeitraum</span>
+								</label><input type="text" class="time" name="from" style="width: 75px" />
+									<span style="margin-top: 5px; margin-right: 5px;">bis</span><input
+									type="text" class="time" name="to" style="width: 75px" /></td>
+								<td><label>Arzt<span class="small">Name des
+											Arztes</span>
+								</label> <input type="text" name="doctor" class="genericInput" /></td>
+							</tr>
+							<tr>
+								<td><label>Typ<span class="small">Art der
+											Operation</span>
+								</label> <input type="text" name="type" class="genericInput" /></td>
+							</tr>
+							<tr>
+								<td><label>&nbsp;</label>
+									<button type="submit">suchen</button></td>
+							</tr>
+						</table>
+					</form>
+				</div>
 
 			</div>
 		</div>
