@@ -1,52 +1,182 @@
 .success {
-	display:block;
-	background-color:#ccffcc;
-	padding:5px 10px;
-	border:1px solid #0f0;
+	display: block;
+	background-color: #ccffcc;
+	padding: 5px 10px;
+	border: 1px solid #0f0;
 }
 
 .error {
-	display:block;
-	background-color:#ffcccc;
-	padding:5px 10px;
-	border:1px solid #f00;
+	display: block;
+	background-color: #ffcccc;
+	padding: 5px 10px;
+	border: 1px solid #f00;
 }
 
 #notifications {
-	position:fixed;
-	bottom:0;
-	right:50px;
-	height:250px;
-	width:400px;
-	background-color:#EAEAEA;
-	border:1px solid #2a2;
-	overflow-y:scroll;
+	position: fixed;
+	bottom: 0;
+	right: 50px;
+	height: 250px;
+	width: 400px;
+	background-color: #EAEAEA;
+	border: 1px solid #2a2;
+	overflow-y: scroll;
 }
 
 #notifications_header {
-	height:27px;
-	background-color:#2a2;
-	color:#fff;
-	font-size:16px;
-	padding-top:8px;
-	font-weight:bold;
-	padding-left:10px;
+	height: 27px;
+	background-color: #2a2;
+	color: #fff;
+	font-size: 16px;
+	padding-top: 8px;
+	font-weight: bold;
+	padding-left: 10px;
 }
 
 .notification_element {
-	height:20px;
-	padding:0 10px;
-	font-weight:bold;
-	color:#000;
-	background-color:#eee;
-	cursor:pointer;
+	height: 20px;
+	padding: 0 10px;
+	font-weight: bold;
+	color: #000;
+	background-color: #eee;
+	cursor: pointer;
 }
 
 .notel_mas {
-	display:none;
+	display: none;
 }
 
 .notification_element:nth-child(2n) {
-	background-color:#fff;
+	background-color: #fff;
 }
 
+/*
+ * jQuery-UI
+ */
+.ui-dialog {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: .2em;
+	outline: 0;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	padding: .4em 1em;
+	position: relative;
+}
+
+.ui-widget {
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 1.1em;
+}
+
+.ui-corner-all {
+	border-top-left-radius: 4px;
+}
+
+.ui-front {
+	z-index: 100;
+}
+
+.ui-draggable .ui-dialog-titlebar {
+	cursor: move;
+}
+
+.ui-resizable {
+	position: relative;
+}
+
+.ui-helper-clearfix:before,.ui-helper-clearfix:after {
+	content: "";
+	display: table;
+	border-collapse: collapse;
+}
+
+.ui-helper-clearfix:after {
+	clear: both;
+}
+
+.ui-helper-clearfix {
+	min-height: 0; /* support: IE7 */
+}
+
+.ui-dialog .ui-dialog-title {
+	float: left;
+	margin: .1em 0;
+	white-space: nowrap;
+	width: 90%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.ui-button {
+	display: inline-block;
+	position: relative;
+	padding: 0;
+	line-height: normal;
+	margin-right: .1em;
+	cursor: pointer;
+	vertical-align: middle;
+	text-align: center;
+	overflow: visible; /* removes extra width in IE */
+}
+
+.ui-button,.ui-button:link,.ui-button:visited,.ui-button:hover,.ui-button:active
+	{
+	text-decoration: none;
+}
+
+/* button text element */
+.ui-button .ui-button-text {
+	display: block;
+	line-height: normal;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+	position: absolute;
+	right: .3em;
+	top: 50%;
+	width: 21px;
+	margin: -10px 0 0 0;
+	padding: 1px;
+	height: 20px;
+}
+
+.ui-button-icon-only {
+	width: 2.2em;
+	padding: .4em;
+	text-indent: -9999999px;
+	position: absolute;
+	top: 50%;
+	margin-top: -8px;
+	margin-left: -8px;
+}
+
+.ui-button-text-icon-primary .ui-button-icon-primary,.ui-button-text-icons .ui-button-icon-primary,.ui-button-icons-only .ui-button-icon-primary
+	{
+	left: .5em;
+}
+
+.ui-icon-closethick {
+	background-position: -96px -128px;
+}
+
+.ui-state-hover .ui-icon,.ui-state-focus .ui-icon {
+	background-image: url(../images/ui-icons_454545_256x240.png);
+}
+
+.ui-icon,.ui-widget-content .ui-icon {
+	background-image: url(../images/ui-icons_222222_256x240.png);
+}
+
+.ui-state-default .ui-icon {
+	background-image: url(../images/ui-icons_888888_256x240.png);
+}
+
+.ui-widget-content {
+	border: 1px solid #aaaaaa;
+	background: #ffffff url(../images/ui-bg_flat_75_ffffff_40x100.png) 50%
+		50% repeat-x;
+	color: #222222;
+}
