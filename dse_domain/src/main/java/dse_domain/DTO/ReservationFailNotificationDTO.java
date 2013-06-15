@@ -2,10 +2,15 @@ package dse_domain.DTO;
 
 import java.io.Serializable;
 
+/**
+ * Notification that a reservation failed.
+ */
 public class ReservationFailNotificationDTO implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private ReservationDTO reservationRequest;
+
 	private String failureReason;
 
 	public ReservationFailNotificationDTO(ReservationDTO request, String failureReason) {

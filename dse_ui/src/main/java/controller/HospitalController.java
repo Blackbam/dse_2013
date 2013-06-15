@@ -41,11 +41,8 @@ public class HospitalController {
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String hospital(Model model, @RequestParam("id") String id) {
-
 		Hospital hospital = mongoTemplate.findOne(new Query(where("id").is(id)), Hospital.class);
-
 		addStandardOutputs(model, hospital);
-
 		return "hospital";
 	}
 

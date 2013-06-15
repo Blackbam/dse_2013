@@ -2,10 +2,15 @@ package dse_domain.DTO;
 
 import java.io.Serializable;
 
+/**
+ * Notification that a reservation succeeded.
+ */
 public class ReservationSuccessNotificationDTO implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	private ReservationDTO reservationRequest;
+
 	private OpSlotDTO assignedOpSlot;
 
 	public ReservationSuccessNotificationDTO(ReservationDTO reservationRequest, OpSlotDTO assignedOpSlot) {

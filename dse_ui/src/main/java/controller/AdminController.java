@@ -37,7 +37,7 @@ public class AdminController {
 	}
 
 	/**
-	 * If parameters are valid, a new hospital will be created.
+	 * Create a new hospital.
 	 * 
 	 * @param model
 	 * @param name
@@ -72,7 +72,7 @@ public class AdminController {
 	}
 
 	/**
-	 * Delete a give hospital.
+	 * Delete a given hospital.
 	 * 
 	 * @param model
 	 * @param idToDelete

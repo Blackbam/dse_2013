@@ -22,6 +22,9 @@ import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 import dse_domain.domain.Doctor;
 
+/**
+ * 
+ */
 @Controller
 @RequestMapping(value = "/doctor")
 public class DoctorController {
@@ -42,16 +45,14 @@ public class DoctorController {
 		/* For Debugging: Test Reservations */
 
 		/*
-		 * Patient p = mongoTemplate.findOne(new Query(),Patient.class); OpSlot op_slot =
-		 * mongoTemplate.findOne(new Query(),OpSlot.class);
+		 * Patient p = mongoTemplate.findOne(new Query(),Patient.class); OpSlot op_slot = mongoTemplate.findOne(new
+		 * Query(),OpSlot.class);
 		 * 
 		 * 
 		 * 
-		 * if(doctor!=null && p!=null && op_slot!=null && op_slot.getReservation()==null) {
-		 * Reservation res = new Reservation(doctor,p); mongoTemplate.save(res);
-		 * op_slot.setReservation(res); mongoTemplate.save(op_slot);
-		 * logger.debug("Test reservation created"); } else {
-		 * logger.debug("Test reservation error"); }
+		 * if(doctor!=null && p!=null && op_slot!=null && op_slot.getReservation()==null) { Reservation res = new
+		 * Reservation(doctor,p); mongoTemplate.save(res); op_slot.setReservation(res); mongoTemplate.save(op_slot);
+		 * logger.debug("Test reservation created"); } else { logger.debug("Test reservation error"); }
 		 */
 		// End Debug
 
@@ -113,7 +114,7 @@ public class DoctorController {
 	public String doctorRemoveReservation(Model model, @RequestParam("opslot_id") String opslot_id) {
 
 		// TODO delete reservation (DAO)
-		//uiDAO.removeReservationFromOpSlot(opslot_id); // not tested yet TODO
+		// uiDAO.removeReservationFromOpSlot(opslot_id); // not tested yet TODO
 
 		ReservationCancelNotificationDTO cancel = new ReservationCancelNotificationDTO(opslot_id);
 		amqpTemplate.convertAndSend(cancel);

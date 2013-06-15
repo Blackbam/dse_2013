@@ -6,19 +6,29 @@ import java.util.Date;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.OpSlot.Type;
 
+/**
+ * Serializable reservation model.
+ */
 public class ReservationDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private String patientID;
+
 	private String doctorID;
+
 	private Date dateStart;
+
 	private Date dateEnd;
+
 	private OpSlot.Type type;
+
 	private int minTime;
+
 	private int maxDistance;
 
-	public ReservationDTO(String patientID, String doctorID, Date dateStart, Date dateEnd, Type type, int minTime, int maxDistance) {
+	public ReservationDTO(String patientID, String doctorID, Date dateStart, Date dateEnd, Type type, int minTime,
+			int maxDistance) {
 		this.patientID = patientID;
 		this.doctorID = doctorID;
 		this.dateStart = dateStart;
@@ -91,6 +101,4 @@ public class ReservationDTO implements Serializable {
 				+ "]";
 	}
 
-
-	
 }

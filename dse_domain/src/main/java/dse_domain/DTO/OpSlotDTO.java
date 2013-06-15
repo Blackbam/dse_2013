@@ -2,11 +2,19 @@ package dse_domain.DTO;
 
 import java.io.Serializable;
 
+/**
+ * Serializable operation slot model.
+ */
 public class OpSlotDTO implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+
 	private String hospitalID;
+
 	private String date;
+
 	private String startTime;
+
 	private String endTime;
 
 	public OpSlotDTO(String hospitalID, String date, String startTime, String endTime) {

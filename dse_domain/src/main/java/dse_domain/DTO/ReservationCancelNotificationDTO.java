@@ -2,13 +2,16 @@ package dse_domain.DTO;
 
 import java.io.Serializable;
 
+/**
+ * Notification to cancel a reservation.
+ */
 public class ReservationCancelNotificationDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private String opSlotID;
 
-	public ReservationCancelNotificationDTO(String opSlotID ) {
+	public ReservationCancelNotificationDTO(String opSlotID) {
 		super();
 		this.opSlotID = opSlotID;
 	}
