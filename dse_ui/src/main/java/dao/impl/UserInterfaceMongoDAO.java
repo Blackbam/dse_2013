@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
@@ -44,7 +45,7 @@ public class UserInterfaceMongoDAO implements IUserInterfaceDAO {
 		Criteria query = where("reservation").exists(true).and("reservation.doctor").is(doctor);
 		return mongo.find(new Query(query), OpSlot.class);
 	}
-	
+
 	@Override
 	public List<OpSlot> findAllReservedOpSlotsWithPatient(Patient patient) {
 		Criteria query = where("reservation").exists(true).and("reservation.patient").is(patient);
@@ -150,12 +151,11 @@ public class UserInterfaceMongoDAO implements IUserInterfaceDAO {
 		}
 	}
 
-	// Notifications
 	@Override
 	public List<Notification> findNotificationsForPerson(Person person) {
 		Query query = new Query(where("user.id").is(person.getId()));
-		// query.sort().on("date", Order.DESCENDING); //<-- deprecated
-		query.with(new Sort(Sort.Direction.DESC));
+		query.sort().on("date", Order.DESCENDING);
+		// TODO query.with(new Sort(Sort.Direction.DESC));
 		return mongo.find(query, Notification.class);
 	}
 

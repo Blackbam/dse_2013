@@ -24,7 +24,7 @@ import dse_domain.domain.Hospital;
 import dse_domain.domain.OpSlot;
 
 /**
- * Handles requests for the hospital view
+ * Handles requests for the hospital view.
  * 
  * @author Blackbam
  */

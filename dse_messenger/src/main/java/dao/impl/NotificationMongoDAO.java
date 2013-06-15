@@ -12,11 +12,15 @@ import dse_domain.domain.Notification;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 
+/**
+ * MongoDB implementation of the INotificationDAO interface for data access operations for notifications.
+ */
 public class NotificationMongoDAO implements INotificationDAO {
+
 	static final Logger logger = Logger.getLogger(NotificationMongoDAO.class);
 
 	MongoOperations mongo;
-	
+
 	public NotificationMongoDAO(MongoOperations mongo) {
 		this.mongo = mongo;
 	}
@@ -24,7 +28,6 @@ public class NotificationMongoDAO implements INotificationDAO {
 	@Override
 	public void insertNotification(Notification notification) {
 		mongo.insert(notification);
-
 		logger.info("Notification stored in database: " + notification);
 	}
 

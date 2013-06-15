@@ -25,7 +25,7 @@
 
 				<h1>DSE Allocator Application</h1>
 
-				<h2>Allocator is running and healthy, check logs for debugging.</h2>
+				<h2>Allocator is running. Check logs for debugging.</h2>
 			</div>
 		</div>
 	</div>

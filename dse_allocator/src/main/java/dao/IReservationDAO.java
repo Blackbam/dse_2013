@@ -9,10 +9,13 @@ import dse_domain.domain.OpSlot;
 import dse_domain.domain.OpSlot.Type;
 import dse_domain.domain.Patient;
 
+/**
+ * Interface defining data access operations relating to performing reservations.
+ */
 public interface IReservationDAO {
 
 	/**
-	 * updates opSlot - insert if opSlot isn't in database yet
+	 * Updates a given operation slot or inserts it if it does not yet exist.
 	 * 
 	 * @param opSlot
 	 */
@@ -21,11 +24,10 @@ public interface IReservationDAO {
 	public Patient findPatient(String patientID);
 
 	public Doctor findDoctor(String doctorID);
-	
 
 	/**
-	 * finds free op_slot which are closest to patient (to maxDistance away) and which are in the
-	 * specified date range, and have the minimal length, and have the correct op type
+	 * Finds free operation slots that are closest to a patient (up to maxDistance away) and that are in the specified
+	 * date range, and have the minimal length, and have the correct op type.
 	 * 
 	 * @param maxDistance
 	 * @param patient
@@ -39,21 +41,9 @@ public interface IReservationDAO {
 	public OpSlot findFreeOPSlotInNearHospital(int maxDistance, Patient patient, Date startDate, Date endDate,
 			int minTime, Type type);
 
+	public List<OpSlot> findFreeOPSlotsInHospitalSortedList(Date startDate, Date endDate, int minTime,
+			Hospital hospital, Type type);
 
-	/**
-	 * 
-	 * @param startDate
-	 * @param endDate
-	 * @param minTime
-	 * @param hospital
-	 * @param type
-	 * @return
-	 */
-	public List<OpSlot> findFreeOPSlotsInHospitalSortedList(Date startDate, Date endDate, int minTime, Hospital hospital, Type type);
-
-	
-	
-	
 	public void save(Doctor doctor);
 
 	public void save(Patient patient);

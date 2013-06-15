@@ -16,7 +16,7 @@ import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 
 /**
- * Handles requests for the patient view
+ * Handles requests for the patient view.
  * 
  * @author Taylor
  */

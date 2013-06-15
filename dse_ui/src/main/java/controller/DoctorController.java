@@ -24,7 +24,7 @@ import dse_domain.domain.Patient;
 import dse_domain.domain.Doctor;
 
 /**
- * Handles requests for the doctor page.
+ * Handles requests for the doctor view.
  */
 @Controller
 @RequestMapping(value = "/doctor")

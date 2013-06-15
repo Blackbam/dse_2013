@@ -27,7 +27,11 @@ import dse_domain.domain.OpSlot;
 import dse_domain.domain.OpSlot.Type;
 import dse_domain.domain.Patient;
 
+/**
+ * MongoDB implementation of the IReservationDAO interface.
+ */
 public class ReservationMongoDAO implements IReservationDAO {
+
 	static final Logger logger = Logger.getLogger(ReservationMongoDAO.class);
 
 	private MongoOperations mongo;

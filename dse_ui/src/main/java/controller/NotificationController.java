@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import dao.IUserInterfaceDAO;
 import dse_domain.domain.Person;
 
+/**
+ * Handles requests for the notifcation view.
+ */
 @Controller
 @RequestMapping(value = "/notification/")
 public class NotificationController {

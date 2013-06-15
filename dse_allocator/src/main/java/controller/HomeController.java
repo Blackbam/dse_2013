@@ -12,7 +12,6 @@ public class HomeController {
 
 	@RequestMapping(value = "")
 	public String home(Model model) {
-		// model.addAttribute(new Message());
 		return "WEB-INF/views/home.jsp";
 	}
 

@@ -8,6 +8,11 @@ import org.joda.time.DateTime;
 
 import dse_domain.domain.OpSlot;
 
+/**
+ * Abstract controller providing generalized methods for filtering and sorting operation slot lists.
+ * 
+ * @author Taylor
+ */
 public abstract class SlotController {
 
 	/**

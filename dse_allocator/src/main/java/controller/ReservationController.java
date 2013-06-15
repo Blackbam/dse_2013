@@ -19,10 +19,11 @@ import dse_domain.domain.Patient;
 import dse_domain.domain.Reservation;
 
 /**
- * Controller component which handles incoming reservation requests
+ * Controller component that handles incoming reservation requests.
  */
 @Controller
 public class ReservationController {
+
 	static final Logger logger = Logger.getLogger(ReservationController.class);
 
 	private final String messengerQueue = "messenger";
@@ -33,14 +34,20 @@ public class ReservationController {
 	@Autowired
 	IReservationDAO reservationDAO;
 
+	/**
+	 * Checks reservation request and make reservation, if possible.
+	 * 
+	 * @param message
+	 */
 	public void handleReservationRequest(Object message) {
+
 		logger.info("Received Message: " + message);
 
 		try {
 
 			if (message instanceof ReservationDTO) {
 
-				logger.info("Message is instance of ReservationDTO, processing..");
+				logger.info("Message is instance of ReservationDTO, processing...");
 
 				ReservationDTO receivedDTO = (ReservationDTO) message;
 
@@ -55,7 +62,7 @@ public class ReservationController {
 				Patient patient = reservationDAO.findPatient(patientID);
 				Doctor doctor = reservationDAO.findDoctor(doctorID);
 
-				// main op_slot query - result is a free and near op_slot
+				// main op_slot query - result is an available op_slot nearest the patient
 				OpSlot foundOpSlot = reservationDAO.findFreeOPSlotInNearHospital(maxDistance, patient, startDate,
 						endDate, minTime, type);
 
@@ -64,7 +71,7 @@ public class ReservationController {
 							+ " / " + foundOpSlot.getStartTimeString() + "-" + foundOpSlot.getEndTimeString()
 							+ " in hospital: " + foundOpSlot.getHospital().getName());
 
-					// update the found op_slot in database and send notification request
+					// update the found op_slot in the database and send notification request
 					Reservation reservation = new Reservation(doctor, patient);
 					foundOpSlot.setReservation(reservation);
 
@@ -74,16 +81,14 @@ public class ReservationController {
 							foundOpSlot.getStartTimeString(), foundOpSlot.getEndTimeString());
 
 					sendSuccessNotification(receivedDTO, opSlotDTO);
-
 				} else {
-					logger.info("Reservation not possible.. no free OpSlots found");
-
+					logger.info("Reservation not possible...no free OpSlots were found");
 					String failureReason = "Keine freien Op-Slots wurden gefunden.";
 					sendFailNotification(receivedDTO, failureReason);
 				}
 
 			} else {
-				logger.info("Received unexpected message type");
+				logger.info("Received unexpected message type.");
 			}
 		} catch (Exception e) {
 			// catch exceptions to avoid loops in case something unexpected happened
@@ -93,8 +98,8 @@ public class ReservationController {
 	}
 
 	/**
-	 * send failure notification request to messenger, with specified failure reason (notification
-	 * is then built in messenger with the sent information)
+	 * Sends failure notification request to messenger, with specified failure reason (the notification is then built in
+	 * messenger with the information sent).
 	 * 
 	 * @param receivedDTO
 	 * @param failureReason
@@ -108,8 +113,8 @@ public class ReservationController {
 	}
 
 	/**
-	 * send success notification request to messenger (notification is then built in messenger with
-	 * the sent information)
+	 * Sends success notification request to messenger (the notification is then built in messenger with the information
+	 * sent)
 	 * 
 	 * @param receivedDTO
 	 * @param opSlotDTO

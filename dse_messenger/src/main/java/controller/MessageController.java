@@ -26,11 +26,12 @@ import dse_domain.domain.Patient;
 import dse_domain.domain.User;
 
 /**
- * controller component which handles incoming notification requests and a simple debug list - view
- * to see notifications in the database
+ * Controller component that handles incoming notification requests and a simple debug list - view to see notifications
+ * in the database
  */
 @Controller
 public class MessageController {
+
 	static final Logger logger = Logger.getLogger(MessageController.class);
 
 	@Autowired
@@ -40,13 +41,11 @@ public class MessageController {
 	private RabbitTemplate rabbitTemplate;
 
 	/**
-	 * listener method which takes notification requests from the messenger queue and processes
-	 * them. depending on the instance of the incoming DTOs takes the information and builds
-	 * notifications out of it, which get inserted in the database
+	 * Listener method that takes notification requests from the messenger queue and processes them. Depending on the
+	 * instance of the incoming DTOs, it takes the information and builds notifications out of it, which get inserted
+	 * into the database.
 	 * 
 	 * @param message
-	 *            - expected: ReservationSuccessNotificationDTO, ReservationFailNotificationDTO,
-	 *            ReservationCancelNotificationDTO, NotificationDTO (generic notification DTO)
 	 */
 	public void handleNotificationRequest(Object message) {
 
@@ -117,11 +116,10 @@ public class MessageController {
 			// catch exceptions to avoid loops in case something unexpected happened
 			logger.error("Exception in message controller: " + e.getMessage());
 		}
-
 	}
 
 	/**
-	 * create and insert (into db) notification for cancellation (from ui)
+	 * Create and insert notification into the database for cancellation received from the UI component.
 	 * 
 	 * @param slot
 	 * @param patient
@@ -145,7 +143,7 @@ public class MessageController {
 	}
 
 	/**
-	 * create and insert (into db) notification for success notification (from allocator)
+	 * Create and insert notification into the database for success notification from the allocator component.
 	 * 
 	 * @param reservationRequestDTO
 	 * @param opSlotDTO
@@ -172,7 +170,7 @@ public class MessageController {
 	}
 
 	/**
-	 * create and insert (into db) notification for failure notification (from allocator)
+	 * Create and insert notification into the database for failure notification from the allocator component.
 	 * 
 	 * @param dto
 	 * @param reservationRequestDTO
@@ -195,8 +193,8 @@ public class MessageController {
 	}
 
 	/**
-	 * Simply selects the home view to render by returning its name. which is a simple list with the
-	 * notifications in the database (for debugging)
+	 * Selects the home view to render by returning its name. The view contains a simple list with the notifications in
+	 * the database (for debugging).
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
