@@ -72,7 +72,7 @@ public class LoginController {
 				break;
 			}
 
-		return "redirect:/public";
+		return "redirect:/home";
 	}
 	
 	public enum Usertype {
