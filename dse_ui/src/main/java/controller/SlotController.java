@@ -51,7 +51,7 @@ public abstract class SlotController {
 	 * @return
 	 */
 	public static List<OpSlot> filterOpSlotList(List<OpSlot> slots, String date, String from, String to, String status,
-			String hospital, String doctor, String type) {
+			String hospital, String doctor, String type, String patient) {
 
 		// Filter list according to received criteria
 		List<OpSlot> toRemove = new ArrayList<OpSlot>();
@@ -121,6 +121,21 @@ public abstract class SlotController {
 				fullname = firstName + " " + lastName;
 			}
 			if (doctor != null && !doctor.isEmpty() && !fullname.contains(doctor.toUpperCase())) {
+				toRemove.add(slot);
+				continue;
+			}
+
+			// Patient
+			fullname = "";
+			if (slot.getReservation() != null && slot.getReservation().getPatient() != null) {
+				String firstName = slot.getReservation().getPatient().getFirstName().toUpperCase();
+				String lastName = slot.getReservation().getPatient().getLastName().toUpperCase();
+				fullname = firstName + " " + lastName;
+			}
+			if (patient != null && !patient.isEmpty() && !fullname.contains(patient.toUpperCase())) {
+				toRemove.add(slot);
+				continue;
+			} else if (patient != null && slot.getReservation() == null) {
 				toRemove.add(slot);
 				continue;
 			}

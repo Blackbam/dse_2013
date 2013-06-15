@@ -4,6 +4,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 import dse_domain.domain.Hospital;
 import dse_domain.domain.OpSlot;
 
@@ -30,7 +30,7 @@ import dse_domain.domain.OpSlot;
  */
 @Controller
 @RequestMapping(value = "/hospital")
-public class HospitalController {
+public class HospitalController extends SlotController {
 	static final Logger logger = Logger.getLogger(HospitalController.class);
 
 	@Autowired(required = false)
@@ -43,6 +43,32 @@ public class HospitalController {
 	public String hospital(Model model, @RequestParam("id") String id) {
 		Hospital hospital = mongoTemplate.findOne(new Query(where("id").is(id)), Hospital.class);
 		addStandardOutputs(model, hospital);
+		return "hospital";
+	}
+
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public String filteredHospital(Model model, @RequestParam("id") String id, @RequestParam("date") String date,
+			@RequestParam("from") String from, @RequestParam("to") String to, @RequestParam("status") String status,
+			@RequestParam("patient") String patient, @RequestParam("doctor") String doctor,
+			@RequestParam("type") String type) {
+
+		Hospital hospital = mongoTemplate.findOne(new Query(where("id").is(id)), Hospital.class);
+
+		// Retrieve all slots
+		List<OpSlot> allSlots = mongoTemplate.findAll(OpSlot.class);
+
+		// Remove past slots before filtering
+		allSlots = removePastSlots(allSlots);
+
+		// Perform filtering
+		allSlots = filterOpSlotList(allSlots, date, from, to, status, hospital.getName(), doctor, type, patient);
+
+		// Sort the list of OpSlots according to their dates
+		Collections.sort(allSlots, new OpSlotComparator());
+
+		// Set models
+		model.addAttribute("opSlots", allSlots);
+		addStandardOutputs(model, hospital, allSlots);
 		return "hospital";
 	}
 
@@ -66,11 +92,10 @@ public class HospitalController {
 
 				op_slot = mongoTemplate.findById(op_slot.getId(), OpSlot.class);
 
-				
 				if (op_slot != null) {
 					model.addAttribute("new_opslot", op_slot);
 					model.addAttribute("add_opslot", true);
-					
+
 					logger.info("Created op_slot: " + op_slot.getId() + "(" + op_slot.getDateString() + ")");
 				} else {
 					model.addAttribute("add_opslot", false);
@@ -90,7 +115,11 @@ public class HospitalController {
 	}
 
 	/**
-	 * Delete some op_slot
+	 * Delete a given OP slot.
+	 * 
+	 * @param model
+	 * @param id_to_delete
+	 * @return
 	 */
 	@RequestMapping(value = "/op_slot/delete/", method = RequestMethod.GET)
 	public String deleteHospital(Model model, @RequestParam("id") String id_to_delete) {
@@ -114,19 +143,23 @@ public class HospitalController {
 		}
 
 		return "hospital";
-
 	}
 
 	private void addStandardOutputs(Model model, Hospital hospital) {
-		// hospital finden
 		Criteria criteria = Criteria.where("hospital").is(hospital);
-
 		Query query = new Query(criteria);
+		List<OpSlot> opSlots = mongoTemplate.find(query, OpSlot.class);
 
-		List<OpSlot> opslots = mongoTemplate.find(query, OpSlot.class);
-
+		model.addAttribute("hospitalId", hospital.getId());
 		model.addAttribute("hospital", hospital);
-		model.addAttribute("opslots", opslots);
+		model.addAttribute("opSlots", opSlots);
+		model.addAttribute("slotCount", opSlots.size());
+	}
+
+	private void addStandardOutputs(Model model, Hospital hospital, List<OpSlot> opSlots) {
+		model.addAttribute("hospitalId", hospital.getId());
+		model.addAttribute("hospital", hospital);
+		model.addAttribute("slotCount", opSlots.size());
 	}
 
 }

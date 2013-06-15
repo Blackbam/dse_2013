@@ -83,7 +83,7 @@ public class HomeController extends SlotController {
 		allSlots = removePastSlots(allSlots);
 
 		// Perform filtering
-		allSlots = filterOpSlotList(allSlots, date, from, to, status, hospital, doctor, type);
+		allSlots = filterOpSlotList(allSlots, date, from, to, status, hospital, doctor, type, null);
 
 		// Sort the list of OpSlots according to their dates
 		Collections.sort(allSlots, new OpSlotComparator());

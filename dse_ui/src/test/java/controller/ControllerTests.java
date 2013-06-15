@@ -63,15 +63,16 @@ public class ControllerTests {
 	@Test
 	public void testOpSlotEmptyFilter() {
 		assertEquals("Check size of original list of OP slots", 4, slots.size());
-		List<OpSlot> filteredList = SlotController.filterOpSlotList(slots, "", "", "", "unset", "", "", "");
+		List<OpSlot> filteredList = SlotController.filterOpSlotList(slots, null, null, null, "unset", null, null, null,
+				null);
 		assertEquals("Filter function should not remove any slots", slots.size(), filteredList.size());
 	}
 
 	@Test
 	public void testOpSlotHospitalFilter() {
 		assertEquals("Check size of original list of OP slots", 4, slots.size());
-		List<OpSlot> filteredList = SlotController
-				.filterOpSlotList(slots, "", "", "", "unset", hospitalName2, "", "");
+		List<OpSlot> filteredList = SlotController.filterOpSlotList(slots, null, null, null, "unset", hospitalName2,
+				null, null, null);
 		assertEquals("Filter function should remove 2 slots", 2, filteredList.size());
 	}
 

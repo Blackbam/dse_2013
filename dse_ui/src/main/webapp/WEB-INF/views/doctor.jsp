@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page session="false"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -30,47 +30,56 @@
 		});
 		$(".date").datepicker($.datepicker.regional['de']);
 	});
-	
+
 	$(document).ready(function() {
 		remote_notifications();
-		setInterval(function() { remote_notifications(); }, 5000);
+		setInterval(function() {
+			remote_notifications();
+		}, 5000);
 	});
-	
-	
+
 	function remote_notifications() {
-		
-        $.ajax({
-            type: "GET",
-            url: "/notification/?id=${doctorID}",
-            data: "",
-            success: function(data){
-                var html = "";
-                $(data).each(function(key,obj) {
-                	
-                	html +='<div class="notification_element"><div class="noz"><span class="title">'+obj.title+' <span class="date">'+obj.date+'</span></div>';
-	                	html += '<div class="notel_mas" title="'+obj.title+' - '+obj.date+'">';
-		                	html += '<div class="notel_content">'+obj.content+'</div>';
-	                	html += '</div>';
-	                html += '</div>';
-                });
-                $('#notifications_content').html(html);
-                
-                $(".notification_element").on("click", function (e) {
-                   
-                 $(this).children('.notel_mas').each(function() {
-                	$(this).dialog({
-                		width:400,
-                		height:300
-                	}); 
-                 });
-                });
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-            	console.log(jqXHR);
-            	console.log(textStatus);
-            	console.log(errorThrown);
-            }
-        });
+
+		$
+				.ajax({
+					type : "GET",
+					url : "/notification/?id=${doctorID}",
+					data : "",
+					success : function(data) {
+						var html = "";
+						$(data)
+								.each(
+										function(key, obj) {
+
+											html += '<div class="notification_element"><div class="noz"><span class="title">'
+													+ obj.title
+													+ ' <span class="date">'
+													+ obj.date
+													+ '</span></div>';
+											html += '<div class="notel_mas" title="'+obj.title+' - '+obj.date+'">';
+											html += '<div class="notel_content">'
+													+ obj.content + '</div>';
+											html += '</div>';
+											html += '</div>';
+										});
+						$('#notifications_content').html(html);
+
+						$(".notification_element").on("click", function(e) {
+
+							$(this).children('.notel_mas').each(function() {
+								$(this).dialog({
+									width : 400,
+									height : 300
+								});
+							});
+						});
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						console.log(jqXHR);
+						console.log(textStatus);
+						console.log(errorThrown);
+					}
+				});
 	}
 </script>
 </head>
@@ -121,8 +130,7 @@
 							</tr>
 						</tfoot>
 
-						<c:forEach items="${opSlots}"
-							var="opSlots">
+						<c:forEach items="${opSlots}" var="opSlots">
 							<tr>
 								<td><fmt:formatDate value="${opSlots.date}"
 										pattern="dd.MM.yyyy HH:mm" /></td>
@@ -160,6 +168,11 @@
 									</label> <input type="text" name="type" class="genericInput" /></td>
 								</tr>
 								<tr>
+									<td><label>Patient<span class="small">Name
+												des Patienten</span>
+									</label> <input type="text" name="patient" class="genericInput" /></td>
+								</tr>
+								<tr>
 									<td><label>&nbsp;</label>
 										<button type="submit">suchen</button></td>
 								</tr>
@@ -173,9 +186,9 @@
 					<c:if test="${sent_reservation == true}">
 						<p class="success">Eine Reservierungsanfrage wurde gesendet
 							für: PatientID: ${sent_dto.patientID}, Frühestes Datum:
-							${sent_dto.dateStart}", Spätestes Datum:
-							${sent_dto.dateEnd}", Minimale Dauer in Minuten:
-							${sent_dto.minTime}, Typ: ${sent_dto.type}</p>
+							${sent_dto.dateStart}", Spätestes Datum: ${sent_dto.dateEnd}",
+							Minimale Dauer in Minuten: ${sent_dto.minTime}, Typ:
+							${sent_dto.type}</p>
 					</c:if>
 
 					<div id="stylized" class="searchForm">

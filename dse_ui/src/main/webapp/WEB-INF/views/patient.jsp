@@ -74,9 +74,6 @@
             }
         });
 	}
-	
-
-	
 </script>
 </head>
 <body>

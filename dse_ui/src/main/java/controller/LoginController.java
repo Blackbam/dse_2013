@@ -43,7 +43,7 @@ public class LoginController {
 		switch (usertype) {
 			case HOSPITAL:
 				// Retrieve the hospital
-				Hospital hospital = mongoTemplate.findOne(new Query(where("name").is(username)), Hospital.class);
+				Hospital hospital = mongoTemplate.findOne(new Query(where("username").is(username)), Hospital.class);
 	
 				// Check type of user
 				if (hospital != null) {
