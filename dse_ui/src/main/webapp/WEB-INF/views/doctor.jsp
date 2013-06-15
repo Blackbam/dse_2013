@@ -99,7 +99,7 @@
 					<table id='gradient-style' class='sortable' style="width: 100%">
 						<thead>
 							<tr>
-								<th>Datum</th>
+								<th>Datum & Uhrzeit</th>
 								<th>Dauer</br>(in Minuten)</th>
 								<th>Typ</th>
 								<th>Krankenhaus</th>
@@ -153,22 +153,10 @@
 								</label><input type="text" class="time" name="from" style="width: 75px" />
 									<span style="margin-top: 5px; margin-right: 5px;">bis</span><input
 									type="text" class="time" name="to" style="width: 75px" /></td>
-								<td><label>Arzt<span class="small">Name des
-											Arztes</span>
-								</label> <input type="text" name="doctor" class="genericInput" /></td>
-							</tr>
-							<tr>
-								<td><label>Status<span class="small">Verfügbarkeit</span>
-								</label><select name="status">
-										<option value="unset">-</option>
-										<option value="available">frei</option>
-										<option value="reserved">reserviert</option>
-								</select></td>
 								<td><label>Typ<span class="small">Art der
 											Operation</span>
 								</label> <input type="text" name="type" class="genericInput" /></td>
 							</tr>
-							
 							<tr>
 								<td><label>&nbsp;</label>
 									<button type="submit">suchen</button></td>

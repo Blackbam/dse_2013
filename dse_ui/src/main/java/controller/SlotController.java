@@ -63,13 +63,13 @@ public abstract class SlotController {
 				DateTime dt = new DateTime(slot.getDate());
 				dateString = dt.toLocalDate().toString("dd.MM.yyyy");
 			}
-			if (!date.isEmpty() && !date.equals(dateString)) {
+			if (date != null && !date.isEmpty() && !date.equals(dateString)) {
 				toRemove.add(slot);
 				continue;
 			}
 
 			// from
-			if (!from.isEmpty()) {
+			if (from != null && !from.isEmpty()) {
 				DateTime slotEndTime = new DateTime(slot.getDate()).plusMinutes(slot.getLength());
 				String[] split = from.split(":");
 				Integer fromHour = Integer.valueOf(split[0]);
@@ -83,7 +83,7 @@ public abstract class SlotController {
 			}
 
 			// to
-			if (!to.isEmpty()) {
+			if (to != null && !to.isEmpty()) {
 				DateTime slotStartTime = new DateTime(slot.getDate());
 				String[] split = to.split(":");
 				Integer fromHour = Integer.valueOf(split[0]);
@@ -101,13 +101,14 @@ public abstract class SlotController {
 			if (slot.getReservation() != null) {
 				reserved = "reserved";
 			}
-			if (!status.equalsIgnoreCase("unset") && !status.equalsIgnoreCase(reserved)) {
+			if (status != null && !status.equalsIgnoreCase("unset") && !status.equalsIgnoreCase(reserved)) {
 				toRemove.add(slot);
 				continue;
 			}
 
 			// Hospital
-			if (!hospital.isEmpty() && !slot.getHospital().getName().toUpperCase().contains(hospital.toUpperCase())) {
+			if (hospital != null && !hospital.isEmpty()
+					&& !slot.getHospital().getName().toUpperCase().contains(hospital.toUpperCase())) {
 				toRemove.add(slot);
 				continue;
 			}
@@ -119,13 +120,13 @@ public abstract class SlotController {
 				String lastName = slot.getReservation().getDoctor().getLastName().toUpperCase();
 				fullname = firstName + " " + lastName;
 			}
-			if (!doctor.isEmpty() && !fullname.contains(doctor.toUpperCase())) {
+			if (doctor != null && !doctor.isEmpty() && !fullname.contains(doctor.toUpperCase())) {
 				toRemove.add(slot);
 				continue;
 			}
 
 			// Type
-			if (!type.isEmpty() && !slot.getTypeString().toUpperCase().contains(type.toUpperCase())) {
+			if (type != null && !type.isEmpty() && !slot.getTypeString().toUpperCase().contains(type.toUpperCase())) {
 				toRemove.add(slot);
 				continue;
 			}

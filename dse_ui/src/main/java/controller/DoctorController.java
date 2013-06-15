@@ -67,7 +67,7 @@ public class DoctorController extends SlotController {
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public String doctorFiltered(Model model, @RequestParam("id") String id, @RequestParam("date") String date,
-			@RequestParam("from") String from, @RequestParam("to") String to, @RequestParam("status") String status,
+			@RequestParam("from") String from, @RequestParam("to") String to,
 			@RequestParam("hospital") String hospital, @RequestParam("type") String type) {
 
 		Doctor doctor = uiDAO.findDoctor(id);
@@ -77,7 +77,7 @@ public class DoctorController extends SlotController {
 		opSlots = removePastSlots(opSlots);
 
 		// Perform filtering
-		opSlots = filterOpSlotList(opSlots, date, from, to, status, hospital, "", type);
+		opSlots = filterOpSlotList(opSlots, date, from, to, null, hospital, null, type);
 
 		// Sort the list of OpSlots according to their dates
 		Collections.sort(opSlots, new OpSlotComparator());
