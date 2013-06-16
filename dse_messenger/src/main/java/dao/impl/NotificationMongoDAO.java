@@ -35,6 +35,11 @@ public class NotificationMongoDAO implements INotificationDAO {
 	public Patient findPatient(String patientID) {
 		return mongo.findById(patientID, Patient.class);
 	}
+	
+	@Override
+	public List<Patient> findAllPatients() {
+		return mongo.findAll(Patient.class);
+	}
 
 	@Override
 	public Doctor findDoctor(String doctorID) {

@@ -114,7 +114,7 @@ public class ReservationController {
 
 	/**
 	 * Sends success notification request to messenger (the notification is then built in messenger with the information
-	 * sent)
+	 * sent).
 	 * 
 	 * @param receivedDTO
 	 * @param opSlotDTO

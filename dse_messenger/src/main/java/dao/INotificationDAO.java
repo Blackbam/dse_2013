@@ -35,4 +35,6 @@ public interface INotificationDAO {
 	 */
 	public List<Notification> findAllNotifications();
 
+	public List<Patient> findAllPatients();
+
 }

@@ -44,10 +44,21 @@
 			<artifactId>cglib-nodep</artifactId>
 		</dependency>
 
-		<!-- Data -->
+		<!-- MongoDB -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.flapdoodle.embedmongo</groupId>
+			<artifactId>de.flapdoodle.embedmongo</artifactId>
+			<version>1.18</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>2.7.3</version>
 		</dependency>
 
 		<dependency>
