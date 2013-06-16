@@ -19,15 +19,12 @@ public class Notification {
 	private String content;
 	
 	private Date date;
-	
-	private boolean read;
 
 	public Notification(User user, String title, String content) {
 		this.user = user;
 		this.title = title;
 		this.content = content;
 		this.date = new Date();
-		this.read = false;
 	}
 
 	public String getId() {
@@ -66,14 +63,6 @@ public class Notification {
 		return date;
 	}
 
-	public boolean isRead() {
-		return read;
-	}
-
-	public void setRead(boolean read) {
-		this.read = read;
-	}
-
 	public void setDate(Date date) {
 		this.date = date;
 	}
@@ -81,7 +70,7 @@ public class Notification {
 	@Override
 	public String toString() {
 		return "Notification [id=" + id + ", user=" + user + ", title=" + title + ", content=" + content + ", date="
-				+ date + ", hasBeenRead=" + read + "]";
+				+ date +"]";
 	}
 
 }
