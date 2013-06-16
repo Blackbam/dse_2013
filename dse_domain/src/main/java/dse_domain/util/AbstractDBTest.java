@@ -13,6 +13,11 @@ import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
 import de.flapdoodle.embedmongo.runtime.Network;
 
+/**
+ * Abstract class providing generalized functionality required for testing the database and data access objects.
+ * 
+ * @author Taylor
+ */
 public abstract class AbstractDBTest {
 
 	private static MongodExecutable mongodExe;
