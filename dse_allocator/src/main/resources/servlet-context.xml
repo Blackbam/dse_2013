@@ -40,5 +40,4 @@
 
 	<bean id="messageController" class="controller.ReservationController" />
 
-
 </beans>

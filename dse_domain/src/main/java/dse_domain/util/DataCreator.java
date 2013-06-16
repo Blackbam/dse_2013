@@ -1,9 +1,11 @@
 package dse_domain.util;
 
+import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import dse_domain.domain.Doctor;
 import dse_domain.domain.Hospital;
+import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 
 /**
@@ -13,13 +15,13 @@ import dse_domain.domain.Patient;
  */
 public class DataCreator {
 
-	private static final double[] WIEN = new double[] { 48.208889, 16.3725 };
-	private static final double[] GRAZ = new double[] { 47.066667, 15.433333 };
-	private static final double[] INNSBRUCK = new double[] { 47.266667, 11.383333 };
-	private static final double[] SALZBURG = new double[] { 47.8, 13.033333 };
-	private static final double[] LINZ = new double[] { 48.303056, 14.290556 };
-	private static final double[] KLOSTERNEUBURG = new double[] { 48.304167, 16.316667 };
-	private static final double[] TULLN = new double[] { 48.333333, 16.05 };
+	public static final double[] WIEN = new double[] { 48.208889, 16.3725 };
+	public static final double[] GRAZ = new double[] { 47.066667, 15.433333 };
+	public static final double[] INNSBRUCK = new double[] { 47.266667, 11.383333 };
+	public static final double[] SALZBURG = new double[] { 47.8, 13.033333 };
+	public static final double[] LINZ = new double[] { 48.303056, 14.290556 };
+	public static final double[] KLOSTERNEUBURG = new double[] { 48.304167, 16.316667 };
+	public static final double[] TULLN = new double[] { 48.333333, 16.05 };
 
 	public static void insertTestData(MongoTemplate template) {
 
@@ -125,5 +127,19 @@ public class DataCreator {
 		template.save(hospital2);
 		template.save(hospital3);
 		template.save(hospital4);
+
+		OpSlot opSlot1 = new OpSlot(hospital1, 60, OpSlot.Type.AUGENHEILKUNDE, DateTime.now().plusDays(10).toDate());
+		OpSlot opSlot2 = new OpSlot(hospital2, 120, OpSlot.Type.HNO, DateTime.now().plusDays(11).toDate());
+		OpSlot opSlot3 = new OpSlot(hospital3, 180, OpSlot.Type.KARDIOLOGIE, DateTime.now().plusDays(12).toDate());
+		OpSlot opSlot4 = new OpSlot(hospital4, 240, OpSlot.Type.NEUROCHIRURGIE, DateTime.now().plusDays(13).toDate());
+		OpSlot opSlot5 = new OpSlot(hospital4, 240, OpSlot.Type.ORTHOPÄDIE, DateTime.now().plusDays(14).toDate());
+		OpSlot opSlot6 = new OpSlot(hospital2, 240, OpSlot.Type.ORTHOPÄDIE, DateTime.now().plusDays(14).toDate());
+
+		template.save(opSlot1);
+		template.save(opSlot2);
+		template.save(opSlot3);
+		template.save(opSlot4);
+		template.save(opSlot5);
+		template.save(opSlot6);
 	}
 }
