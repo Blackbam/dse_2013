@@ -7,6 +7,11 @@ import org.junit.Test;
 import dao.impl.UserInterfaceMongoDAO;
 import dse_domain.util.AbstractDBTest;
 
+/**
+ * Unit tests for the User Interface DAO.
+ * 
+ * @author Taylor
+ */
 public class UiDaoTests extends AbstractDBTest {
 
 	private static UserInterfaceMongoDAO uiDao;

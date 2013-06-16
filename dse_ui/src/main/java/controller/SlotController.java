@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
 import dse_domain.domain.OpSlot;
@@ -14,6 +15,8 @@ import dse_domain.domain.OpSlot;
  * @author Taylor
  */
 public abstract class SlotController {
+
+	static final Logger logger = Logger.getLogger(SlotController.class);
 
 	/**
 	 * Filter out operation slots that have already occurred.
@@ -69,6 +72,7 @@ public abstract class SlotController {
 				dateString = dt.toLocalDate().toString("dd.MM.yyyy");
 			}
 			if (date != null && !date.isEmpty() && !date.equals(dateString)) {
+				// logger.debug("Removing slot {" + slot.toString() + "} due to not matching date criteria.");
 				toRemove.add(slot);
 				continue;
 			}
@@ -82,6 +86,7 @@ public abstract class SlotController {
 
 				if (slotEndTime.getHourOfDay() < fromHour
 						|| (slotEndTime.getHourOfDay() == fromHour && slotEndTime.getMinuteOfHour() < fromMinute)) {
+					// logger.debug("Removing slot {" + slot.toString() + "} due to not matching from time criteria.");
 					toRemove.add(slot);
 					continue;
 				}
@@ -96,6 +101,7 @@ public abstract class SlotController {
 
 				if (slotStartTime.getHourOfDay() > fromHour
 						|| (slotStartTime.getHourOfDay() == fromHour && slotStartTime.getMinuteOfHour() > fromMinute)) {
+					// logger.debug("Removing slot {" + slot.toString() + "} due to not matching to time criteria.");
 					toRemove.add(slot);
 					continue;
 				}
@@ -107,6 +113,7 @@ public abstract class SlotController {
 				reserved = "reserved";
 			}
 			if (status != null && !status.equalsIgnoreCase("unset") && !status.equalsIgnoreCase(reserved)) {
+				// logger.debug("Removing slot {" + slot.toString() + "} due to not matching status criteria.");
 				toRemove.add(slot);
 				continue;
 			}
@@ -114,6 +121,7 @@ public abstract class SlotController {
 			// Hospital
 			if (hospital != null && !hospital.isEmpty()
 					&& !slot.getHospital().getName().toUpperCase().contains(hospital.toUpperCase())) {
+				// logger.debug("Removing slot {" + slot.toString() + "} due to not matching hospital criteria.");
 				toRemove.add(slot);
 				continue;
 			}
@@ -126,6 +134,11 @@ public abstract class SlotController {
 				fullname = firstName + " " + lastName;
 			}
 			if (doctor != null && !doctor.isEmpty() && !fullname.contains(doctor.toUpperCase())) {
+				// logger.debug("Removing slot {" + slot.toString() + "} due to not matching doctor criteria.");
+				toRemove.add(slot);
+				continue;
+			} else if (doctor != null && !doctor.isEmpty() && slot.getReservation() == null) {
+				// logger.debug("Removing slot {" + slot.toString() + "} due to not matching doctor criteria.");
 				toRemove.add(slot);
 				continue;
 			}
@@ -138,15 +151,18 @@ public abstract class SlotController {
 				fullname = firstName + " " + lastName;
 			}
 			if (patient != null && !patient.isEmpty() && !fullname.contains(patient.toUpperCase())) {
+				// logger.debug("Removing slot {" + slot.toString() + "} due to not matching patient criteria.");
 				toRemove.add(slot);
 				continue;
-			} else if (patient != null && slot.getReservation() == null) {
+			} else if (patient != null && !patient.isEmpty() && slot.getReservation() == null) {
+				// logger.debug("Removing slot {" + slot.toString() + "} due to not matching patient criteria.");
 				toRemove.add(slot);
 				continue;
 			}
 
 			// Type
 			if (type != null && !type.isEmpty() && !slot.getTypeString().toUpperCase().contains(type.toUpperCase())) {
+				// logger.debug("Removing slot {" + slot.toString() + "} due to not matching type criteria.");
 				toRemove.add(slot);
 				continue;
 			}

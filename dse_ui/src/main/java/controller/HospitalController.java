@@ -31,6 +31,7 @@ import dse_domain.domain.OpSlot;
 @Controller
 @RequestMapping(value = "/hospital")
 public class HospitalController extends SlotController {
+
 	static final Logger logger = Logger.getLogger(HospitalController.class);
 
 	@Autowired(required = false)
@@ -61,7 +62,7 @@ public class HospitalController extends SlotController {
 		allSlots = removePastSlots(allSlots);
 
 		// Perform filtering
-		allSlots = filterOpSlotList(allSlots, date, from, to, status, hospital.getName(), doctor, type, patient);
+		allSlots = filterOpSlotList(allSlots, date, from, to, status, null, doctor, type, patient);
 
 		// Sort the list of OpSlots according to their dates
 		Collections.sort(allSlots, new OpSlotComparator());
