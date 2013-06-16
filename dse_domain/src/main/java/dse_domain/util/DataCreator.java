@@ -2,8 +2,15 @@ package dse_domain.util;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import dse_domain.domain.Doctor;
+import dse_domain.domain.Hospital;
 import dse_domain.domain.Patient;
 
+/**
+ * Helper class to create test database data for unit tests.
+ * 
+ * @author Taylor
+ */
 public class DataCreator {
 
 	private static final double[] WIEN = new double[] { 48.208889, 16.3725 };
@@ -11,6 +18,8 @@ public class DataCreator {
 	private static final double[] INNSBRUCK = new double[] { 47.266667, 11.383333 };
 	private static final double[] SALZBURG = new double[] { 47.8, 13.033333 };
 	private static final double[] LINZ = new double[] { 48.303056, 14.290556 };
+	private static final double[] KLOSTERNEUBURG = new double[] { 48.304167, 16.316667 };
+	private static final double[] TULLN = new double[] { 48.333333, 16.05 };
 
 	public static void insertTestData(MongoTemplate template) {
 
@@ -62,6 +71,59 @@ public class DataCreator {
 		template.save(patient4);
 		template.save(patient5);
 		template.save(patient6);
-	}
 
+		Doctor doctor1 = new Doctor();
+		doctor1.setTitle("Dr.");
+		doctor1.setFirstName("Michael");
+		doctor1.setLastName("Aufmesser");
+		doctor1.setUsername("Michael");
+		doctor1.setPassword("Aufmesser");
+
+		Doctor doctor2 = new Doctor();
+		doctor2.setTitle("Dr.");
+		doctor2.setFirstName("David");
+		doctor2.setLastName("Gott");
+		doctor2.setUsername("David");
+		doctor2.setPassword("Gott");
+
+		Doctor doctor3 = new Doctor();
+		doctor3.setTitle("Dr.");
+		doctor3.setFirstName("Johannes");
+		doctor3.setLastName("Gunst-Fehler");
+		doctor3.setUsername("Johannes");
+		doctor3.setPassword("Gunst-Fehler");
+
+		Doctor doctor4 = new Doctor();
+		doctor4.setTitle("Dr.");
+		doctor4.setFirstName("Stefan");
+		doctor4.setLastName("Augenblick");
+		doctor4.setUsername("Stefan");
+		doctor4.setPassword("Augenblick");
+
+		template.save(doctor1);
+		template.save(doctor2);
+		template.save(doctor3);
+		template.save(doctor4);
+
+		Hospital hospital1 = new Hospital("AKH Wien", WIEN);
+		hospital1.setUsername(hospital1.getName());
+		hospital1.setPassword(hospital1.getName());
+
+		Hospital hospital2 = new Hospital("LKH Klosterneuburg", KLOSTERNEUBURG);
+		hospital2.setUsername(hospital2.getName());
+		hospital2.setPassword(hospital2.getName());
+
+		Hospital hospital3 = new Hospital("Barmherzige Brüder Wien", WIEN);
+		hospital3.setUsername(hospital3.getName());
+		hospital3.setPassword(hospital3.getName());
+
+		Hospital hospital4 = new Hospital("LKH Tulln", TULLN);
+		hospital4.setUsername(hospital4.getName());
+		hospital4.setPassword(hospital4.getName());
+
+		template.save(hospital1);
+		template.save(hospital2);
+		template.save(hospital3);
+		template.save(hospital4);
+	}
 }
