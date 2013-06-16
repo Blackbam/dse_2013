@@ -47,7 +47,7 @@ public class ReservationMongoDAO implements IReservationDAO {
 	 * @param patient
 	 * @return
 	 */
-	private GeoResults<Hospital> findNearHospitals(int maxDistance, Patient patient) {
+	public GeoResults<Hospital> findNearbyHospitals(int maxDistance, Patient patient) {
 		double[] patientLoc = patient.getLocation();
 		Point patientLocation = new Point(patientLoc[0], patientLoc[1]);
 		logger.debug("patient location: " + patientLocation.toString());
@@ -68,7 +68,7 @@ public class ReservationMongoDAO implements IReservationDAO {
 			return null;
 		}
 
-		GeoResults<Hospital> test = findNearHospitals(maxDistance, patient);
+		GeoResults<Hospital> test = findNearbyHospitals(maxDistance, patient);
 		List<GeoResult<Hospital>> geoResults = test.getContent();
 
 		OpSlot foundOpSlot = null;
