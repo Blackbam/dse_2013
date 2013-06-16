@@ -218,9 +218,11 @@
 										<td><label>ID des Patienten</label> <input type="text"
 											name="patient_id" class="genericInput" /></td>
 										<td><label>benötigter Typ</label> <select name="type">
-												<option value="AUGEN">Augen</option>
-												<option value="KARDIO">Kardio</option>
-												<option value="OTHER">Andere</option>
+												<option value="AUGENHEILKUNDE">Augenheilkunde</option>
+												<option value="ORTHOPÄDIE">Orthopädie</option>
+												<option value="HNO">HNO</option>
+												<option value="NEUROCHIRURGIE">Neurochirurgie</option>
+												<option value="KARDIOLOGIE">Kardiologie</option>
 										</select></td>
 
 									</tr>

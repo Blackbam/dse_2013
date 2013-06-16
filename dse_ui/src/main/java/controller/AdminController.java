@@ -2,6 +2,7 @@ package controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import dao.IUserInterfaceDAO;
 import dse_domain.domain.Doctor;
 import dse_domain.domain.Hospital;
+import dse_domain.domain.Notification;
+import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
+import dse_domain.domain.Reservation;
+import dse_domain.domain.User;
 
 /**
  * Handles requests for the administrator page.
@@ -23,6 +28,10 @@ public class AdminController {
 
 	@Autowired
 	IUserInterfaceDAO uiDAO;
+	
+	@Autowired
+	private MongoOperations mongo;
+
 
 	/**
 	 * Default Admin Controller.
@@ -226,6 +235,19 @@ public class AdminController {
 
 		return "admin";
 	}
+	
+	@RequestMapping(value="/database_erase_all/", method= RequestMethod.GET)
+	public String eraseAll(Model model) {
+		mongo.dropCollection(Notification.class);
+		mongo.dropCollection(OpSlot.class);
+		mongo.dropCollection(Reservation.class);
+		mongo.dropCollection(User.class);
+		mongo.dropCollection(Doctor.class);
+		mongo.dropCollection(Patient.class);
+		mongo.dropCollection(Hospital.class);
+		addStandardOutputs(model);
+		return "admin";
+	}
 
 	/**
 	 * Retrieve all standard entities and add them to a given model.
@@ -241,5 +263,7 @@ public class AdminController {
 		model.addAttribute("doctors", doctors);
 		model.addAttribute("patients", patients);
 	}
+	
+	
 
 }

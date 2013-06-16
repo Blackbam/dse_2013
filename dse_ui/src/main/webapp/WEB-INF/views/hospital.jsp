@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/static/css/main.css" type="text/css"></link>
 <link rel="stylesheet" href="/static/css/colors.css" type="text/css"></link>
 <link rel="stylesheet" href="/static/css/local.css" type="text/css"></link>
+<link rel="stylesheet" href="/static/css/custom.css" type="text/css"></link>
 <link rel="stylesheet" href="/static/css/normalize.css" type="text/css" />
 <link rel="stylesheet" href="/static/css/datepicker.css" type="text/css" />
 <link rel="stylesheet" href="/static/css/jquery.timepicker.css" type="text/css" />
@@ -97,9 +98,11 @@
 								name="length" />
 							<div style="clear: both;"></div>
 							<br /> <label style="width: 160px;">Typ</label> <select name="type">
-								<option value="AUGEN">Augen</option>
-								<option value="KARDIO">Kardio</option>
-								<option value="OTHER">Andere</option>
+												<option value="AUGENHEILKUNDE">Augenheilkunde</option>
+												<option value="ORTHOPÄDIE">Orthopädie</option>
+												<option value="HNO">HNO</option>
+												<option value="NEUROCHIRURGIE">Neurochirurgie</option>
+												<option value="KARDIOLOGIE">Kardiologie</option>
 							</select>
 							<div style="clear: both;"></div>
 							<br /> <input type="submit" value="OP-Slot anlegen" />

@@ -8,6 +8,7 @@ import dse_domain.domain.Notification;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 import dse_domain.domain.Person;
+import dse_domain.domain.Reservation;
 
 /**
  * Interface defining data-access methods.
@@ -85,5 +86,6 @@ public interface IUserInterfaceDAO {
 	public void delete(Notification notification);
 
 	public void removeReservationFromOpSlot(String opSlotID);
+	
 
 }

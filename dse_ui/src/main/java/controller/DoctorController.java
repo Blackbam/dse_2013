@@ -135,8 +135,7 @@ public class DoctorController extends SlotController {
 		ReservationDTO res = new ReservationDTO(patientID, doctorID, startDate.toDate(), endDate.toDate(), type,
 				minTime, maxDistance);
 
-		logger.info("trying to reserve patientID: " + patientID + " (as doctorID: " + doctorID
-				+ "). sending message to allocator: " + res);
+		logger.info("trying to reserve patientID: " + patientID + " (as doctorID: " + doctorID +"). sending message to allocator: " + res);
 
 		amqpTemplate.convertAndSend("allocator", res);
 
@@ -155,8 +154,9 @@ public class DoctorController extends SlotController {
 	@RequestMapping(value = "/remove_reservation/", method = RequestMethod.GET)
 	public String doctorRemoveReservation(Model model, @RequestParam("opslot_id") String opslot_id) {
 
-		// TODO delete reservation (DAO)
-		// uiDAO.removeReservationFromOpSlot(opslot_id); // not tested yet TODO
+		logger.debug("Try to delete reservation of OP-Slot "+opslot_id);
+		
+		uiDAO.removeReservationFromOpSlot(opslot_id);
 
 		ReservationCancelNotificationDTO cancel = new ReservationCancelNotificationDTO(opslot_id);
 		amqpTemplate.convertAndSend(cancel);

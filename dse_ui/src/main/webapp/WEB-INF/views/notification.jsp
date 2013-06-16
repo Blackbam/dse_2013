@@ -20,6 +20,6 @@
 
 [
 <c:forEach items="${notifications}" var="notifications" varStatus="status">
-		${status.first ? '' : ','} {"id":"${notifications.id}", "title":"${notifications.title}", "content":"${notifications.content}","date":"<fmt:formatDate value="${notifications.date}" pattern="dd.MM.yyyy HH:mm" />","read":"${notifications.read}"}
+		${status.first ? '' : ','} {"id":"${notifications.id}", "title":"${notifications.title}", "content":"${notifications.content}","date":"<fmt:formatDate value="${notifications.date}" pattern="dd.MM.yyyy HH:mm" />"}
 </c:forEach>
 ]

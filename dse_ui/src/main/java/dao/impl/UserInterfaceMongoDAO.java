@@ -21,6 +21,7 @@ import dse_domain.domain.Notification;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 import dse_domain.domain.Person;
+import dse_domain.domain.Reservation;
 
 /**
  * Data-access class for retrieving and modifying objects in the MongoDB database.

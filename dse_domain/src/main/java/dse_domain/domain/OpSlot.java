@@ -36,7 +36,7 @@ public class OpSlot {
 	 * @author Taylor
 	 */
 	public enum Type {
-		AUGENHEILKUNDE, ORTHOPÄDIE, HNO, NEUROCHIRURGIE, KARDIOLOGIE, KARDIO, AUGEN, OTHER // TODO remove old
+		AUGENHEILKUNDE, ORTHOPÄDIE, HNO, NEUROCHIRURGIE, KARDIOLOGIE, OTHER
 	}
 
 	public String getId() {
