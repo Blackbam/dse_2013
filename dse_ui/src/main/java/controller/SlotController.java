@@ -163,7 +163,7 @@ public abstract class SlotController {
 	 * 
 	 * @author Taylor
 	 */
-	class OpSlotComparator implements Comparator<OpSlot> {
+	public class OpSlotComparator implements Comparator<OpSlot> {
 
 		@Override
 		public int compare(OpSlot slot1, OpSlot slot2) {

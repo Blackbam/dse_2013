@@ -41,7 +41,7 @@ public class ReservationMongoDAO implements IReservationDAO {
 	}
 
 	/**
-	 * mongo geo search for near hospitals
+	 * MongoDB geo search for nearby hospitals
 	 * 
 	 * @param maxDistance
 	 * @param patient

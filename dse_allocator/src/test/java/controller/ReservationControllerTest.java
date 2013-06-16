@@ -6,25 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import dao.IReservationDAO;
-import dao.impl.ReservationMongoDAO;
-import dse_domain.domain.Doctor;
-import dse_domain.domain.Hospital;
 import dse_domain.domain.OpSlot;
 import dse_domain.domain.Patient;
 
-
 public class ReservationControllerTest {
-	static final Logger logger = Logger.getLogger(ReservationControllerTest.class);
 	
+	static final Logger logger = Logger.getLogger(ReservationControllerTest.class);
+
 	@Autowired
 	private IReservationDAO reservationDAO;
-	
+
 	/**
 	 * Name of test hospital 1
 	 */
@@ -46,56 +42,34 @@ public class ReservationControllerTest {
 	@Before
 	public void createTestSlots() {
 
-//		// Hospitals
-//		Hospital hospital1 = new Hospital(hospitalName1, null);
-//		Hospital hospital2 = new Hospital(hospitalName2, null);
-//
-//		// Dates
-//		DateTime pastDate = new DateTime().minusYears(100);
-//		DateTime futureDate = new DateTime().plusYears(100);
-//
-//		// OpSlots
-//		OpSlot slot1 = new OpSlot(hospital1, 60, OpSlot.Type.AUGEN, pastDate.toDate());
-//		OpSlot slot2 = new OpSlot(hospital2, 60, OpSlot.Type.AUGEN, pastDate.toDate());
-//		OpSlot slot3 = new OpSlot(hospital1, 60, OpSlot.Type.AUGEN, futureDate.toDate());
-//		OpSlot slot4 = new OpSlot(hospital2, 60, OpSlot.Type.AUGEN, futureDate.toDate());
-//
-//		slots.add(slot1);
-//		slots.add(slot2);
-//		slots.add(slot3);
-//		slots.add(slot4);
+		// // Hospitals
+		// Hospital hospital1 = new Hospital(hospitalName1, null);
+		// Hospital hospital2 = new Hospital(hospitalName2, null);
+		//
+		// // Dates
+		// DateTime pastDate = new DateTime().minusYears(100);
+		// DateTime futureDate = new DateTime().plusYears(100);
+		//
+		// // OpSlots
+		// OpSlot slot1 = new OpSlot(hospital1, 60, OpSlot.Type.AUGEN, pastDate.toDate());
+		// OpSlot slot2 = new OpSlot(hospital2, 60, OpSlot.Type.AUGEN, pastDate.toDate());
+		// OpSlot slot3 = new OpSlot(hospital1, 60, OpSlot.Type.AUGEN, futureDate.toDate());
+		// OpSlot slot4 = new OpSlot(hospital2, 60, OpSlot.Type.AUGEN, futureDate.toDate());
+		//
+		// slots.add(slot1);
+		// slots.add(slot2);
+		// slots.add(slot3);
+		// slots.add(slot4);
 	}
+
 	@Test
 	public void testOpSlotEmptyFilter() {
-		double [ ]  loc = {66.6, 66.6};
-		Patient test = new Patient("unitTest","patient", loc);
+		double[] loc = { 66.6, 66.6 };
+		Patient test = new Patient("unitTest", "patient", loc);
 		reservationDAO.save(test);
 		logger.debug("test DAO test lol");
 		assertEquals("Check size of original list of OP slots", 4, slots.size());
-		//List<OpSlot> filteredList = PublicController.filterOpSlotList(slots, "", "", "", "unset", "", "", "");
-		//assertEquals("Filter function should not remove any slots", slots.size(), filteredList.size());
+		// List<OpSlot> filteredList = PublicController.filterOpSlotList(slots, "", "", "", "unset", "", "", "");
+		// assertEquals("Filter function should not remove any slots", slots.size(), filteredList.size());
 	}
-
-//	@Test
-//	public void testOpSlotEmptyFilter() {
-//		assertEquals("Check size of original list of OP slots", 4, slots.size());
-//		List<OpSlot> filteredList = PublicController.filterOpSlotList(slots, "", "", "", "unset", "", "", "");
-//		assertEquals("Filter function should not remove any slots", slots.size(), filteredList.size());
-//	}
-//
-//	@Test
-//	public void testOpSlotHospitalFilter() {
-//		assertEquals("Check size of original list of OP slots", 4, slots.size());
-//		List<OpSlot> filteredList = PublicController
-//				.filterOpSlotList(slots, "", "", "", "unset", hospitalName2, "", "");
-//		assertEquals("Filter function should remove 2 slots", 2, filteredList.size());
-//	}
-//
-//	@Test
-//	public void testRemovePastOpSlots() {
-//		assertEquals("Check size of original list of OP slots", 4, slots.size());
-//		List<OpSlot> filteredList = PublicController.removePastSlots(slots);
-//		assertEquals("Filter function should remove 2 slots", 2, filteredList.size());
-//	}
-
 }

@@ -1,11 +1,15 @@
 package dse_domain.domain;
 
+import java.io.Serializable;
+
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 
 /**
  * Model class for patients.
  */
-public class Patient extends Person {
+public class Patient extends Person implements Serializable {
+
+	private static final long serialVersionUID = -2704716436489063116L;
 
 	@GeoSpatialIndexed
 	private double[] location;
